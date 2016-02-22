@@ -78,6 +78,12 @@ import java.lang.*;
       this.rehearse ++;
     }*/
 }
+    /*}
+    public void rehearse(){
+      /*add 1 to rehearseCount */
+    //}
+
+
    public static class Dice{
     private Dice(){
     }
