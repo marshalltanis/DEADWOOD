@@ -51,28 +51,27 @@ import java.lang.*;
   public abstract class Role{
     private int rankReq;
 
-    public abstract void reward() {
-      /* provide money and credit reward for extras, just credit reward for leads on success.
-      Also on success, shotsLeft for ActingSet is decremented.
-      on failure, money for extras, nothing for leads. */
-    }
-
+    //Abstract function with implementation provided by children:
+    public abstract void reward();
   }
+
   public class Lead extends Role{
 
     public Lead(int val) {
       rankReq = val;
     }
-
+    //provide credits reward on success:
+    //shotsLeft for ActingSet is also decremented.
     public void reward() {
-      //reward on success only:s
+      //reward on success only:
       if (Player.act() == true)
         Player.setCredits(Player.getCredits + 2);
+      ActingSet.setShotsLeft(ActingSet.getShotsLeft() - 1);
     }
-    /*see Abstract class Role */
   }
   public class Extra extends Role{
-
+    // provide money and credit reward on Success, money only on failure:
+    //shotsLeft for ActingSet is also decremented.
     public Extra(int val) {
       rankReq = val;
     }
@@ -86,9 +85,9 @@ import java.lang.*;
       } else {
         Player.setDollars(Player.getDollars + 1);
       }
+      ActingSet.setShotsLeft(ActingSet.getShotsLeft() - 1);
 
     }
-    /*see Abstract class Role */
   }
 
    public static class Dice{
