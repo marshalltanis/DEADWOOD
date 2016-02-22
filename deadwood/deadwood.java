@@ -5,7 +5,10 @@
  * Modified 2/19/2016
  */
 
+import java.util.*;
+import java.lang.*;
 
+ 
  public class deadwood{
 
   public class Player{
@@ -16,9 +19,10 @@
     private int score;
     private boolean role;
     //private Location local;
-    public Player(){
+   // public Player(){
 
-    }
+    //}
+}
 //     public boolean act(){
 //       int getRoll = Dice.roll();
 //       int budget = Scene.getBudget();   //Identify which scene based on the players position
@@ -42,13 +46,25 @@
     /*}
     public void rehearse(){
       /*add 1 to rehearseCount */
-    }
+    //}
 
-//   public class Dice{
-//     public int roll(){
-//       //int random = Math.random(6,1);
-//       return 0;
-//     }
+   public static class Dice{
+    private Dice(){
+    }
+    public static Dice getDice(){
+        if(dice == null){
+            dice = new Dice();
+        }
+        return dice;
+    }
+    public static Dice dice;
+    
+    public int roll(){
+        Random rand = new Random();
+        int random = rand.nextInt(6) + 1;
+    return random;
+    }
+    }
 //   }
 // 
 //   public abstract class Role{
@@ -103,7 +119,7 @@
 //     private List<Set> adjRooms;
 // 
 //   }
-//   public static void main(String[]arg){
-// 
-//   }
+   public static void main(String[]arg){
+       Dice officialDice = Dice.getDice();
+   }
  }
