@@ -56,19 +56,12 @@ import java.lang.*;
         }
         return null;
     }
-    public String getSceneName(){
+    public ActingSet getActingSet(){
         if(location != null){
-            String roomScene = location.getScene().getName();
-            return roomScene;
+            ActingSet currentSet = location;
+            return currentSet;
         }
         return null;
-    }
-    public int getSceneId(){
-        if(location != null){
-            int sceneId = location.getScene().getId();
-            return sceneId;
-        }
-        return 0;
     }
     public void setDollars(int amount){
         this.dollars += amount;
@@ -229,6 +222,7 @@ import java.lang.*;
     private int numRoles;
     private String name;
     private int sceneNum;
+    private List<Lead> leadList;
     public Scene(int budget,int numRoles, String name, int num){
         this.budget = budget;
         this.numRoles = numRoles;
@@ -249,6 +243,10 @@ import java.lang.*;
     public int getId(){
         int id = sceneNum;
         return id;
+    }
+    public List<Lead> getLeadList(){
+        List<Lead> theLeadList = leadList;
+        return theLeadList;
     }
   }
   
@@ -350,8 +348,11 @@ import java.lang.*;
         public void setScene(Scene newscene){
             scene = newscene;
         }
+        public List<Extra> getExtrasList(){
+            List<Extra> temp = extrasList;
+            return temp;
+        }
         
-
     }
     
     public static class CastingOffice {
@@ -417,7 +418,6 @@ import java.lang.*;
         
         public void upgrade_wCreds (Player p, int credits) {
             switch (credits) {
-            
                 case 5 :
                     if (p.getCredits() >= 5){
                         p.setCredits(-5);
@@ -519,31 +519,7 @@ import java.lang.*;
 //        l2.reward(p2);
 //        CommandExec(p1,cmd);
 //        CommandExec(p2,cmd);
-
-       Extra l1 = new Extra(1, "Prospector");
-       List<Extra> poop = new ArrayList<Extra>();
-       poop.add(l1);
-       Scene curr = new Scene(4,3, "Wild West",20);
-       ActingSet here = new ActingSet("Salooon", 3, 2, curr, poop, adjacencyList);
-       ActingSet []me = {here};
-       Player p1 = new Player(officialDice,1);
-       Player p2 = new Player(officialDice,2);
-       p1.move(here);
-       p2.move(here);
-       
-       Lead l2 = new Lead(1, "Miner");
-       p1.takeExtraRole(l1);
-       p2.takeLeadRole(l2);
-       p1.act();
-       p2.act();
-       l1.reward(p1);
-       l2.reward(p2);
-       CommandExec(p1,cmd, me);
-       CommandExec(p2,cmd , me);
-       
-       
-   }
-   
+}
    
    private static void popAdjList(Map<String,List<String>> adjacencyList) {
       List<String> mainAdj = Arrays.asList("Trailers", "Saloon", "Jail");
@@ -626,6 +602,22 @@ import java.lang.*;
         }
         return null;
     }
+    private static Lead findLead(String part, List<Lead> leadList){
+        for(int i =0; i < 1; i ++){
+            if(leadList.get(i).getName().equals(part)){
+                return leadList.get(i);
+            }
+        }
+        return null;
+    }
+    private static Extra findExtra(String part, List<Extra> extraList){
+        for(int i =0; i < 1; i ++){
+            if(extraList.get(i).getName().equals(part)){
+                return extraList.get(i);
+            }
+        }
+        return null;
+    }
     
     private static void CommandExec(Player p, String cmd, ActingSet [] list){
         if(cmd.equals("who")){
@@ -644,8 +636,8 @@ import java.lang.*;
         }
         else if(cmd.equals("Where")){
             System.out.print("You are in the " + p.getLocal());
-            if(p.getSceneName() != null){
-                System.out.print(" where " + p.getSceneName() + ", " + "scene " + p.getSceneId() +" is shooting.\n");
+            if(p.getActingSet().getScene().getName() != null){
+                System.out.print(" where " + p.getActingSet().getScene().getName() + ", " + "scene " + p.getActingSet().getScene().getName() +" is shooting.\n");
             }
             else{
                 System.out.print(" and you are not currently shooting a scene.\n");
@@ -659,6 +651,21 @@ import java.lang.*;
             else{
                 p.move(room);
                 System.out.print("Player " + p.getId() + " has moved to room " + room.getName() + ".\n");
+            }
+        }
+        else if(cmd.substring(0,4).equals("work")){
+            Lead isLead = findLead(cmd.substring(5),p.getActingSet().getScene().getLeadList());
+            Extra isExtra = findExtra(cmd.substring(5),p.getActingSet().getExtrasList());
+            if(isLead == null){
+                if(isExtra == null){
+                    System.out.print("I'm sorry but that role doesn't exist...");
+                }
+                p.takeExtraRole(isExtra);
+                System.out.print("Player " + p.getId() + " has taken the Extra role of " + p.getExtraRole() + ".\n");
+            }
+            else{
+                p.takeLeadRole(isLead);
+                System.out.print("Player " + p.getId() + " has taken the Lead role of " + p.getLeadRole() + ".\n");
             }
         }
     }
