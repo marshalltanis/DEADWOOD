@@ -64,25 +64,26 @@ import java.lang.*;
         return false;
       }
     }
-    /*public void takeRole(){
-      if(role == false && rank >= Role.rankReq){           
+    public void takeRole(Role roll){
+      if(role == false && rank >= roll.rankReq){           
         role = true;
       }
       else{
         System.out.print("Invalid Action");
       }
-    }*/
+    }
    /* public void move(){
       /* If location is in adjacent set, move, else choose a different room */
     /*public void rehearse(){
       this.rehearse ++;
     }*/
-}
-    /*}
+
+    
     public void rehearse(){
       /*add 1 to rehearseCount */
-    //}
-
+      this.rehearseCount ++;
+    }
+}
 
    public static class Dice{
     private Dice(){
@@ -106,10 +107,10 @@ import java.lang.*;
     private int rankReq;
 
     //Abstract function with implementation provided by children:
-    public abstract void reward();
+    public abstract void reward(Player p);
   }
 
-  public abstract static class Lead extends Role{
+  public static class Lead extends Role{
 
     public Lead(int val) {
       int rankReq = val;
@@ -123,7 +124,7 @@ import java.lang.*;
       //ActingSet.setShotsLeft(ActingSet.getShotsLeft() - 1);
     }
   }
-  public abstract static class Extra extends Role{
+  public static class Extra extends Role{
     // provide money and credit reward on Success, money only on failure:
     //shotsLeft for ActingSet is also decremented.
     public Extra(int val) {
