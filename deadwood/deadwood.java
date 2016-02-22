@@ -93,6 +93,11 @@ import java.lang.*;
         }
         return null;
     }
+    public void resetRole() {
+        role = false;
+        extraRole = null;
+        actRole = null;
+    }
 
     public boolean act(){
       int getRoll = dice.roll();
@@ -141,24 +146,23 @@ import java.lang.*;
 }
 
    public static class Dice{
-    private Dice(){
-    }
-    public static Dice getDice(){
-        if(dice == null){
-            dice = new Dice();
+        private Dice(){
         }
-        return dice;
-    }
-    public static Dice dice;
+        public static Dice getDice(){
+            if(dice == null){
+                dice = new Dice();
+            }
+            return dice;
+        }
+        public static Dice dice;
     
-    public int roll(){
-        Random rand = new Random();
-        int random = rand.nextInt(6) + 1;
-        return random;
+        public int roll(){
+            Random rand = new Random();
+            int random = rand.nextInt(6) + 1;
+            return random;
+        }
     }
-    }
-//   }
-// 
+
    public static abstract class Role{
     private int rankReq;
 
@@ -251,31 +255,57 @@ import java.lang.*;
   
   
 
-//   public interface Day{
-//     //private int dayNum;
-//   }
-// 
-//     public void newDay () {
-//       /* do some shit */
-//     }
-//   }
-  /* public static class ActingSet{
-    private int shots;
-    private int shotsLeft;
-    private Scene scene;
-    private List<Scene> scenelist;
-    private List<Extra> extraList;
-    private String name;
-    public ActingSet(String name, Scene scene){
-        this.name = name;
-        this.scene = scene;
+  public class Day{
+    private int dayNum;
+    private List<ActingSet> setsList;
+    private List<Scene> scenesList;
+    private List<Player> playersList;
+    private int numelems;
+
+    public Day (List<ActingSet> sets, List<Scene> scenes, List<Player> players) {
+        this.dayNum = 0;
+        this.setsList = sets;
+        this.scenesList = scenes;
+        this.playersList = players;
+        this.numelems = scenesList.size();
     }
-    public Scene getScene(){
-        return scene;
+
+    public void newDay () {
+      /* Reset all  roles to false for players
+        remove scenes from Sets list
+        Choose new Scenes for Sets
+        Reset all shotsLeft = shots
+        iterate Day*/
+
+        dayNum++;
+        if(dayNum > 3) {
+            System.out.println("Game Over");
+        } else {
+
+            //Resetting all roles to false for players
+            for (Player player : playersList) {
+                player.resetRole();
+            }
+
+            //Resetting shotLeft for all Sets
+            for (ActingSet set : setsList) {
+                set.resetShots();
+            }
+
+            for (int i=0;i<setsList.size();i++) {
+                Random rand = new Random();
+                int random = rand.nextInt(numelems);
+
+                Scene scene = scenesList.get(random);
+                scenesList.remove(random);
+
+                setsList.get(i).setScene(scene);
+
+            }
+        }
     }
-    public String getName(){
-        return name;
-    }*/
+  }
+  
 
     public class ActingSet { //implements Day{    <---
         private String name;
@@ -308,11 +338,18 @@ import java.lang.*;
             int thisShotsLeft = shotsLeft;
             return thisShotsLeft;
         }
+
+        public void resetShots(){
+            int shotsLeft = shots;
+        }
         
         public Scene getScene(){
             return scene;
         }
         
+        public void setScene(Scene newscene){
+            scene = newscene;
+        }
         
 
     }
@@ -446,15 +483,6 @@ import java.lang.*;
 
 
 
-//   public class Trailer extends Set{
-// 
-//   }
-//   public abstract class Set{
-//     private List<Set> adjRooms;
-// 
-//   }
-
-
 
 
 
@@ -470,6 +498,11 @@ import java.lang.*;
        Dice officialDice = Dice.getDice();
        Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
        popAdjList(adjacencyList);
+       //Create list of all Player objects to iterate through
+       //Create list of all Set objects to iterate through
+       //Create Deck of scene to choose from for ending days
+
+
 //        Scene curr = new Scene(4,3, "Wild West",20);
 //        ActingSet here = new ActingSet("Salooon", curr);
 //        Player p1 = new Player(officialDice,1);
