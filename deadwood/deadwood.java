@@ -107,25 +107,6 @@ import java.lang.*;
     return random;
     }
     }
-//   }
-// 
-//   public abstract class Role{
-//     private int rankReq;
-// 
-//     public abstract int reward() {
-//       /* provide money and credit reward for extras, just credit reward for leads on success.
-//       Also on success, shotsLeft for ActingSet is decremented.
-//       on failure, money for extras, nothing for leads. */
-//       return 0;
-//     }
-// 
-//   }
-//   public class Lead extends Role{
-//     /*see Abstract class Role */
-//   }
-//   public class Extra extends Role{
-//     /*see Abstract class Role */
-//   }
 //   public class Scene implements Day{
 //     private int budget;
 // 
