@@ -19,6 +19,9 @@ import java.lang.*;
     private int score = 0;
     private boolean role = false;
     private Scene scene;
+    private Lead actRole;
+    private Extra extraRole;
+    private boolean actSuccessful;
     
     private String local = "Trailer";
     public Player(Dice pDice){
@@ -53,20 +56,41 @@ import java.lang.*;
     public void setCredits(int amount){
         this.credits += amount;
     }
+    public String getLeadRole(){
+        String name = this.actRole.getName();
+        return name;
+    }
+    public String getExtraRole(){
+        String name = this.extraRole.getName();
+        return name;
+    }
 
     public boolean act(){
       int getRoll = dice.roll();
+      System.out.println(getRoll);
       int budget = scene.getBudget();   //Identify which scene based on the players position
-      if(getRoll > budget - rehearseCount){
-        return true;
+      if(getRoll >= budget - rehearseCount){
+        actSuccessful = true;
+        return actSuccessful;
       }
       else{
-        return false;
+        actSuccessful = false;
+        return actSuccessful;
       }
     }
-    public void takeRole(Role roll){
-      if(role == false && rank >= roll.rankReq){           
+    public void takeLeadRole(Lead roll){
+      if(role == false && rank >= roll.getRank()){           
         role = true;
+        actRole = roll;
+      }
+      else{
+        System.out.print("Invalid Action");
+      }
+    }
+    public void takeExtraRole(Extra roll){
+      if(role == false && rank >= roll.getRank()){           
+        role = true;
+        extraRole = roll;
       }
       else{
         System.out.print("Invalid Action");
@@ -99,7 +123,7 @@ import java.lang.*;
     public int roll(){
         Random rand = new Random();
         int random = rand.nextInt(6) + 1;
-    return random;
+        return random;
     }
     }
 //   }
@@ -112,15 +136,25 @@ import java.lang.*;
   }
 
   public static class Lead extends Role{
-
-    public Lead(int val) {
-      int rankReq = val;
+    private String roleName;
+    private int rankReq;
+    public Lead(int val, String name) {
+      rankReq = val;
+      roleName = name;
+    }
+    public String getName(){
+        String actName = roleName;
+        return actName;
+    }
+    public int getRank(){
+        int rank = rankReq;
+        return rank;
     }
     //provide credits reward on success:
     //shotsLeft for ActingSet is also decremented.
     public void reward(Player p) {
       //reward on success only:
-      if (p.act() == true)
+      if (p.actSuccessful == true)
         p.setCredits(p.getCredits() + 2);
       //ActingSet.setShotsLeft(ActingSet.getShotsLeft() - 1);
     }
@@ -128,13 +162,23 @@ import java.lang.*;
   public static class Extra extends Role{
     // provide money and credit reward on Success, money only on failure:
     //shotsLeft for ActingSet is also decremented.
-    public Extra(int val) {
-      int rankReq = val;
+    private String roleName;
+    private int rankReq;
+    public Extra(int val, String name) {
+      rankReq = val;
+      roleName = name;
     }
-
+    public String getName(){
+        String actname = roleName;
+        return actname;
+    }
+    public int getRank(){
+        int rank = rankReq;
+        return rank;
+    }
     public void reward(Player p) {
       //reward on success:
-      if (p.act() == true) {
+      if (p.actSuccessful == true) {
         p.setCredits(p.getCredits() + 1);
         p.setDollars(p.getDollars() + 1);
       //reward on failure:
@@ -190,11 +234,22 @@ import java.lang.*;
 //   }
    public static void main(String[]arg){
        Dice officialDice = Dice.getDice();
-       Scene curr = new Scene(9,3);
+       Scene curr = new Scene(4,3);
        Player p1 = new Player(officialDice);
-       p1.setCredits(4);
        Player p2 = new Player(officialDice);
-       System.out.println(p1.getCredits());
-       System.out.println(p2.getCredits());
+       p1.joinScene(curr);
+       p2.joinScene(curr);
+       Extra l1 = new Extra(1, "Prospector");
+       Lead l2 = new Lead(1, "Miner");
+       p1.takeExtraRole(l1);
+       p2.takeLeadRole(l2);
+       System.out.println(p1.getExtraRole());
+       System.out.println(p2.getLeadRole());
+       p1.act();
+       p2.act();
+       l1.reward(p1);
+       l2.reward(p2);
+       System.out.println(p1.getCredits() + "\t" + p1.getDollars());
+       System.out.println(p2.getCredits() + "\t" + p2.getDollars());
    }
  }
