@@ -5,7 +5,10 @@
  * Modified 2/19/2016
  */
 
+import java.util.*;
+import java.lang.*;
 
+ 
  public class deadwood{
 
   public class Player{
@@ -16,9 +19,10 @@
     private int score;
     private boolean role;
     //private Location local;
-    public Player(){
+   // public Player(){
 
-    }
+    //}
+}
 //     public boolean act(){
 //       int getRoll = Dice.roll();
 //       int budget = Scene.getBudget();   //Identify which scene based on the players position
@@ -42,14 +46,7 @@
     /*}
     public void rehearse(){
       /*add 1 to rehearseCount */
-    }
-
-  public class Dice{
-    public int roll(){
-      //int random = Math.random(6,1);
-      return 0;
-    }
-  }
+    //}
 
   public abstract class Role{
     private int rankReq;
@@ -93,6 +90,43 @@
     }
     /*see Abstract class Role */
   }
+
+   public static class Dice{
+    private Dice(){
+    }
+    public static Dice getDice(){
+        if(dice == null){
+            dice = new Dice();
+        }
+        return dice;
+    }
+    public static Dice dice;
+    
+    public int roll(){
+        Random rand = new Random();
+        int random = rand.nextInt(6) + 1;
+    return random;
+    }
+    }
+//   }
+// 
+//   public abstract class Role{
+//     private int rankReq;
+// 
+//     public abstract int reward() {
+//       /* provide money and credit reward for extras, just credit reward for leads on success.
+//       Also on success, shotsLeft for ActingSet is decremented.
+//       on failure, money for extras, nothing for leads. */
+//       return 0;
+//     }
+// 
+//   }
+//   public class Lead extends Role{
+//     /*see Abstract class Role */
+//   }
+//   public class Extra extends Role{
+//     /*see Abstract class Role */
+//   }
 //   public class Scene implements Day{
 //     private int budget;
 // 
@@ -128,7 +162,7 @@
 //     private List<Set> adjRooms;
 // 
 //   }
-//   public static void main(String[]arg){
-// 
-//   }
+   public static void main(String[]arg){
+       Dice officialDice = Dice.getDice();
+   }
  }
