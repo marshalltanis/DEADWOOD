@@ -307,7 +307,7 @@ import java.lang.*;
   }
   
 
-    public class ActingSet { //implements Day{    <---
+    public static class ActingSet { //implements Day{    <---
         private String name;
         private int shots;
         private int shotsLeft;
@@ -494,7 +494,7 @@ import java.lang.*;
        Scanner console = new Scanner(System.in);
        
        System.out.print("> ");
-       String cmd = console.next();
+       String cmd = console.nextLine();
        Dice officialDice = Dice.getDice();
        Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
        popAdjList(adjacencyList);
@@ -519,12 +519,33 @@ import java.lang.*;
 //        l2.reward(p2);
 //        CommandExec(p1,cmd);
 //        CommandExec(p2,cmd);
+
+       Extra l1 = new Extra(1, "Prospector");
+       List<Extra> poop = new ArrayList<Extra>();
+       poop.add(l1);
+       Scene curr = new Scene(4,3, "Wild West",20);
+       ActingSet here = new ActingSet("Salooon", 3, 2, curr, poop, adjacencyList);
+       ActingSet []me = {here};
+       Player p1 = new Player(officialDice,1);
+       Player p2 = new Player(officialDice,2);
+       p1.move(here);
+       p2.move(here);
+       
+       Lead l2 = new Lead(1, "Miner");
+       p1.takeExtraRole(l1);
+       p2.takeLeadRole(l2);
+       p1.act();
+       p2.act();
+       l1.reward(p1);
+       l2.reward(p2);
+       CommandExec(p1,cmd, me);
+       CommandExec(p2,cmd , me);
        
        
    }
    
    
-   public static void popAdjList(Map<String,List<String>> adjacencyList) {
+   private static void popAdjList(Map<String,List<String>> adjacencyList) {
       List<String> mainAdj = Arrays.asList("Trailers", "Saloon", "Jail");
       List<String> jailAdj = Arrays.asList("Main Street", "General Store", "Train Station");
       List<String> storeAdj = Arrays.asList("Saloon","Ranch","Train Station","Jail");
@@ -550,14 +571,22 @@ import java.lang.*;
       adjacencyList.put("Church",churchAdj);
       adjacencyList.put("Hotel",hotelAdj);
     }
+    private static ActingSet findActingSet(String room, ActingSet [] check){
+        for(int i = 0; i < 10; i ++){
+            if(check[i].getName().equals(room)){
+                return check[i];
+            }
+        }
+        return null;
+    }
     
-    public static void CommandExec(Player p, String cmd){
+    private static void CommandExec(Player p, String cmd, ActingSet [] list){
         if(cmd.equals("who")){
             System.out.print("\nPlayer " + p.getId() + " has $" + p.getDollars() + " and " + p.getCredits() + " credits ");
             String name = p.getLeadRole();
             String name2 = p.getExtraRole();
             if(name != null){
-                System.out.print("and is working on " + name);
+                System.out.print("and is working on " + name + ".\n");
             }
             else if(name2 != null){
                 System.out.print("and is working on " + name2 + ".\n");
@@ -573,6 +602,16 @@ import java.lang.*;
             }
             else{
                 System.out.print(" and you are not currently shooting a scene.\n");
+            }
+        }
+        else if(cmd.substring(0,4).equals("move")){
+            ActingSet room = findActingSet(cmd.substring(5), list);
+            if(room == null){
+                System.out.println("The room you tried to move to was an invalid room");
+            }
+            else{
+                p.move(room);
+                System.out.print("Player " + p.getId() + " has moved to room " + room.getName() + ".\n");
             }
         }
     }
