@@ -10,31 +10,62 @@ import java.lang.*;
 
  
  public class deadwood{
+  public static class Player{
+    private Dice dice;
+    private int dollars = 0;
+    private int credits = 0;
+    private int rehearseCount = 0;
+    private int rank = 1;
+    private int score = 0;
+    private boolean role = false;
+    private Scene scene;
+    
+    private String local = "Trailer";
+    public Player(Dice pDice){
+        this.dice = pDice;
+    }
+    public void joinScene(Scene scene){
+        this.scene = scene;
+    }
+    public int getDollars(){
+        int bucks = dollars;
+        return bucks;
+    }
+    public int getCredits(){
+        int creds = credits;
+        return creds;
+    }
+    public int rank(){
+        int pRank = rank;
+        return pRank;
+    }
+    public int getScore(){
+        int Score = score;
+        return Score;
+    }
+    public String getLocal(){
+        String location = local;
+        return location;
+    }
+    public void setDollars(int amount){
+        this.dollars += amount;
+    }
+    public void setCredits(int amount){
+        this.credits += amount;
+    }
 
-  public class Player{
-    private int dollars;
-    private int credits;
-    private int rehearseCount;
-    private int rank;
-    private int score;
-    private boolean role;
-    //private Location local;
-   // public Player(){
-
-    //}
-}
-//     public boolean act(){
-//       int getRoll = Dice.roll();
-//       int budget = Scene.getBudget();   //Identify which scene based on the players position
-//       if(getRoll > budget - rehearseCount){
-//         return true;
-//       }
-//       else{
-//         return false;
-//       }
-//     }
-   /* public void takeRole(){
-      if(role == false && rank >= Role.rankReq){           // Specific Role from get statement in Role Class, reinitialize rehearsal count to zero
+    public boolean act(){
+      int getRoll = dice.roll();
+      int budget = scene.getBudget();   //Identify which scene based on the players position
+      if(getRoll > budget - rehearseCount){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+    /*public void takeRole(){
+      if(role == false && rank >= Role.rankReq){           
         role = true;
       }
       else{
@@ -43,11 +74,10 @@ import java.lang.*;
     }*/
    /* public void move(){
       /* If location is in adjacent set, move, else choose a different room */
-    /*}
-    public void rehearse(){
-      /*add 1 to rehearseCount */
-    //}
-
+    /*public void rehearse(){
+      this.rehearse ++;
+    }*/
+}
    public static class Dice{
     private Dice(){
     }
@@ -67,27 +97,59 @@ import java.lang.*;
     }
 //   }
 // 
-//   public abstract class Role{
-//     private int rankReq;
-// 
-//     public abstract int reward() {
-//       /* provide money and credit reward for extras, just credit reward for leads on success.
-//       Also on success, shotsLeft for ActingSet is decremented.
-//       on failure, money for extras, nothing for leads. */
-//       return 0;
-//     }
-// 
-//   }
-//   public class Lead extends Role{
-//     /*see Abstract class Role */
-//   }
-//   public class Extra extends Role{
-//     /*see Abstract class Role */
-//   }
-//   public class Scene implements Day{
-//     private int budget;
-// 
-//   }
+   public static abstract class Role{
+    private int rankReq;
+
+    //Abstract function with implementation provided by children:
+    public abstract void reward();
+  }
+
+  public abstract static class Lead extends Role{
+
+    public Lead(int val) {
+      int rankReq = val;
+    }
+    //provide credits reward on success:
+    //shotsLeft for ActingSet is also decremented.
+    public void reward(Player p) {
+      //reward on success only:
+      if (p.act() == true)
+        p.setCredits(p.getCredits() + 2);
+      //ActingSet.setShotsLeft(ActingSet.getShotsLeft() - 1);
+    }
+  }
+  public abstract static class Extra extends Role{
+    // provide money and credit reward on Success, money only on failure:
+    //shotsLeft for ActingSet is also decremented.
+    public Extra(int val) {
+      int rankReq = val;
+    }
+
+    public void reward(Player p) {
+      //reward on success:
+      if (p.act() == true) {
+        p.setCredits(p.getCredits() + 1);
+        p.setDollars(p.getDollars() + 1);
+      //reward on failure:
+      } else {
+        p.setDollars(p.getDollars() + 1);
+      }
+      //ActingSet.setShotsLeft(ActingSet.getShotsLeft() - 1);
+
+    }
+  }
+   public static class Scene{
+    private int budget; 
+    private int numRoles;
+    public Scene(int budget,int numRoles){
+        this.budget = budget;
+        this.numRoles = numRoles;
+    }
+    public int getBudget(){
+        int budg = budget;
+        return budg;
+    }
+  }
 //   public interface Day{
 //     //private int dayNum;
 //   }
@@ -121,5 +183,11 @@ import java.lang.*;
 //   }
    public static void main(String[]arg){
        Dice officialDice = Dice.getDice();
+       Scene curr = new Scene(9,3);
+       Player p1 = new Player(officialDice);
+       p1.setCredits(4);
+       Player p2 = new Player(officialDice);
+       System.out.println(p1.getCredits());
+       System.out.println(p2.getCredits());
    }
  }
