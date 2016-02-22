@@ -12,6 +12,7 @@ import java.lang.*;
  public class deadwood{
   public static class Player{
     private Dice dice;
+    private int id;
     private int dollars = 0;
     private int credits = 0;
     private int rehearseCount = 0;
@@ -24,8 +25,13 @@ import java.lang.*;
     private boolean actSuccessful;
     
     private String local = "Trailer";
-    public Player(Dice pDice){
+    public Player(Dice pDice, int pId){
         this.dice = pDice;
+        this.id = pId;
+    }
+    public int getId(){
+        int thisId = id;
+        return thisId;
     }
     public void joinScene(Scene scene){
         this.scene = scene;
@@ -38,7 +44,7 @@ import java.lang.*;
         int creds = credits;
         return creds;
     }
-    public int rank(){
+    public int getRank(){
         int pRank = rank;
         return pRank;
     }
@@ -57,12 +63,18 @@ import java.lang.*;
         this.credits += amount;
     }
     public String getLeadRole(){
-        String name = this.actRole.getName();
-        return name;
+        if(actRole != null){
+            String name = actRole.getName();
+            return name;
+        }
+        return null;
     }
     public String getExtraRole(){
-        String name = this.extraRole.getName();
-        return name;
+        if(extraRole != null){
+            String name = extraRole.getName();
+            return name;
+        }
+        return null;
     }
 
     public boolean act(){
@@ -201,6 +213,10 @@ import java.lang.*;
         return budg;
     }
   }
+  
+  
+  
+
 //   public interface Day{
 //     //private int dayNum;
 //   }
@@ -233,26 +249,27 @@ import java.lang.*;
 // 
 //   }
    public static void main(String[]arg){
+       Scanner console = new Scanner(System.in);
+       System.out.print("> ");
+       String cmd = console.next();
        Dice officialDice = Dice.getDice();
        Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
        popAdjList(adjacencyList);
        Scene curr = new Scene(4,3);
-       Player p1 = new Player(officialDice);
-       Player p2 = new Player(officialDice);
+       Player p1 = new Player(officialDice,1);
+       Player p2 = new Player(officialDice,2);
        p1.joinScene(curr);
        p2.joinScene(curr);
        Extra l1 = new Extra(1, "Prospector");
        Lead l2 = new Lead(1, "Miner");
        p1.takeExtraRole(l1);
        p2.takeLeadRole(l2);
-       System.out.println(p1.getExtraRole());
-       System.out.println(p2.getLeadRole());
        p1.act();
        p2.act();
        l1.reward(p1);
        l2.reward(p2);
-       System.out.println(p1.getCredits() + "\t" + p1.getDollars());
-       System.out.println(p2.getCredits() + "\t" + p2.getDollars());
+       CommandExec(p1,cmd);
+       CommandExec(p2,cmd);
        
        
    }
@@ -285,5 +302,21 @@ import java.lang.*;
       adjacencyList.put("Hotel",hotelAdj);
     }
     
+    public static void CommandExec(Player p, String cmd){
+        if(cmd.equals("who")){
+            System.out.print("\nPlayer " + p.getId() + " has $" + p.getDollars() + " and " + p.getCredits() + " credits ");
+            String name = p.getLeadRole();
+            String name2 = p.getExtraRole();
+            if(name != null){
+                System.out.print("and is working on " + name);
+            }
+            else if(name2 != null){
+                System.out.print("and is working on " + name2);
+            }
+            else{
+                System.out.print("and is currently not working on a role");
+            }
+        }
+    }
     
  }
