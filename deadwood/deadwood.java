@@ -234,6 +234,8 @@ import java.lang.*;
 //   }
    public static void main(String[]arg){
        Dice officialDice = Dice.getDice();
+       Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
+       popAdjList(adjacencyList);
        Scene curr = new Scene(4,3);
        Player p1 = new Player(officialDice);
        Player p2 = new Player(officialDice);
@@ -251,5 +253,37 @@ import java.lang.*;
        l2.reward(p2);
        System.out.println(p1.getCredits() + "\t" + p1.getDollars());
        System.out.println(p2.getCredits() + "\t" + p2.getDollars());
+       
+       
    }
+   
+   
+   public static void popAdjList(Map<String,List<String>> adjacencyList) {
+      List<String> mainAdj = Arrays.asList("Trailers", "Saloon", "Jail");
+      List<String> jailAdj = Arrays.asList("Main Street", "General Store", "Train Station");
+      List<String> storeAdj = Arrays.asList("Saloon","Ranch","Train Station","Jail");
+      List<String> saloonAdj = Arrays.asList("Main Street","Trailers","General Store");
+      List<String> trailersAdj = Arrays.asList("Main Street","Saloon","Hotel");
+      List<String> bankAdj = Arrays.asList("Hotel","Church","Ranch","Saloon");
+      List<String> hideoutAdj = Arrays.asList("Ranch","Casting Office","Church");
+      List<String> trainAdj = Arrays.asList("Jail","General Store","Casting Office");
+      List<String> castingAdj = Arrays.asList("Ranch","Secret Hideout","Train Station");
+      List<String> ranchAdj = Arrays.asList("Casting Office","Secret Hideout","General Store","Bank");
+      List<String> churchAdj = Arrays.asList("Secret Hideout","Bank","Hotel");
+      List<String> hotelAdj = Arrays.asList("Church","Bank","Trailers");
+      adjacencyList.put("Main Street",mainAdj);
+      adjacencyList.put("Jail",jailAdj);
+      adjacencyList.put("General Store",storeAdj);
+      adjacencyList.put("Saloon",saloonAdj);
+      adjacencyList.put("Trailers",trailersAdj);
+      adjacencyList.put("Bank",bankAdj);
+      adjacencyList.put("Secret Hideout",hideoutAdj);
+      adjacencyList.put("Train Station",trainAdj);
+      adjacencyList.put("Casting Office",castingAdj);
+      adjacencyList.put("Ranch",ranchAdj);
+      adjacencyList.put("Church",churchAdj);
+      adjacencyList.put("Hotel",hotelAdj);
+    }
+    
+    
  }
