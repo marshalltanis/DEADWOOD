@@ -155,14 +155,14 @@ import java.lang.*;
         return budg;
     }
   }
-//   public interface Day{
-//     //private int dayNum;
-//   }
-// 
-//     public void newDay () {
-//       /* do some shit */
-//     }
-//   }
+  public interface Day{
+    //private int dayNum;
+  }
+
+    public void newDay () {
+      /* do some shit */
+    }
+  }
 //   public class ActingSet extends Set implements Day{
 //     private int shots;
 //     private int shotsLeft;
