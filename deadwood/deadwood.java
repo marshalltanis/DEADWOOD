@@ -76,6 +76,9 @@ import java.lang.*;
     public void setCredits(int amount){
         this.credits += amount;
     }
+    public void setRank(int newRank) {
+        this.rank = newRank;
+    }
     public String getLeadRole(){
         if(actRole != null){
             String name = actRole.getName();
@@ -256,7 +259,7 @@ import java.lang.*;
 //       /* do some shit */
 //     }
 //   }
-  public static class ActingSet /*extends Set implements Day*/{
+  /* public static class ActingSet{
     private int shots;
     private int shotsLeft;
     private Scene scene;
@@ -272,17 +275,177 @@ import java.lang.*;
     }
     public String getName(){
         return name;
+    }*/
+
+    public class ActingSet { //implements Day{    <---
+        private String name;
+        private int shots;
+        private int shotsLeft;
+        private Scene scene; //add list of roles to scene
+        private List<Extra> extrasList;
+        private Map<String,List<String>> adjacencyList;
+        
+        public ActingSet (String name, int shots, int shotsLeft, Scene scene, List<Extra> extrasList, Map<String,List<String>> adjacencyList){
+            this.name = name;
+            this.shots = shots;
+            this.shotsLeft = shotsLeft;
+            this.scene = scene;
+            this.extrasList = extrasList;
+            this.adjacencyList = adjacencyList;
+        }
+        
+        public String getName(){
+            String thisName = name;
+            return thisName;
+        }
+        
+        public int getShots(){
+            int thisShots = shots;
+            return thisShots;
+        }
+        
+        public int getShotsLeft(){
+            int thisShotsLeft = shotsLeft;
+            return thisShotsLeft;
+        }
+        
+        public Scene getScene(){
+            return scene;
+        }
+        
+        
+
+    }
+    
+    public static class CastingOffice {
+    
+        private Map<String,List<String>> adjacencyList;
+    
+        public CastingOffice (Map<String,List<String>> adjacencyList) {
+            this.adjacencyList = adjacencyList;
+        }
+        
+        public void upgrade_wDollars (Player p, int dollars){
+        
+            switch (dollars) {
+                case 4 :
+                    if (p.getDollars() >= 4){
+                        p.setDollars(-4);
+                        p.setRank(2);
+                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
+                    } else {
+                        System.out.println("Insufficient Dollars");
+                    }
+                    break;
+                case 10 :
+                    if (p.getDollars() >= 10){
+                        p.setDollars(-10);
+                        p.setRank(3);
+                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
+                    } else {
+                        System.out.println("Insufficient Dollars");
+                    }
+                    break;
+                case 18 :
+                    if (p.getDollars() >= 18){
+                        p.setDollars(-18);
+                        p.setRank(4);
+                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
+                    } else {
+                        System.out.println("Insufficient Dollars");
+                    }
+                    break;
+                case 28 :
+                    if (p.getDollars() >= 28){
+                        p.setDollars(-28);
+                        p.setRank(5);
+                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
+                    } else {
+                        System.out.println("Insufficient Dollars");
+                    }
+                    break;
+                case 40 :
+                    if (p.getDollars() >= 40){
+                        p.setDollars(-40);
+                        p.setRank(6);
+                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
+                    } else {
+                        System.out.println("Insufficient Dollars");
+                    }
+                    break;
+                default : 
+                    System.out.println("Invalid dollar amount");
+            }
+        }
+        
+        public void upgrade_wCreds (Player p, int credits) {
+            switch (credits) {
+            
+                case 5 :
+                    if (p.getCredits() >= 5){
+                        p.setCredits(-5);
+                        p.setRank(2);
+                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
+                    } else {
+                        System.out.println("Insufficient Credits");
+                    }
+                    break;
+                    
+                case 10 :
+                    if (p.getCredits() >= 10){
+                        p.setCredits(-10);
+                        p.setRank(3);
+                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
+                    } else {
+                        System.out.println("Insufficient Credits");
+                    }
+                    break;
+                    
+                case 15 :
+                    if (p.getCredits() >= 15){
+                        p.setCredits(-15);
+                        p.setRank(4);
+                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
+                    } else {
+                        System.out.println("Insufficient Credits");
+                    }
+                    break;
+                    
+                case 20 :
+                    if (p.getCredits() >= 20){
+                        p.setCredits(-20);
+                        p.setRank(5);
+                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
+                    } else {
+                        System.out.println("Insufficient Credits");
+                    }
+                    break;
+                    
+                case 25 :
+                    if (p.getCredits() >= 25){
+                        p.setCredits(-25);
+                        p.setRank(6);
+                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
+                    } else {
+                        System.out.println("Insufficient Credits");
+                    }
+                    break;
+                    
+                default : 
+                    System.out.println("Invalid credit amount");
+            }
+        }
     }
 
-  }
-//   public class CastingOffice extends Set{
-//     public void upgrade_wDollars (int dollars){
-// 
-//     }
-//     public void upgrade_wCreds (int credits) {
-// 
-//     }
-//   }
+
+
+
+
+
+
+
+
+
 //   public class Trailer extends Set{
 // 
 //   }
@@ -290,6 +453,15 @@ import java.lang.*;
 //     private List<Set> adjRooms;
 // 
 //   }
+
+
+
+
+
+
+
+
+
    public static void main(String[]arg){
        Scanner console = new Scanner(System.in);
        
@@ -298,22 +470,22 @@ import java.lang.*;
        Dice officialDice = Dice.getDice();
        Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
        popAdjList(adjacencyList);
-       Scene curr = new Scene(4,3, "Wild West",20);
-       ActingSet here = new ActingSet("Salooon", curr);
-       Player p1 = new Player(officialDice,1);
-       Player p2 = new Player(officialDice,2);
-       p1.move(here);
-       p2.move(here);
-       Extra l1 = new Extra(1, "Prospector");
-       Lead l2 = new Lead(1, "Miner");
-       p1.takeExtraRole(l1);
-       p2.takeLeadRole(l2);
-       p1.act();
-       p2.act();
-       l1.reward(p1);
-       l2.reward(p2);
-       CommandExec(p1,cmd);
-       CommandExec(p2,cmd);
+//        Scene curr = new Scene(4,3, "Wild West",20);
+//        ActingSet here = new ActingSet("Salooon", curr);
+//        Player p1 = new Player(officialDice,1);
+//        Player p2 = new Player(officialDice,2);
+//        p1.move(here);
+//        p2.move(here);
+//        Extra l1 = new Extra(1, "Prospector");
+//        Lead l2 = new Lead(1, "Miner");
+//        p1.takeExtraRole(l1);
+//        p2.takeLeadRole(l2);
+//        p1.act();
+//        p2.act();
+//        l1.reward(p1);
+//        l2.reward(p2);
+//        CommandExec(p1,cmd);
+//        CommandExec(p2,cmd);
        
        
    }
