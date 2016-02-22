@@ -19,10 +19,10 @@ import java.lang.*;
     private int rank = 1;
     private int score = 0;
     private boolean role = false;
-    private Scene scene;
     private Lead actRole;
     private Extra extraRole;
     private boolean actSuccessful;
+    private ActingSet location;
     
     private String local = "Trailer";
     public Player(Dice pDice, int pId){
@@ -32,9 +32,6 @@ import java.lang.*;
     public int getId(){
         int thisId = id;
         return thisId;
-    }
-    public void joinScene(Scene scene){
-        this.scene = scene;
     }
     public int getDollars(){
         int bucks = dollars;
@@ -53,8 +50,25 @@ import java.lang.*;
         return Score;
     }
     public String getLocal(){
-        String location = local;
-        return location;
+        if(location != null){
+            this.local = location.getName();
+            return local;
+        }
+        return null;
+    }
+    public String getSceneName(){
+        if(location != null){
+            String roomScene = location.getScene().getName();
+            return roomScene;
+        }
+        return null;
+    }
+    public int getSceneId(){
+        if(location != null){
+            int sceneId = location.getScene().getId();
+            return sceneId;
+        }
+        return 0;
     }
     public void setDollars(int amount){
         this.dollars += amount;
@@ -80,7 +94,7 @@ import java.lang.*;
     public boolean act(){
       int getRoll = dice.roll();
       System.out.println(getRoll);
-      int budget = scene.getBudget();   //Identify which scene based on the players position
+      int budget = location.getScene().getBudget();   //Identify which scene based on the players position
       if(getRoll >= budget - rehearseCount){
         actSuccessful = true;
         return actSuccessful;
@@ -108,8 +122,10 @@ import java.lang.*;
         System.out.print("Invalid Action");
       }
     }
-   /* public void move(){
+    public void move(ActingSet location){
+        this.location = location;
       /* If location is in adjacent set, move, else choose a different room */
+    }
     /*public void rehearse(){
       this.rehearse ++;
     }*/
@@ -204,13 +220,28 @@ import java.lang.*;
    public static class Scene{
     private int budget; 
     private int numRoles;
-    public Scene(int budget,int numRoles){
+    private String name;
+    private int sceneNum;
+    public Scene(int budget,int numRoles, String name, int num){
         this.budget = budget;
         this.numRoles = numRoles;
+        this.sceneNum = num;
+        this.name = name;
     }
     public int getBudget(){
         int budg = budget;
         return budg;
+    }
+    public String getName(){
+        if(name != null){
+            String sName = name;
+            return sName;
+        }
+        return null;
+    }
+    public int getId(){
+        int id = sceneNum;
+        return id;
     }
   }
   
@@ -225,14 +256,25 @@ import java.lang.*;
 //       /* do some shit */
 //     }
 //   }
-//   public class ActingSet extends Set implements Day{
-//     private int shots;
-//     private int shotsLeft;
-//     private Scene scene;
-//     private List<Scene> scenelist;
-//     private List<Extra> extraList;
-// 
-//   }
+  public static class ActingSet /*extends Set implements Day*/{
+    private int shots;
+    private int shotsLeft;
+    private Scene scene;
+    private List<Scene> scenelist;
+    private List<Extra> extraList;
+    private String name;
+    public ActingSet(String name, Scene scene){
+        this.name = name;
+        this.scene = scene;
+    }
+    public Scene getScene(){
+        return scene;
+    }
+    public String getName(){
+        return name;
+    }
+
+  }
 //   public class CastingOffice extends Set{
 //     public void upgrade_wDollars (int dollars){
 // 
@@ -250,16 +292,18 @@ import java.lang.*;
 //   }
    public static void main(String[]arg){
        Scanner console = new Scanner(System.in);
+       
        System.out.print("> ");
        String cmd = console.next();
        Dice officialDice = Dice.getDice();
        Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
        popAdjList(adjacencyList);
-       Scene curr = new Scene(4,3);
+       Scene curr = new Scene(4,3, "Wild West",20);
+       ActingSet here = new ActingSet("Salooon", curr);
        Player p1 = new Player(officialDice,1);
        Player p2 = new Player(officialDice,2);
-       p1.joinScene(curr);
-       p2.joinScene(curr);
+       p1.move(here);
+       p2.move(here);
        Extra l1 = new Extra(1, "Prospector");
        Lead l2 = new Lead(1, "Miner");
        p1.takeExtraRole(l1);
@@ -311,10 +355,19 @@ import java.lang.*;
                 System.out.print("and is working on " + name);
             }
             else if(name2 != null){
-                System.out.print("and is working on " + name2);
+                System.out.print("and is working on " + name2 + ".\n");
             }
             else{
-                System.out.print("and is currently not working on a role");
+                System.out.print("and is currently not working on a role.\n");
+            }
+        }
+        else if(cmd.equals("Where")){
+            System.out.print("You are in the " + p.getLocal());
+            if(p.getSceneName() != null){
+                System.out.print(" where " + p.getSceneName() + ", " + "scene " + p.getSceneId() +" is shooting.\n");
+            }
+            else{
+                System.out.print(" and you are not currently shooting a scene.\n");
             }
         }
     }
