@@ -180,7 +180,7 @@ import java.lang.*;
         int rank = rankReq;
         return rank;
     }
-    public int getBlurb(){
+    public String getBlurb(){
         return blurb;
     }
     //provide credits reward on success:
@@ -192,6 +192,7 @@ import java.lang.*;
       //ActingSet.setShotsLeft(ActingSet.getShotsLeft() - 1);
     }
   }
+  
   public static class Extra extends Role{
     // provide money and credit reward on Success, money only on failure:
     //shotsLeft for ActingSet is also decremented.
@@ -253,6 +254,8 @@ import java.lang.*;
         List<Lead> theLeadList = leadList;
         return theLeadList;
     }
+    
+    
   }
   
   
@@ -311,7 +314,7 @@ import java.lang.*;
   }
   
 
-    public static class ActingSet { //implements Day{    <---
+    public static class ActingSet { 
         private String name;
         private int shots;
         private int shotsLeft;
@@ -351,8 +354,16 @@ import java.lang.*;
             return scene;
         }
         
+        public void setShots(int newShots){
+	    this.shots = newShots;
+        }
+        
+        public void setShotsLeft(int newShotsLeft){
+	  this.shotsLeft = newShotsLeft;
+        }
+        
         public void setScene(Scene newscene){
-            scene = newscene;
+            this.scene = newscene;
         }
         public List<Extra> getExtrasList(){
             List<Extra> temp = extrasList;
@@ -488,14 +499,6 @@ import java.lang.*;
 
 
 
-
-
-
-
-
-
-
-
    public static void main(String[]arg){
        Scanner console = new Scanner(System.in);
        
@@ -504,6 +507,8 @@ import java.lang.*;
        Dice officialDice = Dice.getDice();
        Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
        popAdjList(adjacencyList);
+       populateExtrasList();
+       //ActingSet MainStreet = new ActingSet("Main Street",4,4,null,mainExtras,mainAdj);
        //Create list of all Player objects to iterate through
        //Create list of all Set objects to iterate through
        //Create Deck of scene to choose from for ending days
@@ -605,7 +610,7 @@ import java.lang.*;
         
     } */
 
-    public static void populateLeadsList(){
+    public static void populateExtrasList(){
     
         Extra main1 = new Extra(1,"Railroad Worker");
         Extra main2 = new Extra(2,"Falls off Roof");
