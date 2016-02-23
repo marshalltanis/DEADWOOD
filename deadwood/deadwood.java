@@ -157,10 +157,11 @@ import java.lang.*;
     }
   }
   public interface Day{
-    //private int dayNum;
+    private int dayNum;
   }
 
     public void newDay () {
+      //Assuming there is a list of all 
       /* do some shit */
     }
   }
