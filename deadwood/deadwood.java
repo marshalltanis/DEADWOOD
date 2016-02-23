@@ -298,6 +298,7 @@ import java.lang.*;
 
                 Scene scene = scenesList.get(random);
                 scenesList.remove(random);
+                numelems--;
 
                 setsList.get(i).setScene(scene);
 
