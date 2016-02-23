@@ -50,10 +50,12 @@ import java.lang.*;
         return Score;
     }
     public String getLocal(){
-        this.local = local;
-        return local;
+        String area = local;
+        return area;
     }
-    
+    public void setActSuccesful(){
+        this.actSuccessful = false;
+    }
     public ActingSet getActingSet(){
         if(location != null){
             ActingSet currentSet = location;
@@ -92,7 +94,7 @@ import java.lang.*;
 
     public boolean act(){
       int getRoll = dice.roll();
-      System.out.println(getRoll);
+      System.out.print(getRoll + "\n");
       int budget = location.getScene().getBudget();   //Identify which scene based on the players position
       if(getRoll >= budget - rehearseCount){
         actSuccessful = true;
@@ -194,7 +196,7 @@ import java.lang.*;
     public void reward(Player p) {
       //reward on success only:
       if (p.actSuccessful == true)
-        p.setCredits(p.getCredits() + 2);
+        p.setCredits(2);
       //ActingSet.setShotsLeft(ActingSet.getShotsLeft() - 1);
     }
   }
@@ -219,11 +221,11 @@ import java.lang.*;
     public void reward(Player p) {
       //reward on success:
       if (p.actSuccessful == true) {
-        p.setCredits(p.getCredits() + 1);
-        p.setDollars(p.getDollars() + 1);
+        p.setCredits(1);
+        p.setDollars(1);
       //reward on failure:
       } else {
-        p.setDollars(p.getDollars() + 1);
+        p.setDollars(1);
       }
       //ActingSet.setShotsLeft(ActingSet.getShotsLeft() - 1);
 
@@ -531,7 +533,7 @@ import java.lang.*;
        Player p2 = new Player(officialDice,2);
        //ActingSet []list = {here};
        Trailer trailer = new Trailer();
-      p1.setDollars(4);
+       p1.setDollars(4);
        while(true){
         System.out.print("> ");
         String cmd = console.nextLine();
@@ -730,6 +732,29 @@ import java.lang.*;
                 System.out.print(" and you are not currently shooting a scene.\n");
             }
         }
+        else if(cmd.equals("Rehearse")){
+            p.rehearse();
+            System.out.print("Player " + p.getId() + " has rehearsed this turn.\n");
+        }
+        else if(cmd.equals("Act")){
+            Lead LeadRole = findLead(p.getLeadRole(), p.getActingSet().getScene().getLeadList());
+            Extra ExtraRole = findExtra(p.getExtraRole(), p.getActingSet().getExtrasList());
+            if(LeadRole != null){
+                p.act();
+                LeadRole.reward(p);
+                System.out.print("Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
+                p.setActSuccesful();
+            }
+            else if(ExtraRole != null){
+                p.act();
+                ExtraRole.reward(p);
+                System.out.print("Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
+                p.setActSuccesful();
+            }
+        }
+         else if(cmd.equals("end")){
+            System.out.print("Player " + p.getId() + "'s turn is over... Please pass the computer to the next player.\n");
+        }
         else if(cmd.substring(0,4).equals("move")){
             ActingSet room = findActingSet(cmd.substring(5), list);
             if(room == null && (!(cmd.substring(5).equals( "Casting Office")) && !(cmd.substring(5).equals("Trailer")))){
@@ -745,6 +770,10 @@ import java.lang.*;
                         p.move(trailer);
                         System.out.print("Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
                     }
+                }
+                else{
+                    p.move(room);
+                    System.out.print("Player " + p.getId() + " has moved to room " + p.getActingSet().getName() + ".\n");
                 }
             }
         }
@@ -777,7 +806,10 @@ import java.lang.*;
                 }
             }
         }
-                    
+        else{
+            System.out.print("That was not a valid command. Please read the README with any questions");
+        }
+        
         
     }
     
