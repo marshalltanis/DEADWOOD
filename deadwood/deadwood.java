@@ -543,7 +543,7 @@ import java.lang.*;
 
     } */
    
-    private static void popAdjList(Map<String,List<String>> adjacencyList) {
+  /*  private static void popAdjList(Map<String,List<String>> adjacencyList) {
       List<String> mainAdj = Arrays.asList("Trailers", "Saloon", "Jail");
       List<String> jailAdj = Arrays.asList("Main Street", "General Store", "Train Station");
       List<String> storeAdj = Arrays.asList("Saloon","Ranch","Train Station","Jail");
@@ -570,54 +570,200 @@ import java.lang.*;
       adjacencyList.put("Hotel",hotelAdj);
     }
     
-   /* public static void populateExtrasList(){
+    public static void populateLeadsList(){
     
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc2L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc3L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc4L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc5L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc6L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc7L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc8L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc9L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc10L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc11L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc12L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc13L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc14L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc15L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc16L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc17L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc18L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc19L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc20L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc21L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc22L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc23L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc24L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc25L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc26L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
-        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Defrocked Priest", "Look out below!");
+        Lead sc1L2 = new Lead(3,"Marshal Canfield", "Hold fast!");
+        Lead sc1L3 = new Lead(4,"One-Eyed Man", "Balderdash!");
+
+        Lead sc2L1 = new Lead(2,"Squeaking Boy", "I'll say!");
+        Lead sc2L2 = new Lead(4,"Pharaoh Imhotep", "Attack, soldiers!");
+        Lead sc2L3 = new Lead(6,"Aunt Martha", "You got nothin!");
+
+        Lead sc3L1 = new Lead(1,"Rug Merchant", "Don't leave my store!");
+        Lead sc3L2 = new Lead(2,"Banker", "Trust me.");
+        Lead sc3L3 = new Lead(5,"Talking Mule", "Nice work, Johnny!");
+
+        Lead sc4L1 = new Lead(4,"The Duck", "Waaaak!");
+        Lead sc4L2 = new Lead(6,"His Brother", "Waaaaaaak!");
+
+        Lead sc5L1 = new Lead(5,"Auctioneer", "Going once!");
+        Lead sc5L2 = new Lead(6,"General Custer", "Go West!");
+
+        Lead sc6L1 = new Lead(2,"Town Drunk", "Even me!");
+        Lead sc6L2 = new Lead(4,"Squinting Miner", "Sure we can!");
+        Lead sc6L3 = new Lead(5,"Poltergeist", "Wooooo!");
+
+        Lead sc7L1 = new Lead(3,"Drunk", "Where's Willard?");
+        Lead sc7L2 = new Lead(4,"Librarian", "Shhhhh!");
+        Lead sc7L3 = new Lead(6,"Man with Hay", "Hey!");
+
+        Lead sc8L1 = new Lead(1,"Angry Barber", "Hold him still!");
+        Lead sc8L2 = new Lead(3,"Woman with Board", "Nonsense, Frank!");
+        Lead sc8L3 = new Lead(5,"Man on Fire", "It burns!");
+
+        Lead sc9L1 = new Lead(2,"Hollering Boy", "Over here, mister!");
+        Lead sc9L2 = new Lead(3,"Drunk Farmer", "Git outta my barn!");
+        Lead sc9L3 = new Lead(5,"Meek Little Sarah", "He's so cute!");
+
+        Lead sc10L1 = new Lead(1,"Sleeping Man", "Snnkkk snnkk snnkk");
+        Lead sc10L2 = new Lead(2,"Man with Pig", "Tally-Hooo!");
+        Lead sc10L3 = new Lead(4,"Shooter", "Where's my britches?");
+
+        Lead sc11L1 = new Lead(1,"Buster", "One two three go!");
+        Lead sc11L2 = new Lead(4,"Man Reading Paper", "Ouchie!");
+        Lead sc11L3 = new Lead(5,"Fate Pete", "Nice kick, boss!");
+
+        Lead sc12L1 = new Lead(2,"Shot in Back", "Arrrggh!");
+        Lead sc12L2 = new Lead(4,"Shot in Leg", "Ooh, lordy!");
+        Lead sc12L3 = new Lead(5,"Leaps into Cake", "Dangit, Jesse!");
+
+        Lead sc13L1 = new Lead(6,"Martin", "Have you tried soy cheese?");
+
+        Lead sc14L1 = new Lead(2,"Piano Player", "It's a nocturne!");
+        Lead sc14L2 = new Lead(3,"Man in Turban", "My stars!");
+        Lead sc14L3 = new Lead(4,"Falls on Hoe", "Ow!");
+
+        Lead sc15L1 = new Lead(3,"Preacher", "My word!");
+        Lead sc15L2 = new Lead(6,"Amused Witness", "Tee hee hee!");
+
+        Lead sc16L1 = new Lead(1,"Falls from Tree", "What ho!");
+        Lead sc16L2 = new Lead(3,"Laughing Woman", "Tis to laugh!");
+        Lead sc16L3 = new Lead(4,"Man with Whistle", "Tweeeeet!");
+
+        Lead sc17L1 = new Lead(3,"Curious Girl", "Are you sure?");
+        Lead sc17L2 = new Lead(4,"Ghost of Plato", "It happened to me!");
+
+        Lead sc18L1 = new Lead(4,"Ex-Convict", "Never again!");
+        Lead sc18L2 = new Lead(6,"Man with Onion", "Fresh onions!");
+
+        Lead sc19L1 = new Lead(2,"Suprised Bison", "Mmrrrrrph!");
+        Lead sc19L2 = new Lead(4,"Man with Horn", "Ta daaaa!");
+
+        Lead sc20L1 = new Lead(3,"Staggering Man", "You never know!");
+        Lead sc20L2 = new Lead(5,"Woman with Beer", "Howdy, stranger!");
+        Lead sc20L3 = new Lead(6,"Marcie", "Welcome home!");
+
+        Lead sc21L1 = new Lead(4,"Looks like Elvis", "Thankyouverymuch");
+        Lead sc21L2 = new Lead(5,"Singing Dead Man", "Yeah!");
+        Lead sc21L3 = new Lead(6,"Apothecary", "Such drugs I have.");
+
+        Lead sc22L1 = new Lead(1,"Flustered Man", "Well, I never!");
+        Lead sc22L2 = new Lead(2,"Space Monkey", "Ook!");
+        Lead sc22L3 = new Lead(5,"Cowbot Dan", "Bzzzzzt!");
+
+        Lead sc23L1 = new Lead(2,"Jailer", "You there!");
+        Lead sc23L2 = new Lead(4,"Mephistopheles", "Be not afraid!");
+        Lead sc23L3 = new Lead(5,"Breaks a Window", "Oops!");
+
+        Lead sc24L1 = new Lead(1,"Man in Poncho", "Howdy, Jones!");
+        Lead sc24L2 = new Lead(3,"Ecstatic Housewife", "This is fine!");
+        Lead sc24L3 = new Lead(5,"Isaac", "The mail!");
+
+        Lead sc25L1 = new Lead(5,"Film Critic", "Implausible!");
+        Lead sc25L2 = new Lead(6,"Hobo with Bat", "Nice house!");
+
+        Lead sc26L1 = new Lead(2,"Cow", "Moo.");
+        Lead sc26L2 = new Lead(3,"St. Clement of Alexandria", "Peace be with you, child!");
+        Lead sc26L3 = new Lead(4,"Josie", "Yikes!");
+
+        Lead sc27L1 = new Lead(3,"Bewhisker'd Cowpoke", "Oh, sweet Lord!");
+        Lead sc27L2 = new Lead(5,"Dog", "Wurf!");
+
+        Lead sc28L1 = new Lead(2,"Willard", "Ain't that a sight?");
+        Lead sc28L2 = new Lead(3,"Leprechaun", "Begorrah!");
+        Lead sc28L3 = new Lead(5,"Startled Ox", "Mrr?");
+
+        Lead sc29L1 = new Lead(1,"Shot in Head", "Arrrgh!");
+        Lead sc29L2 = new Lead(4,"Leaps Out of Cake", "Oh, for Pete's sake!");
+        Lead sc29L3 = new Lead(6,"Shot Three Times", "Ow! Ow! Ow!");
+
+        Lead sc30L1 = new Lead(2,"Voice of God", "Grab hold, son!");
+        Lead sc30L2 = new Lead(3,"Hands of God", "!");
+        Lead sc30L3 = new Lead(4,"Jack Kemp", "America!");
+
+        Lead sc31L1 = new Lead(5,"Opice (Monkey)", "Ukk! (Ook)!");
+        Lead sc31L2 = new Lead(6,"Man with Gun", "Hold it right there!");
+
+        Lead sc32L1 = new Lead(1,"Man with Rope", "Look out below!");
+        Lead sc32L2 = new Lead(2,"Svetlana", "Says who?");
+        Lead sc32L3 = new Lead(5,"Accidental Victim", "Ow! My spine!");
+
+        Lead sc33L1 = new Lead(1,"Thrifty Mike", "Call!");
+        Lead sc33L2 = new Lead(3,"Sober Physician", "Raise!");
+        Lead sc33L3 = new Lead(5,"Man on Floor", "Fold!");
+
+        Lead sc34L1 = new Lead(2,"Very Wet Man", "Sheesh!");
+        Lead sc34L2 = new Lead(4,"Dejected Housewife", "Its time had come.");
+        Lead sc34L3 = new Lead(5,"Man with Box", "Progress!");
+
+        Lead sc35L1 = new Lead(3,"Liberated Nun", "Let me have it!");
+        Lead sc35L2 = new Lead(5,"Witch Doctor", "Oogie Boogie!");
+        Lead sc35L3 = new Lead(6,"Voice of Reason", "Come on, now!");
+
+        Lead sc36L1 = new Lead(4,"Marksman", "Pull!");
+        Lead sc36L2 = new Lead(5,"Postal Worker", "It's about time!");
+        Lead sc36L3 = new Lead(6,"A Horse", "Yes Sir!");
+
+        Lead sc37L1 = new Lead(2,"Burning Man", "Make it stop!");
+        Lead sc37L2 = new Lead(4,"Cheese Vendor", "Opa!");
+        Lead sc37L3 = new Lead(5,"Hit with Table", "Ow! A table?");
+
+        Lead sc38L1 = new Lead(2,"Fraternity Pledge", "Beer me!");
+        Lead sc38L2 = new Lead(6,"Man with Sword", "None shall pass!");
+
+        Lead sc39L1 = new Lead(3,"Detective", "I have a hunch.");
+        Lead sc39L2 = new Lead(4,"File Clerk", "My stapler!");
+        Lead sc39L3 = new Lead(5,"Cindy Lou", "Dear Lord!");
+
+        Lead sc40L1 = new Lead(2,"Farmer", "Git off a that!");
+        Lead sc40L2 = new Lead(4,"Exploding Horse", "Boom!");
+        Lead sc40L3 = new Lead(6,"Jack", "Here we go again!");
         
-        List<Leads> sc1Leads = Arrays.asList(main1,main2,main3,main4);
+        List<Leads> sc1Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc2Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc3Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc4Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc5Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Leads> sc6Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc7Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc8Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc9Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc10Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc11Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc12Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc13Leads = Arrays.asList(sc1L1);
+        List<Leads> sc14Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc15Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Leads> sc16Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc17Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Leads> sc18Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Leads> sc19Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Leads> sc20Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc21Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc22Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc23Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc24Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc25Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Leads> sc26Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc27Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Leads> sc28Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc29Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc30Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc31Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Leads> sc32Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc33Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc34Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc35Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc36Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc37Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc38Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Leads> sc39Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Leads> sc40Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
         
     } */
 
-    public static void populateLeadsList(){
+    public static void populateExtrasList(){
     
         Extra main1 = new Extra(1,"Railroad Worker");
         Extra main2 = new Extra(2,"Falls off Roof");
