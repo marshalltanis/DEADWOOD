@@ -50,12 +50,10 @@ import java.lang.*;
         return Score;
     }
     public String getLocal(){
-        if(location != null){
-            this.local = location.getName();
-            return local;
-        }
-        return null;
+        this.local = local;
+        return local;
     }
+    
     public ActingSet getActingSet(){
         if(location != null){
             ActingSet currentSet = location;
@@ -127,6 +125,14 @@ import java.lang.*;
         this.location = location;
       /* If location is in adjacent set, move, else choose a different room */
     }
+    public void move(CastingOffice office){
+        this.local = "Casting Office";
+        this.location = null;
+    }
+    public void move(Trailer trailer){
+        this.local = "Trailer";
+        this.location = null;
+    }
     /*public void rehearse(){
       this.rehearse ++;
     }*/
@@ -180,7 +186,7 @@ import java.lang.*;
         int rank = rankReq;
         return rank;
     }
-    public int getBlurb(){
+    public String getBlurb(){
         return blurb;
     }
     //provide credits reward on success:
@@ -228,11 +234,12 @@ import java.lang.*;
     private String name;
     private int sceneNum;
     private List<Lead> leadList;
-    public Scene(int budget,int numRoles, String name, int num){
+    public Scene(int budget,int numRoles, String name, int num, List<Lead> leadList){
         this.budget = budget;
         this.numRoles = numRoles;
         this.sceneNum = num;
         this.name = name;
+        this.leadList = leadList;
     }
     public int getBudget(){
         int budg = budget;
@@ -479,6 +486,10 @@ import java.lang.*;
             }
         }
     }
+    public static class Trailer{
+        public Trailer(){
+        }
+    }
 
 
 
@@ -499,32 +510,32 @@ import java.lang.*;
    public static void main(String[]arg){
        Scanner console = new Scanner(System.in);
        
-       System.out.print("> ");
-       String cmd = console.nextLine();
+       
        Dice officialDice = Dice.getDice();
        Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
        popAdjList(adjacencyList);
        //Create list of all Player objects to iterate through
        //Create list of all Set objects to iterate through
        //Create Deck of scene to choose from for ending days
-
-
-//        Scene curr = new Scene(4,3, "Wild West",20);
-//        ActingSet here = new ActingSet("Salooon", curr);
-//        Player p1 = new Player(officialDice,1);
-//        Player p2 = new Player(officialDice,2);
-//        p1.move(here);
-//        p2.move(here);
-//        Extra l1 = new Extra(1, "Prospector");
-//        Lead l2 = new Lead(1, "Miner");
-//        p1.takeExtraRole(l1);
-//        p2.takeLeadRole(l2);
-//        p1.act();
-//        p2.act();
-//        l1.reward(p1);
-//        l2.reward(p2);
-//        CommandExec(p1,cmd);
-//        CommandExec(p2,cmd);
+       Extra l1 = new Extra(1, "Prospector");
+       Lead l2 = new Lead(1, "Miner", "Boom Pow"); 
+       List<Lead> leads = new ArrayList<Lead>();
+       List<Extra> extras = new ArrayList<Extra>();
+       leads.add(l2);
+       extras.add(l1);
+       CastingOffice office = new CastingOffice(adjacencyList);
+       Scene curr = new Scene(4,3, "Wild West",20, leads);
+       ActingSet here = new ActingSet("Salooon", 3, 3, curr, extras, adjacencyList);
+       Player p1 = new Player(officialDice,1);
+       Player p2 = new Player(officialDice,2);
+       ActingSet []list = {here};
+       Trailer trailer = new Trailer();
+      p1.setDollars(4);
+       while(true){
+        System.out.print("> ");
+        String cmd = console.nextLine();
+        CommandExec(p1,cmd,list, office, trailer);
+       }
     }
 
     /*private static void init() {
@@ -652,7 +663,7 @@ import java.lang.*;
     
     
     private static ActingSet findActingSet(String room, ActingSet [] check){
-        for(int i = 0; i < 10; i ++){
+        for(int i = 0; i < 1; i ++){
             if(check[i].getName().equals(room)){
                 return check[i];
             }
@@ -676,7 +687,7 @@ import java.lang.*;
         return null;
     }
     
-    private static void CommandExec(Player p, String cmd, ActingSet [] list){
+    private static void CommandExec(Player p, String cmd, ActingSet [] list, CastingOffice office, Trailer trailer){
         if(cmd.equals("who")){
             System.out.print("\nPlayer " + p.getId() + " has $" + p.getDollars() + " and " + p.getCredits() + " credits ");
             String name = p.getLeadRole();
@@ -693,8 +704,14 @@ import java.lang.*;
         }
         else if(cmd.equals("Where")){
             System.out.print("You are in the " + p.getLocal());
-            if(p.getActingSet().getScene().getName() != null){
+            if(p.getActingSet() != null){
                 System.out.print(" where " + p.getActingSet().getScene().getName() + ", " + "scene " + p.getActingSet().getScene().getName() +" is shooting.\n");
+            }
+            else if(p.getLocal().equals("Casting Office")){
+                System.out.print(" where there is no scene that is ever worked on.\n");
+            }
+            else if(p.getLocal().equals("Trailer")){
+                System.out.print(" where there is no scene ever shot.\n");
             }
             else{
                 System.out.print(" and you are not currently shooting a scene.\n");
@@ -702,12 +719,20 @@ import java.lang.*;
         }
         else if(cmd.substring(0,4).equals("move")){
             ActingSet room = findActingSet(cmd.substring(5), list);
-            if(room == null){
+            if(room == null && (!(cmd.substring(5).equals( "Casting Office")) && !(cmd.substring(5).equals("Trailer")))){
                 System.out.println("The room you tried to move to was an invalid room");
             }
             else{
-                p.move(room);
-                System.out.print("Player " + p.getId() + " has moved to room " + room.getName() + ".\n");
+                if(room == null){
+                    if(cmd.substring(5).equals("Casting Office")){
+                        p.move(office);
+                        System.out.print("Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
+                    }
+                    else{
+                        p.move(trailer);
+                        System.out.print("Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
+                    }
+                }
             }
         }
         else if(cmd.substring(0,4).equals("work")){
@@ -725,6 +750,22 @@ import java.lang.*;
                 System.out.print("Player " + p.getId() + " has taken the Lead role of " + p.getLeadRole() + ".\n");
             }
         }
+        else if(cmd.substring(0,7).equals("upgrade")){
+            if(cmd.substring(8,9).equals("$")){
+                if(p.getLocal().equals("Casting Office")){
+                    int dollars = Integer.parseInt(cmd.substring(10));
+                    office.upgrade_wDollars(p,dollars);
+                }
+            }
+            else if(cmd.substring(8,10).equals("cr")){
+                if(p.getLocal().equals("Casting Office")){
+                    int credits = Integer.parseInt(cmd.substring(11));
+                    office.upgrade_wCreds(p,credits);
+                }
+            }
+        }
+                    
+        
     }
     
  }
