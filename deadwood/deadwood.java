@@ -166,9 +166,11 @@ import java.lang.*;
   public static class Lead extends Role{
     private String roleName;
     private int rankReq;
-    public Lead(int val, String name) {
+    private String blurb;
+    public Lead(int val, String name, String talk) {
       rankReq = val;
       roleName = name;
+      blurb = talk;
     }
     public String getName(){
         String actName = roleName;
@@ -177,6 +179,9 @@ import java.lang.*;
     public int getRank(){
         int rank = rankReq;
         return rank;
+    }
+    public int getBlurb(){
+        return blurb;
     }
     //provide credits reward on success:
     //shotsLeft for ActingSet is also decremented.
@@ -520,9 +525,13 @@ import java.lang.*;
 //        l2.reward(p2);
 //        CommandExec(p1,cmd);
 //        CommandExec(p2,cmd);
-}
+    }
+
+    /*private static void init() {
+
+    } */
    
-   private static void popAdjList(Map<String,List<String>> adjacencyList) {
+    private static void popAdjList(Map<String,List<String>> adjacencyList) {
       List<String> mainAdj = Arrays.asList("Trailers", "Saloon", "Jail");
       List<String> jailAdj = Arrays.asList("Main Street", "General Store", "Train Station");
       List<String> storeAdj = Arrays.asList("Saloon","Ranch","Train Station","Jail");
@@ -549,7 +558,54 @@ import java.lang.*;
       adjacencyList.put("Hotel",hotelAdj);
     }
     
-    public static void populateExtrasList(){
+   /* public static void populateExtrasList(){
+    
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc2L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc3L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc4L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc5L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc6L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc7L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc8L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc9L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc10L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc11L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc12L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc13L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc14L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc15L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc16L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc17L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc18L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc19L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc20L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc21L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc22L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc23L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc24L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc25L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc26L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        Lead sc1L1 = new Lead(2,"Railroad Worker", "");
+        
+        List<Leads> sc1Leads = Arrays.asList(main1,main2,main3,main4);
+        
+    } */
+
+    public static void populateLeadsList(){
     
         Extra main1 = new Extra(1,"Railroad Worker");
         Extra main2 = new Extra(2,"Falls off Roof");
