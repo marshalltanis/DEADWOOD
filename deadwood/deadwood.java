@@ -50,10 +50,12 @@ import java.lang.*;
         return Score;
     }
     public String getLocal(){
-        this.local = local;
-        return local;
+        String area = local;
+        return area;
     }
-    
+    public void setActSuccesful(){
+        this.actSuccessful = false;
+    }
     public ActingSet getActingSet(){
         if(location != null){
             ActingSet currentSet = location;
@@ -92,7 +94,7 @@ import java.lang.*;
 
     public boolean act(){
       int getRoll = dice.roll();
-      System.out.println(getRoll);
+      System.out.print(getRoll + "\n");
       int budget = location.getScene().getBudget();   //Identify which scene based on the players position
       if(getRoll >= budget - rehearseCount){
         actSuccessful = true;
@@ -194,13 +196,14 @@ import java.lang.*;
     public void reward(Player p) {
       //reward on success only:
       if (p.actSuccessful == true)
-        p.setCredits(p.getCredits() + 2);
+        p.setCredits(2);
       //ActingSet.setShotsLeft(ActingSet.getShotsLeft() - 1);
     }
   }
+  
   public static class Extra extends Role{
     // provide money and credit reward on Success, money only on failure:
-    //shotsLeft for ActingSet is also decremented.
+    // shotsLeft for ActingSet is also decremented.
     private String roleName;
     private int rankReq;
     public Extra(int val, String name) {
@@ -218,11 +221,11 @@ import java.lang.*;
     public void reward(Player p) {
       //reward on success:
       if (p.actSuccessful == true) {
-        p.setCredits(p.getCredits() + 1);
-        p.setDollars(p.getDollars() + 1);
+        p.setCredits(1);
+        p.setDollars(1);
       //reward on failure:
       } else {
-        p.setDollars(p.getDollars() + 1);
+        p.setDollars(1);
       }
       //ActingSet.setShotsLeft(ActingSet.getShotsLeft() - 1);
 
@@ -260,6 +263,10 @@ import java.lang.*;
         List<Lead> theLeadList = leadList;
         return theLeadList;
     }
+    
+    
+    
+    
   }
   
   
@@ -319,15 +326,15 @@ import java.lang.*;
 
   
 
-    public static class ActingSet { //implements Day{    <---
+    public static class ActingSet { 
         private String name;
         private int shots;
         private int shotsLeft;
         private Scene scene; //add list of roles to scene
         private List<Extra> extrasList;
-        private Map<String,List<String>> adjacencyList;
+        private List<String> adjacencyList;
         
-        public ActingSet (String name, int shots, int shotsLeft, Scene scene, List<Extra> extrasList, Map<String,List<String>> adjacencyList){
+        public ActingSet (String name, int shots, int shotsLeft, Scene scene, List<Extra> extrasList, List<String> adjacencyList){
             this.name = name;
             this.shots = shots;
             this.shotsLeft = shotsLeft;
@@ -359,8 +366,16 @@ import java.lang.*;
             return scene;
         }
         
+        public void setShots(int newShots){
+	    this.shots = newShots;
+        }
+        
+        public void setShotsLeft(int newShotsLeft){
+	  this.shotsLeft = newShotsLeft;
+        }
+        
         public void setScene(Scene newscene){
-            scene = newscene;
+            this.scene = newscene;
         }
         public List<Extra> getExtrasList(){
             List<Extra> temp = extrasList;
@@ -493,28 +508,16 @@ import java.lang.*;
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    public static void main(String[]arg){
        Scanner console = new Scanner(System.in);
        
        
        Dice officialDice = Dice.getDice();
        Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
+       Map<String,List<Extra>> extrasList = new HashMap<String,List<Extra>>();
        popAdjList(adjacencyList);
+       populateExtrasList(extrasList);
+       ActingSet MainStreet = new ActingSet("Main Street",4,4,null,extrasList.get("Main Street"),adjacencyList.get("Main Street"));
        //Create list of all Player objects to iterate through
        //Create list of all Set objects to iterate through
        //Create Deck of scene to choose from for ending days
@@ -526,16 +529,16 @@ import java.lang.*;
        extras.add(l1);
        CastingOffice office = new CastingOffice(adjacencyList);
        Scene curr = new Scene(4,3, "Wild West",20, leads);
-       ActingSet here = new ActingSet("Salooon", 3, 3, curr, extras, adjacencyList);
+       //ActingSet here = new ActingSet("Salooon", 3, 3, curr, extras, adjacencyList);
        Player p1 = new Player(officialDice,1);
        Player p2 = new Player(officialDice,2);
-       ActingSet []list = {here};
+       //ActingSet []list = {here};
        Trailer trailer = new Trailer();
-      p1.setDollars(4);
+       p1.setDollars(4);
        while(true){
         System.out.print("> ");
         String cmd = console.nextLine();
-        CommandExec(p1,cmd,list, office, trailer);
+        //CommandExec(p1,cmd,list, office, trailer);
        }
     }
 
@@ -763,7 +766,8 @@ import java.lang.*;
         
     } */
 
-    public static void populateExtrasList(){
+
+    public static void populateExtrasList(Map<String,List<Extra>> extrasList){
     
         Extra main1 = new Extra(1,"Railroad Worker");
         Extra main2 = new Extra(2,"Falls off Roof");
@@ -805,6 +809,18 @@ import java.lang.*;
         List<Extra> ranchExtras= Arrays.asList(ranch1,ranch2,ranch3);
         List<Extra> churchExtras = Arrays.asList(church1,church2);
         List<Extra> hotelExtras = Arrays.asList(hotel1,hotel2,hotel3,hotel4);
+        
+        extrasList.put("Main Street",mainExtras);
+        extrasList.put("Jail",jailExtras);
+        extrasList.put("General Store",storeExtras);
+        extrasList.put("Saloon",saloonExtras);
+        extrasList.put("Bank",bankExtras);
+        extrasList.put("Secret Hideout",hideoutExtras);
+        extrasList.put("Train",trainExtras);
+        extrasList.put("Ranch",ranchExtras);
+        extrasList.put("Church",churchExtras);
+        extrasList.put("Hotel",hotelExtras);
+        
         
     }
     
@@ -864,6 +880,29 @@ import java.lang.*;
                 System.out.print(" and you are not currently shooting a scene.\n");
             }
         }
+        else if(cmd.equals("Rehearse")){
+            p.rehearse();
+            System.out.print("Player " + p.getId() + " has rehearsed this turn.\n");
+        }
+        else if(cmd.equals("Act")){
+            Lead LeadRole = findLead(p.getLeadRole(), p.getActingSet().getScene().getLeadList());
+            Extra ExtraRole = findExtra(p.getExtraRole(), p.getActingSet().getExtrasList());
+            if(LeadRole != null){
+                p.act();
+                LeadRole.reward(p);
+                System.out.print("Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
+                p.setActSuccesful();
+            }
+            else if(ExtraRole != null){
+                p.act();
+                ExtraRole.reward(p);
+                System.out.print("Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
+                p.setActSuccesful();
+            }
+        }
+         else if(cmd.equals("end")){
+            System.out.print("Player " + p.getId() + "'s turn is over... Please pass the computer to the next player.\n");
+        }
         else if(cmd.substring(0,4).equals("move")){
             ActingSet room = findActingSet(cmd.substring(5), list);
             if(room == null && (!(cmd.substring(5).equals( "Casting Office")) && !(cmd.substring(5).equals("Trailer")))){
@@ -879,6 +918,10 @@ import java.lang.*;
                         p.move(trailer);
                         System.out.print("Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
                     }
+                }
+                else{
+                    p.move(room);
+                    System.out.print("Player " + p.getId() + " has moved to room " + p.getActingSet().getName() + ".\n");
                 }
             }
         }
@@ -911,7 +954,10 @@ import java.lang.*;
                 }
             }
         }
-                    
+        else{
+            System.out.print("That was not a valid command. Please read the README with any questions");
+        }
+        
         
     }
     
