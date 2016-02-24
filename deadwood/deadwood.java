@@ -640,6 +640,49 @@ public static int activeScenes = 10;
          actingSetList.put("Train Station", TrainStation);
          actingSetList.put("General Store", GeneralStore);
       }
+      /* UNCOMMENT THIS WHEN Leads IS COMPLETE
+      private static void populateSceneList() {
+        Scene scene1 = new Scene(4,3,"Evil Wears a Hat",1,sc1Leads);
+        Scene scene2 = new Scene(6,3,"Square Deal City",2,sc2Leads);
+        Scene scene3 = new Scene(3,3,"Law and the Old West",3,sc3Leads);
+        Scene scene4 = new Scene(4,2,"Davy Crockett: A Drunkard's Tale",4,sc4Leads);
+        Scene scene5 = new Scene(5,2,"The Life and Times of John Skywater",5,sc5Leads);
+        Scene scene6 = new Scene(4,3,"The Way the West was Run",6,sc6Leads);
+        Scene scene7 = new Scene(5,3,"My Years on the Prairie",7,sc7Leads);
+        Scene scene8 = new Scene(3,3,"Down in the Valley",8,sc8Leads);
+        Scene scene9 = new Scene(4,3,"Buffalo Bill: The Lost Years",9,sc9Leads);
+        Scene scene10 = new Scene(4,3,"Ol' Shooter and Little Doll",10,sc10Leads);
+        Scene scene11 = new Scene(4,3,"The Robber of Trains",11,sc11Leads);
+        Scene scene12 = new Scene(5,3,"Jesse James: Man of Action",12,sc12Leads);
+        Scene scene13 = new Scene(2,1,"Beyond the Pail: Life without Lactose",13,sc13Leads);
+        Scene scene14 = new Scene(5,3,"Disaster at Flying J",14,sc14Leads);
+        Scene scene15 = new Scene(3,2,"A Man Called Cow",15,sc15Leads);
+        Scene scene16 = new Scene(3,3,"Shakespeare in Lubbock",16,sc16Leads);
+        Scene scene17 = new Scene(2,2,"Taffy Commercial",17,sc17Leads);
+        Scene scene18 = new Scene(3,2,"Go West, You!",18,sc18Leads);
+        Scene scene19 = new Scene(2,2,"Gum Commercial",19,sc19Leads);
+        Scene scene20 = new Scene(5,3,"The Life and Times of John Skywater",20,sc20Leads);
+        Scene scene21 = new Scene(6,3,"Gun! The Musical",21,sc21Leads);
+        Scene scene22 = new Scene(6,3,"One false Step for Mankind",22,sc22Leads);
+        Scene scene23 = new Scene(5,3,"Humor at the Expense of Others",23,sc23Leads);
+        Scene scene24 = new Scene(5,3,"Thirteen the Hard Way",24,sc24Leads);
+        Scene scene25 = new Scene(6,2,"The Search for Maggie White",25,sc25Leads);
+        Scene scene26 = new Scene(4,3,"How They Get Milk",26,sc26Leads);
+        Scene scene27 = new Scene(2,2,"Picante Sauce Commercial",27,sc27Leads);
+        Scene scene28 = new Scene(5,3,"My Years on the Prairie",28,sc28Leads);
+        Scene scene29 = new Scene(5,3,"Jesse James: Man of Action",29,sc29Leads);
+        Scene scene30 = new Scene(4,3,"Davy Crockett: A Drunkard's Tale",30,sc30Leads);
+        Scene scene31 = new Scene(4,2,"Czechs in the Sonora",31,sc31Leads);
+        Scene scene32 = new Scene(4,3,"J. Robert Lucky, Man of Substance",32,sc32Leads);
+        Scene scene33 = new Scene(6,3,"Swing 'em Wide'",33,sc33Leads);
+        Scene scene34 = new Scene(5,3,"Thirteen the Hard Way",34,sc34Leads);
+        Scene scene35 = new Scene(6,3,"Swing 'em Wide'",35,sc35Leads);
+        Scene scene36 = new Scene(4,3,"How They Get Milk",36,sc36Leads);
+        Scene scene37 = new Scene(4,3,"Trials of te First Pioneers",37,sc37Leads);
+        Scene scene38 = new Scene(3,2,"Breakin' in Trick Ponies",38,sc38Leads);
+        Scene scene39 = new Scene(5,3,"How the Grinch Stole Texas",39,sc39Leads);
+        Scene scene40 = new Scene(5,3,"Custer's Other Stands",40,sc40Leads);
+    } */
 
     }
 
