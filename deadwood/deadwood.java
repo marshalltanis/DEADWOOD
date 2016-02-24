@@ -124,8 +124,8 @@ import java.lang.*;
       }
     }
     public void move(ActingSet location){
-        this.location = location;
       /* If location is in adjacent set, move, else choose a different room */
+        this.location = location;
     }
     public void move(CastingOffice office){
         this.local = "Casting Office";
@@ -508,6 +508,118 @@ import java.lang.*;
     }
 
 
+    public static class Board{
+      public Board(){
+
+      }
+      public static void init(Map<String,List<String>> adjacencyList,Map<String,List<Extra>> extrasList,Map<String,List<ActingSet>> actingSetList){
+        //createAdjList();
+        //createExtrasList();
+        //createActingList();
+        populateAdjacencyList(adjacencyList);
+        populateExtrasList(extrasList);
+        populateActingList(actingSetList,extrasList,adjacencyList);
+
+      }
+
+      private static void populateAdjacencyList(Map<String,List<String>> adjacencyList) {
+        List<String> mainAdj = Arrays.asList("Trailers", "Saloon", "Jail");
+        List<String> jailAdj = Arrays.asList("Main Street", "General Store", "Train Station");
+        List<String> storeAdj = Arrays.asList("Saloon","Ranch","Train Station","Jail");
+        List<String> saloonAdj = Arrays.asList("Main Street","Trailers","General Store");
+        List<String> trailersAdj = Arrays.asList("Main Street","Saloon","Hotel");
+        List<String> bankAdj = Arrays.asList("Hotel","Church","Ranch","Saloon");
+        List<String> hideoutAdj = Arrays.asList("Ranch","Casting Office","Church");
+        List<String> trainAdj = Arrays.asList("Jail","General Store","Casting Office");
+        List<String> castingAdj = Arrays.asList("Ranch","Secret Hideout","Train Station");
+        List<String> ranchAdj = Arrays.asList("Casting Office","Secret Hideout","General Store","Bank");
+        List<String> churchAdj = Arrays.asList("Secret Hideout","Bank","Hotel");
+        List<String> hotelAdj = Arrays.asList("Church","Bank","Trailers");
+        adjacencyList.put("Main Street",mainAdj);
+        adjacencyList.put("Jail",jailAdj);
+        adjacencyList.put("General Store",storeAdj);
+        adjacencyList.put("Saloon",saloonAdj);
+        adjacencyList.put("Trailers",trailersAdj);
+        adjacencyList.put("Bank",bankAdj);
+        adjacencyList.put("Secret Hideout",hideoutAdj);
+        adjacencyList.put("Train Station",trainAdj);
+        adjacencyList.put("Casting Office",castingAdj);
+        adjacencyList.put("Ranch",ranchAdj);
+        adjacencyList.put("Church",churchAdj);
+        adjacencyList.put("Hotel",hotelAdj);
+      }
+
+      private static void populateExtrasList(Map<String,List<Extra>> extrasList){
+
+          Extra main1 = new Extra(1,"Railroad Worker");
+          Extra main2 = new Extra(2,"Falls off Roof");
+          Extra main3 = new Extra(2,"Woman in Black Dress");
+          Extra main4 = new Extra(4,"Mayor McGinty");
+          Extra saloon1 = new Extra(1,"Reluctant Farmer");
+          Extra saloon2 = new Extra(2,"Woman in Red Dress");
+          Extra ranch1 = new Extra(1,"Shot in Leg");
+          Extra ranch2 = new Extra(2,"Saucy Fred");
+          Extra ranch3 = new Extra(3,"Man Under Horse");
+          Extra hideout1 = new Extra(1,"Clumsy Pit Fighter");
+          Extra hideout2 = new Extra(2,"Thug with Knife");
+          Extra hideout3 = new Extra(3,"Dangerous Tom");
+          Extra hideout4 = new Extra(4,"Penny, who is Lost");
+          Extra bank1 = new Extra(2,"Suspicious Gentleman");
+          Extra bank2 = new Extra(3,"Flustered Teller");
+          Extra church1 = new Extra(1,"Dead Man");
+          Extra church2 = new Extra(2,"Crying Woman");
+          Extra hotel1 = new Extra(1,"Faro Player");
+          Extra hotel2 = new Extra(1,"Sleeping Drunkard");
+          Extra hotel3 = new Extra(2,"Falls from Balcony");
+          Extra hotel4 = new Extra(3,"Australian Bartender");
+          Extra jail1 = new Extra(2,"Prisoner in Cell");
+          Extra jail2 = new Extra(3,"Feller in Irons");
+          Extra store1 = new Extra(1,"Man in Overalls");
+          Extra store2 = new Extra(3,"Mister Keach");
+          Extra train1 = new Extra(1,"Crusty Prospector");
+          Extra train2 = new Extra(1,"Dragged by Train");
+          Extra train3 = new Extra(2,"Preacher with Bag");
+          Extra train4 = new Extra(4,"Cyrus the Gunfighter");
+
+          List<Extra> mainExtras = Arrays.asList(main1,main2,main3,main4);
+          List<Extra> jailExtras = Arrays.asList(jail1,jail2);
+          List<Extra> storeExtras = Arrays.asList(store1,store2);
+          List<Extra> saloonExtras = Arrays.asList(saloon1,saloon2);
+          List<Extra> bankExtras = Arrays.asList(bank1,bank2);
+          List<Extra> hideoutExtras = Arrays.asList(hideout1,hideout2,hideout3,hideout4);
+          List<Extra> trainExtras = Arrays.asList(train1,train2,train3,train4);
+          List<Extra> ranchExtras= Arrays.asList(ranch1,ranch2,ranch3);
+          List<Extra> churchExtras = Arrays.asList(church1,church2);
+          List<Extra> hotelExtras = Arrays.asList(hotel1,hotel2,hotel3,hotel4);
+
+          extrasList.put("Main Street",mainExtras);
+          extrasList.put("Jail",jailExtras);
+          extrasList.put("General Store",storeExtras);
+          extrasList.put("Saloon",saloonExtras);
+          extrasList.put("Bank",bankExtras);
+          extrasList.put("Secret Hideout",hideoutExtras);
+          extrasList.put("Train",trainExtras);
+          extrasList.put("Ranch",ranchExtras);
+          extrasList.put("Church",churchExtras);
+          extrasList.put("Hotel",hotelExtras);
+      }
+      private static void populateActingList(Map<String,List<ActingSet>> actingSetList, Map<String,List<Extra>> extrasList, Map<String,List<String>> adjacencyList){
+         ActingSet MainStreet = new ActingSet("Main Street",3,3,null,extrasList.get("Main Street"),adjacencyList.get("Main Street"));
+         ActingSet Saloon = new ActingSet("Saloon",2,2,null,extrasList.get("Saloon"),adjacencyList.get("Saloon"));
+         ActingSet Ranch = new ActingSet("Ranch",2,2,null,extrasList.get("Ranch"),adjacencyList.get("Ranch"));
+         ActingSet SecretHideout = new ActingSet("Secret Hideout",3,3,null,extrasList.get("Secret Hideout"),adjacencyList.get("Secret Hideout"));
+         ActingSet Bank = new ActingSet("Bank",1,1,null,extrasList.get("Bank"),adjacencyList.get("Bank"));
+         ActingSet Hotel = new ActingSet("Hotel",3,3,null,extrasList.get("Hotel"),adjacencyList.get("Hotel"));
+         ActingSet Church = new ActingSet("Church",2,2,null,extrasList.get("Church"),adjacencyList.get("Church"));
+         ActingSet Jail = new ActingSet("Jail",1,1,null,extrasList.get("Jail"),adjacencyList.get("Jail"));
+         ActingSet TrainStation = new ActingSet("Train Station",3,3,null,extrasList.get("Train Station"),adjacencyList.get("Train Station"));
+         ActingSet GeneralStore = new ActingSet("General Store",2,2,null,extrasList.get("General Store"),adjacencyList.get("General Store"));
+      }
+
+    }
+
+
+
    public static void main(String[]arg){
        Scanner console = new Scanner(System.in);
 
@@ -516,9 +628,9 @@ import java.lang.*;
        Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
        Map<String,List<Extra>> extrasList = new HashMap<String,List<Extra>>();
        Map<String,List<ActingSet>> actingSetList = new HashMap<String,List<ActingSet>>();
-       populateAdjacencyList(adjacencyList);
-       populateExtrasList(extrasList);
-       populateActingList(actingSetList,extrasList,adjacencyList);
+
+       Board.init(adjacencyList,extrasList,actingSetList);
+
        //Create list of all Player objects to iterate through
        //Create list of all Set objects to iterate through
        //Create Deck of scene to choose from for ending days
@@ -542,105 +654,6 @@ import java.lang.*;
         //CommandExec(p1,cmd,list, office, trailer);
        }
     }
-
-    /*private static void init() {
-
-    } */
-
-
-    private static void populateAdjacencyList(Map<String,List<String>> adjacencyList) {
-      List<String> mainAdj = Arrays.asList("Trailers", "Saloon", "Jail");
-      List<String> jailAdj = Arrays.asList("Main Street", "General Store", "Train Station");
-      List<String> storeAdj = Arrays.asList("Saloon","Ranch","Train Station","Jail");
-      List<String> saloonAdj = Arrays.asList("Main Street","Trailers","General Store");
-      List<String> trailersAdj = Arrays.asList("Main Street","Saloon","Hotel");
-      List<String> bankAdj = Arrays.asList("Hotel","Church","Ranch","Saloon");
-      List<String> hideoutAdj = Arrays.asList("Ranch","Casting Office","Church");
-      List<String> trainAdj = Arrays.asList("Jail","General Store","Casting Office");
-      List<String> castingAdj = Arrays.asList("Ranch","Secret Hideout","Train Station");
-      List<String> ranchAdj = Arrays.asList("Casting Office","Secret Hideout","General Store","Bank");
-      List<String> churchAdj = Arrays.asList("Secret Hideout","Bank","Hotel");
-      List<String> hotelAdj = Arrays.asList("Church","Bank","Trailers");
-      adjacencyList.put("Main Street",mainAdj);
-      adjacencyList.put("Jail",jailAdj);
-      adjacencyList.put("General Store",storeAdj);
-      adjacencyList.put("Saloon",saloonAdj);
-      adjacencyList.put("Trailers",trailersAdj);
-      adjacencyList.put("Bank",bankAdj);
-      adjacencyList.put("Secret Hideout",hideoutAdj);
-      adjacencyList.put("Train Station",trainAdj);
-      adjacencyList.put("Casting Office",castingAdj);
-      adjacencyList.put("Ranch",ranchAdj);
-      adjacencyList.put("Church",churchAdj);
-      adjacencyList.put("Hotel",hotelAdj);
-    }
-    public static void populateExtrasList(Map<String,List<Extra>> extrasList){
-
-        Extra main1 = new Extra(1,"Railroad Worker");
-        Extra main2 = new Extra(2,"Falls off Roof");
-        Extra main3 = new Extra(2,"Woman in Black Dress");
-        Extra main4 = new Extra(4,"Mayor McGinty");
-        Extra saloon1 = new Extra(1,"Reluctant Farmer");
-        Extra saloon2 = new Extra(2,"Woman in Red Dress");
-        Extra ranch1 = new Extra(1,"Shot in Leg");
-        Extra ranch2 = new Extra(2,"Saucy Fred");
-        Extra ranch3 = new Extra(3,"Man Under Horse");
-        Extra hideout1 = new Extra(1,"Clumsy Pit Fighter");
-        Extra hideout2 = new Extra(2,"Thug with Knife");
-        Extra hideout3 = new Extra(3,"Dangerous Tom");
-        Extra hideout4 = new Extra(4,"Penny, who is Lost");
-        Extra bank1 = new Extra(2,"Suspicious Gentleman");
-        Extra bank2 = new Extra(3,"Flustered Teller");
-        Extra church1 = new Extra(1,"Dead Man");
-        Extra church2 = new Extra(2,"Crying Woman");
-        Extra hotel1 = new Extra(1,"Faro Player");
-        Extra hotel2 = new Extra(1,"Sleeping Drunkard");
-        Extra hotel3 = new Extra(2,"Falls from Balcony");
-        Extra hotel4 = new Extra(3,"Australian Bartender");
-        Extra jail1 = new Extra(2,"Prisoner in Cell");
-        Extra jail2 = new Extra(3,"Feller in Irons");
-        Extra store1 = new Extra(1,"Man in Overalls");
-        Extra store2 = new Extra(3,"Mister Keach");
-        Extra train1 = new Extra(1,"Crusty Prospector");
-        Extra train2 = new Extra(1,"Dragged by Train");
-        Extra train3 = new Extra(2,"Preacher with Bag");
-        Extra train4 = new Extra(4,"Cyrus the Gunfighter");
-
-        List<Extra> mainExtras = Arrays.asList(main1,main2,main3,main4);
-        List<Extra> jailExtras = Arrays.asList(jail1,jail2);
-        List<Extra> storeExtras = Arrays.asList(store1,store2);
-        List<Extra> saloonExtras = Arrays.asList(saloon1,saloon2);
-        List<Extra> bankExtras = Arrays.asList(bank1,bank2);
-        List<Extra> hideoutExtras = Arrays.asList(hideout1,hideout2,hideout3,hideout4);
-        List<Extra> trainExtras = Arrays.asList(train1,train2,train3,train4);
-        List<Extra> ranchExtras= Arrays.asList(ranch1,ranch2,ranch3);
-        List<Extra> churchExtras = Arrays.asList(church1,church2);
-        List<Extra> hotelExtras = Arrays.asList(hotel1,hotel2,hotel3,hotel4);
-
-        extrasList.put("Main Street",mainExtras);
-        extrasList.put("Jail",jailExtras);
-        extrasList.put("General Store",storeExtras);
-        extrasList.put("Saloon",saloonExtras);
-        extrasList.put("Bank",bankExtras);
-        extrasList.put("Secret Hideout",hideoutExtras);
-        extrasList.put("Train",trainExtras);
-        extrasList.put("Ranch",ranchExtras);
-        extrasList.put("Church",churchExtras);
-        extrasList.put("Hotel",hotelExtras);
-    }
-    public static void populateActingList(Map<String,List<ActingSet>> actingSetList, Map<String,List<Extra>> extrasList, Map<String,List<String>> adjacencyList){
-       ActingSet MainStreet = new ActingSet("Main Street",3,3,null,extrasList.get("Main Street"),adjacencyList.get("Main Street"));
-       ActingSet Saloon = new ActingSet("Saloon",2,2,null,extrasList.get("Saloon"),adjacencyList.get("Saloon"));
-       ActingSet Ranch = new ActingSet("Ranch",2,2,null,extrasList.get("Ranch"),adjacencyList.get("Ranch"));
-       ActingSet SecretHideout = new ActingSet("Secret Hideout",3,3,null,extrasList.get("Secret Hideout"),adjacencyList.get("Secret Hideout"));
-       ActingSet Bank = new ActingSet("Bank",1,1,null,extrasList.get("Bank"),adjacencyList.get("Bank"));
-       ActingSet Hotel = new ActingSet("Hotel",3,3,null,extrasList.get("Hotel"),adjacencyList.get("Hotel"));
-       ActingSet Church = new ActingSet("Church",2,2,null,extrasList.get("Church"),adjacencyList.get("Church"));
-       ActingSet Jail = new ActingSet("Jail",1,1,null,extrasList.get("Jail"),adjacencyList.get("Jail"));
-       ActingSet TrainStation = new ActingSet("Train Station",3,3,null,extrasList.get("Train Station"),adjacencyList.get("Train Station"));
-       ActingSet GeneralStore = new ActingSet("General Store",2,2,null,extrasList.get("General Store"),adjacencyList.get("General Store"));
-    }
-
 
     /*    public static void populateLeadsList(){
 
