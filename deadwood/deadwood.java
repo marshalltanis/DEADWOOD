@@ -37,6 +37,17 @@ public static int activeScenes = 10;
         this.dice = pDice;
         this.id = pId;
     }
+    public Player(Dice pDice, int pId, int startCreds){
+        this.dice = pDice;
+        this.id = pId;
+        this.credits = startCreds;
+    }
+    public Player(Dice pDice, int pId, int startCreds, int startRank){
+        this.dice = pDice;
+        this.id = pId;
+        this.credits = startCreds;
+        this.rank = startRank;
+    }
     public int getId(){
         int thisId = id;
         return thisId;
@@ -277,20 +288,35 @@ public static int activeScenes = 10;
 
   }
 
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+  // DAYDAYDAYDAYDAYDAYDAYDAYDAYDAYD //
+////////////////////////////////////////////////
+////////////////////////////////////////////////
 
 
 
-  public class Day{
+
+  public static class Day{
     private int dayNum;
-    private Map<List,ActingSet> setsList;
+    private int lastDay;
+    private Map<String,ActingSet> setsList;
     private List<Scene> scenesList;
     private List<Player> playersList;
     private int numelems;
     
 
-    public Day (Map<List,ActingSet> sets, List<Scene> scenes, List<Player> players) {
+    public Day (List<Scene> scenes, List<Player> players) {
         this.dayNum = 0;
-        this.setsList = sets;
+        this.lastDay = 4;
+        this.setsList = actingSetList;
+        this.scenesList = scenes;
+        this.playersList = players;
+        this.numelems = scenesList.size();
+    } public Day (List<Scene> scenes, List<Player> players, int day) {
+        this.dayNum = 0;
+        this.lastDay = day;
+        this.setsList = actingSetList;
         this.scenesList = scenes;
         this.playersList = players;
         this.numelems = scenesList.size();
@@ -304,7 +330,7 @@ public static int activeScenes = 10;
         iterate Day*/
 
         dayNum++;
-        if(dayNum > 3) {
+        if(dayNum > lastDay) {
             System.out.println("Game Over");
         } else {
 
@@ -533,7 +559,6 @@ public static int activeScenes = 10;
         populateAdjacencyList();
         populateExtrasList();
         populateActingList();
-        List<Scene> sceneList = populateSceneList();
 
       }
 
@@ -641,7 +666,138 @@ public static int activeScenes = 10;
          actingSetList.put("Train Station", TrainStation);
          actingSetList.put("General Store", GeneralStore);
       }
-      // UNCOMMENT THIS WHEN Leads IS COMPLETE
+    }
+
+    //////////////////////////////////////////
+    ////MAINMAINMAIN /////////////////////////
+    //////////////////////////////////////////
+
+
+   public static void main(String[]arg){
+        //Create list of all Player objects to iterate through
+        //Create list of all Set objects to iterate through
+        //Create Deck of scene to choose from for ending days
+
+
+        //initialization stuff:
+       Board board = new Board();
+       Scanner console = new Scanner(System.in);
+       List<Scene> sceneList = populateSceneList();
+       List<Player> playersList = new ArrayList<Player>();
+
+       Dice officialDice = Dice.getDice();
+       board.init();
+
+       //get player input and intialize playersList
+       int playernum = 0;
+       while ((playernum < 1) || (playernum > 8)) {
+            System.out.println("Enter a number of players between 2 and 8");
+            playernum = console.nextInt(); //error checking on this?
+        }
+
+        for (int i=0;i<playernum;i++) {
+            if (playernum < 5) {
+                Player playkid = new Player(officialDice, i+1);
+                playersList.add(playkid);
+            } else if (playernum == 5) {
+                Player playkid = new Player(officialDice, i+1, 2);
+                playersList.add(playkid);
+            } else if (playernum == 6) {
+                Player playkid = new Player(officialDice, i+1, 4);
+                playersList.add(playkid);
+            } else if (playernum > 6) {
+                Player playkid = new Player(officialDice, i+1, 0, 2);
+                playersList.add(playkid);
+            }
+        }
+
+        //intialize Day:
+        if (playernum < 4) {
+            Day day = new Day(sceneList, playersList, 3);
+            day.newDay();
+        } else {
+            Day day = new Day(sceneList, playersList);
+            day.newDay();
+        }
+
+
+
+
+
+
+
+       //Actual Gameplay:
+
+       Extra l1 = new Extra(1, "Prospector");
+       Lead l2 = new Lead(1, "Miner", "Boom Pow");
+       List<Lead> leads = new ArrayList<Lead>();
+       List<Extra> extras = new ArrayList<Extra>();
+       leads.add(l2);
+       extras.add(l1);
+       CastingOffice office = new CastingOffice(adjacencyList);
+       Scene curr = new Scene(4,3, "Wild West",20, leads);
+       //ActingSet here = new ActingSet("Salooon", 3, 3, curr, extras, adjacencyList);
+       Player p1 = new Player(officialDice,1);
+       Player p2 = new Player(officialDice,2);
+       //ActingSet []list = {here};
+       Trailer trailer = new Trailer();
+       p1.setDollars(4);
+       while(true){
+        turn(p1, actingSetList, office, trailer);
+        boolean dayDone = isDayDone();
+        if(dayDone){
+            return;
+        }
+        turn(p2, actingSetList, office, trailer);
+        }
+       
+    }
+    
+    private static void isSceneDone(Player p){
+        if(p.getActingSet().getShotsLeft() == 0){
+            activeScenes --;
+        }
+    }
+    private static boolean isDayDone(){
+        if(activeScenes == 1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    private static void turn(Player p, Map<String,ActingSet> list, CastingOffice office, Trailer trailer){
+        boolean stillATurn = true;
+        Scanner console = new Scanner(System.in);
+        while(stillATurn){
+            System.out.print("What is your command? : ");
+            String cmd = console.nextLine();
+            CommandExec(p,cmd,list,office,trailer);
+            if(cmd.equals("end")){
+                stillATurn = false;
+            }
+        }
+    }
+    
+
+    private static Lead findLead(String part, List<Lead> leadList){
+        for(int i =0; i < leadList.size(); i ++){
+            if(leadList.get(i).getName().equals(part)){
+                return leadList.get(i);
+            }
+        }
+        return null;
+    }
+    private static Extra findExtra(String part, List<Extra> extraList){
+        for(int i =0; i < extraList.size(); i ++){
+            if(extraList.get(i).getName().equals(part)){
+                return extraList.get(i);
+            }
+        }
+        return null;
+    }
+
+    // UNCOMMENT THIS WHEN Leads IS COMPLETE
       private static List<Scene> populateSceneList() {
 
         Lead sc1L1 = new Lead(2,"Defrocked Priest", "Look out below!");
@@ -918,286 +1074,6 @@ public static int activeScenes = 10;
         sceneList.add(scene40);
 
         return sceneList;
-    }
-
-    }
-
-
-
-   public static void main(String[]arg){
-       Board board = new Board();
-       Scanner console = new Scanner(System.in);
-
-
-       Dice officialDice = Dice.getDice();
-       board.init();
-
-       //Create list of all Player objects to iterate through
-       //Create list of all Set objects to iterate through
-       //Create Deck of scene to choose from for ending days
-       Extra l1 = new Extra(1, "Prospector");
-       Lead l2 = new Lead(1, "Miner", "Boom Pow");
-       List<Lead> leads = new ArrayList<Lead>();
-       List<Extra> extras = new ArrayList<Extra>();
-       leads.add(l2);
-       extras.add(l1);
-       CastingOffice office = new CastingOffice(adjacencyList);
-       Scene curr = new Scene(4,3, "Wild West",20, leads);
-       //ActingSet here = new ActingSet("Salooon", 3, 3, curr, extras, adjacencyList);
-       Player p1 = new Player(officialDice,1);
-       Player p2 = new Player(officialDice,2);
-       //ActingSet []list = {here};
-       Trailer trailer = new Trailer();
-       p1.setDollars(4);
-       while(true){
-        turn(p1, actingSetList, office, trailer);
-        boolean dayDone = isDayDone();
-        if(dayDone){
-            return;
-        }
-        turn(p2, actingSetList, office, trailer);
-        }
-       
-    }
-    
-    private static void isSceneDone(Player p){
-        if(p.getActingSet().getShotsLeft() == 0){
-            activeScenes --;
-        }
-    }
-    private static boolean isDayDone(){
-        if(activeScenes == 1){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    private static void turn(Player p, Map<String,ActingSet> list, CastingOffice office, Trailer trailer){
-        boolean stillATurn = true;
-        Scanner console = new Scanner(System.in);
-        while(stillATurn){
-            System.out.print("What is your command? : ");
-            String cmd = console.nextLine();
-            CommandExec(p,cmd,list,office,trailer);
-            if(cmd.equals("end")){
-                stillATurn = false;
-            }
-        }
-    }
-    
-            
-
-    /*    public static void populateLeadsList(){
-
-            Lead sc1L1 = new Lead(2,"Defrocked Priest", "Look out below!");
-            Lead sc1L2 = new Lead(3,"Marshal Canfield", "Hold fast!");
-            Lead sc1L3 = new Lead(4,"One-Eyed Man", "Balderdash!");
-
-            Lead sc2L1 = new Lead(2,"Squeaking Boy", "I'll say!");
-            Lead sc2L2 = new Lead(4,"Pharaoh Imhotep", "Attack, soldiers!");
-            Lead sc2L3 = new Lead(6,"Aunt Martha", "You got nothin!");
-
-            Lead sc3L1 = new Lead(1,"Rug Merchant", "Don't leave my store!");
-            Lead sc3L2 = new Lead(2,"Banker", "Trust me.");
-            Lead sc3L3 = new Lead(5,"Talking Mule", "Nice work, Johnny!");
-
-            Lead sc4L1 = new Lead(4,"The Duck", "Waaaak!");
-            Lead sc4L2 = new Lead(6,"His Brother", "Waaaaaaak!");
-
-            Lead sc5L1 = new Lead(5,"Auctioneer", "Going once!");
-            Lead sc5L2 = new Lead(6,"General Custer", "Go West!");
-
-            Lead sc6L1 = new Lead(2,"Town Drunk", "Even me!");
-            Lead sc6L2 = new Lead(4,"Squinting Miner", "Sure we can!");
-            Lead sc6L3 = new Lead(5,"Poltergeist", "Wooooo!");
-
-            Lead sc7L1 = new Lead(3,"Drunk", "Where's Willard?");
-            Lead sc7L2 = new Lead(4,"Librarian", "Shhhhh!");
-            Lead sc7L3 = new Lead(6,"Man with Hay", "Hey!");
-
-            Lead sc8L1 = new Lead(1,"Angry Barber", "Hold him still!");
-            Lead sc8L2 = new Lead(3,"Woman with Board", "Nonsense, Frank!");
-            Lead sc8L3 = new Lead(5,"Man on Fire", "It burns!");
-
-            Lead sc9L1 = new Lead(2,"Hollering Boy", "Over here, mister!");
-            Lead sc9L2 = new Lead(3,"Drunk Farmer", "Git outta my barn!");
-            Lead sc9L3 = new Lead(5,"Meek Little Sarah", "He's so cute!");
-
-            Lead sc10L1 = new Lead(1,"Sleeping Man", "Snnkkk snnkk snnkk");
-            Lead sc10L2 = new Lead(2,"Man with Pig", "Tally-Hooo!");
-            Lead sc10L3 = new Lead(4,"Shooter", "Where's my britches?");
-
-            Lead sc11L1 = new Lead(1,"Buster", "One two three go!");
-            Lead sc11L2 = new Lead(4,"Man Reading Paper", "Ouchie!");
-            Lead sc11L3 = new Lead(5,"Fate Pete", "Nice kick, boss!");
-
-            Lead sc12L1 = new Lead(2,"Shot in Back", "Arrrggh!");
-            Lead sc12L2 = new Lead(4,"Shot in Leg", "Ooh, lordy!");
-            Lead sc12L3 = new Lead(5,"Leaps into Cake", "Dangit, Jesse!");
-
-            Lead sc13L1 = new Lead(6,"Martin", "Have you tried soy cheese?");
-
-            Lead sc14L1 = new Lead(2,"Piano Player", "It's a nocturne!");
-            Lead sc14L2 = new Lead(3,"Man in Turban", "My stars!");
-            Lead sc14L3 = new Lead(4,"Falls on Hoe", "Ow!");
-
-            Lead sc15L1 = new Lead(3,"Preacher", "My word!");
-            Lead sc15L2 = new Lead(6,"Amused Witness", "Tee hee hee!");
-
-            Lead sc16L1 = new Lead(1,"Falls from Tree", "What ho!");
-            Lead sc16L2 = new Lead(3,"Laughing Woman", "Tis to laugh!");
-            Lead sc16L3 = new Lead(4,"Man with Whistle", "Tweeeeet!");
-
-            Lead sc17L1 = new Lead(3,"Curious Girl", "Are you sure?");
-            Lead sc17L2 = new Lead(4,"Ghost of Plato", "It happened to me!");
-
-            Lead sc18L1 = new Lead(4,"Ex-Convict", "Never again!");
-            Lead sc18L2 = new Lead(6,"Man with Onion", "Fresh onions!");
-
-            Lead sc19L1 = new Lead(2,"Suprised Bison", "Mmrrrrrph!");
-            Lead sc19L2 = new Lead(4,"Man with Horn", "Ta daaaa!");
-
-            Lead sc20L1 = new Lead(3,"Staggering Man", "You never know!");
-            Lead sc20L2 = new Lead(5,"Woman with Beer", "Howdy, stranger!");
-            Lead sc20L3 = new Lead(6,"Marcie", "Welcome home!");
-
-            Lead sc21L1 = new Lead(4,"Looks like Elvis", "Thankyouverymuch");
-            Lead sc21L2 = new Lead(5,"Singing Dead Man", "Yeah!");
-            Lead sc21L3 = new Lead(6,"Apothecary", "Such drugs I have.");
-
-            Lead sc22L1 = new Lead(1,"Flustered Man", "Well, I never!");
-            Lead sc22L2 = new Lead(2,"Space Monkey", "Ook!");
-            Lead sc22L3 = new Lead(5,"Cowbot Dan", "Bzzzzzt!");
-
-            Lead sc23L1 = new Lead(2,"Jailer", "You there!");
-            Lead sc23L2 = new Lead(4,"Mephistopheles", "Be not afraid!");
-            Lead sc23L3 = new Lead(5,"Breaks a Window", "Oops!");
-
-            Lead sc24L1 = new Lead(1,"Man in Poncho", "Howdy, Jones!");
-            Lead sc24L2 = new Lead(3,"Ecstatic Housewife", "This is fine!");
-            Lead sc24L3 = new Lead(5,"Isaac", "The mail!");
-
-            Lead sc25L1 = new Lead(5,"Film Critic", "Implausible!");
-            Lead sc25L2 = new Lead(6,"Hobo with Bat", "Nice house!");
-
-            Lead sc26L1 = new Lead(2,"Cow", "Moo.");
-            Lead sc26L2 = new Lead(3,"St. Clement of Alexandria", "Peace be with you, child!");
-            Lead sc26L3 = new Lead(4,"Josie", "Yikes!");
-
-            Lead sc27L1 = new Lead(3,"Bewhisker'd Cowpoke", "Oh, sweet Lord!");
-            Lead sc27L2 = new Lead(5,"Dog", "Wurf!");
-
-            Lead sc28L1 = new Lead(2,"Willard", "Ain't that a sight?");
-            Lead sc28L2 = new Lead(3,"Leprechaun", "Begorrah!");
-            Lead sc28L3 = new Lead(5,"Startled Ox", "Mrr?");
-
-            Lead sc29L1 = new Lead(1,"Shot in Head", "Arrrgh!");
-            Lead sc29L2 = new Lead(4,"Leaps Out of Cake", "Oh, for Pete's sake!");
-            Lead sc29L3 = new Lead(6,"Shot Three Times", "Ow! Ow! Ow!");
-
-            Lead sc30L1 = new Lead(2,"Voice of God", "Grab hold, son!");
-            Lead sc30L2 = new Lead(3,"Hands of God", "!");
-            Lead sc30L3 = new Lead(4,"Jack Kemp", "America!");
-
-            Lead sc31L1 = new Lead(5,"Opice (Monkey)", "Ukk! (Ook)!");
-            Lead sc31L2 = new Lead(6,"Man with Gun", "Hold it right there!");
-
-            Lead sc32L1 = new Lead(1,"Man with Rope", "Look out below!");
-            Lead sc32L2 = new Lead(2,"Svetlana", "Says who?");
-            Lead sc32L3 = new Lead(5,"Accidental Victim", "Ow! My spine!");
-
-            Lead sc33L1 = new Lead(1,"Thrifty Mike", "Call!");
-            Lead sc33L2 = new Lead(3,"Sober Physician", "Raise!");
-            Lead sc33L3 = new Lead(5,"Man on Floor", "Fold!");
-
-            Lead sc34L1 = new Lead(2,"Very Wet Man", "Sheesh!");
-            Lead sc34L2 = new Lead(4,"Dejected Housewife", "Its time had come.");
-            Lead sc34L3 = new Lead(5,"Man with Box", "Progress!");
-
-            Lead sc35L1 = new Lead(3,"Liberated Nun", "Let me have it!");
-            Lead sc35L2 = new Lead(5,"Witch Doctor", "Oogie Boogie!");
-            Lead sc35L3 = new Lead(6,"Voice of Reason", "Come on, now!");
-
-            Lead sc36L1 = new Lead(4,"Marksman", "Pull!");
-            Lead sc36L2 = new Lead(5,"Postal Worker", "It's about time!");
-            Lead sc36L3 = new Lead(6,"A Horse", "Yes Sir!");
-
-            Lead sc37L1 = new Lead(2,"Burning Man", "Make it stop!");
-            Lead sc37L2 = new Lead(4,"Cheese Vendor", "Opa!");
-            Lead sc37L3 = new Lead(5,"Hit with Table", "Ow! A table?");
-
-            Lead sc38L1 = new Lead(2,"Fraternity Pledge", "Beer me!");
-            Lead sc38L2 = new Lead(6,"Man with Sword", "None shall pass!");
-
-            Lead sc39L1 = new Lead(3,"Detective", "I have a hunch.");
-            Lead sc39L2 = new Lead(4,"File Clerk", "My stapler!");
-            Lead sc39L3 = new Lead(5,"Cindy Lou", "Dear Lord!");
-
-            Lead sc40L1 = new Lead(2,"Farmer", "Git off a that!");
-            Lead sc40L2 = new Lead(4,"Exploding Horse", "Boom!");
-            Lead sc40L3 = new Lead(6,"Jack", "Here we go again!");
-
-            List<Leads> sc1Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc2Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc3Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc4Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc5Leads = Arrays.asList(sc1L1, sc1L2);
-            List<Leads> sc6Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc7Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc8Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc9Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc10Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc11Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc12Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc13Leads = Arrays.asList(sc1L1);
-            List<Leads> sc14Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc15Leads = Arrays.asList(sc1L1, sc1L2);
-            List<Leads> sc16Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc17Leads = Arrays.asList(sc1L1, sc1L2);
-            List<Leads> sc18Leads = Arrays.asList(sc1L1, sc1L2);
-            List<Leads> sc19Leads = Arrays.asList(sc1L1, sc1L2);
-            List<Leads> sc20Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc21Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc22Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc23Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc24Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc25Leads = Arrays.asList(sc1L1, sc1L2);
-            List<Leads> sc26Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc27Leads = Arrays.asList(sc1L1, sc1L2);
-            List<Leads> sc28Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc29Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc30Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc31Leads = Arrays.asList(sc1L1, sc1L2);
-            List<Leads> sc32Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc33Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc34Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc35Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc36Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc37Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc38Leads = Arrays.asList(sc1L1, sc1L2);
-            List<Leads> sc39Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-            List<Leads> sc40Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
-
-    	}*/
-
-
-
-    private static Lead findLead(String part, List<Lead> leadList){
-        for(int i =0; i < leadList.size(); i ++){
-            if(leadList.get(i).getName().equals(part)){
-                return leadList.get(i);
-            }
-        }
-        return null;
-    }
-    private static Extra findExtra(String part, List<Extra> extraList){
-        for(int i =0; i < extraList.size(); i ++){
-            if(extraList.get(i).getName().equals(part)){
-                return extraList.get(i);
-            }
-        }
-        return null;
     }
 
     private static void CommandExec(Player p, String cmd, Map<String,ActingSet> list, CastingOffice office, Trailer trailer){
