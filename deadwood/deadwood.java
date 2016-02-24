@@ -10,6 +10,14 @@ import java.lang.*;
 
 
  public class deadwood{
+
+/* GLOBALS */
+static Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
+static Map<String,List<Extra>> extrasList = new HashMap<String,List<Extra>>();
+static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
+
+
+
   public static class Player{
     private Dice dice;
     private int id;
@@ -512,17 +520,14 @@ import java.lang.*;
       public Board(){
 
       }
-      public static void init(Map<String,List<String>> adjacencyList,Map<String,List<Extra>> extrasList,Map<String,List<ActingSet>> actingSetList){
-        //createAdjList();
-        //createExtrasList();
-        //createActingList();
-        populateAdjacencyList(adjacencyList);
-        populateExtrasList(extrasList);
-        populateActingList(actingSetList,extrasList,adjacencyList);
+      public static void init(){
+        populateAdjacencyList();
+        populateExtrasList();
+        populateActingList();
 
       }
 
-      private static void populateAdjacencyList(Map<String,List<String>> adjacencyList) {
+      private static void populateAdjacencyList() {
         List<String> mainAdj = Arrays.asList("Trailers", "Saloon", "Jail");
         List<String> jailAdj = Arrays.asList("Main Street", "General Store", "Train Station");
         List<String> storeAdj = Arrays.asList("Saloon","Ranch","Train Station","Jail");
@@ -549,7 +554,7 @@ import java.lang.*;
         adjacencyList.put("Hotel",hotelAdj);
       }
 
-      private static void populateExtrasList(Map<String,List<Extra>> extrasList){
+      private static void populateExtrasList(){
 
           Extra main1 = new Extra(1,"Railroad Worker");
           Extra main2 = new Extra(2,"Falls off Roof");
@@ -603,7 +608,7 @@ import java.lang.*;
           extrasList.put("Church",churchExtras);
           extrasList.put("Hotel",hotelExtras);
       }
-      private static void populateActingList(Map<String,List<ActingSet>> actingSetList, Map<String,List<Extra>> extrasList, Map<String,List<String>> adjacencyList){
+      private static void populateActingList(){
          ActingSet MainStreet = new ActingSet("Main Street",3,3,null,extrasList.get("Main Street"),adjacencyList.get("Main Street"));
          ActingSet Saloon = new ActingSet("Saloon",2,2,null,extrasList.get("Saloon"),adjacencyList.get("Saloon"));
          ActingSet Ranch = new ActingSet("Ranch",2,2,null,extrasList.get("Ranch"),adjacencyList.get("Ranch"));
@@ -625,11 +630,7 @@ import java.lang.*;
 
 
        Dice officialDice = Dice.getDice();
-       Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
-       Map<String,List<Extra>> extrasList = new HashMap<String,List<Extra>>();
-       Map<String,List<ActingSet>> actingSetList = new HashMap<String,List<ActingSet>>();
-
-       Board.init(adjacencyList,extrasList,actingSetList);
+       Board.init();
 
        //Create list of all Player objects to iterate through
        //Create list of all Set objects to iterate through
