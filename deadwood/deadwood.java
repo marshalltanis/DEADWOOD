@@ -15,7 +15,7 @@ import java.lang.*;
 static Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
 static Map<String,List<Extra>> extrasList = new HashMap<String,List<Extra>>();
 static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
-
+public static int activeScenes = 10;
 
 
   public static class Player{
@@ -119,7 +119,7 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
         actRole = roll;
       }
       else{
-        System.out.print("Invalid Action");
+        System.out.print("Invalid Action, not high enough level or you have a role currently\n");
       }
     }
     public void takeExtraRole(Extra roll){
@@ -128,7 +128,7 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
         extraRole = roll;
       }
       else{
-        System.out.print("Invalid Action");
+        System.out.print("Invalid Action, not high enough level or you have a Role currently\n");
       }
     }
     public void move(ActingSet location){
@@ -282,12 +282,13 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
 
   public class Day{
     private int dayNum;
-    private List<ActingSet> setsList;
+    private Map<List,ActingSet> setsList;
     private List<Scene> scenesList;
     private List<Player> playersList;
     private int numelems;
+    
 
-    public Day (List<ActingSet> sets, List<Scene> scenes, List<Player> players) {
+    public Day (Map<List,ActingSet> sets, List<Scene> scenes, List<Player> players) {
         this.dayNum = 0;
         this.setsList = sets;
         this.scenesList = scenes;
@@ -313,19 +314,27 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
             }
 
             //Resetting shotLeft for all Sets
-            for (ActingSet set : setsList) {
+            for (ActingSet set : setsList.values()) {
                 set.resetShots();
             }
 
             for (int i=0;i<setsList.size();i++) {
                 Random rand = new Random();
+                String sceneName = "dynamite";
                 int random = rand.nextInt(numelems);
-
+                for(int j = 0; j < scenesList.size(); j ++){
+                    if(scenesList.get(j).getId() == random){
+                        sceneName = scenesList.get(j).getName();
+                    }
+                }
+                if(sceneName == null){
+                    System.out.print("Could not start new day");
+                }
                 Scene scene = scenesList.get(random);
                 scenesList.remove(random);
                 numelems--;
 
-                setsList.get(i).setScene(scene);
+                setsList.get(sceneName).setScene(scene);
 
             }
         }
@@ -619,6 +628,17 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
          ActingSet Jail = new ActingSet("Jail",1,1,null,extrasList.get("Jail"),adjacencyList.get("Jail"));
          ActingSet TrainStation = new ActingSet("Train Station",3,3,null,extrasList.get("Train Station"),adjacencyList.get("Train Station"));
          ActingSet GeneralStore = new ActingSet("General Store",2,2,null,extrasList.get("General Store"),adjacencyList.get("General Store"));
+         
+         actingSetList.put("Main Street", MainStreet);
+         actingSetList.put("Saloon", Saloon);
+         actingSetList.put("Ranch", Ranch);
+         actingSetList.put("Secret Hideout", SecretHideout);
+         actingSetList.put("Bank", Bank);
+         actingSetList.put("Hotel", Hotel);
+         actingSetList.put("Church", Church);
+         actingSetList.put("Jail", Jail);
+         actingSetList.put("Train Station", TrainStation);
+         actingSetList.put("General Store", GeneralStore);
       }
 
     }
@@ -626,11 +646,12 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
 
 
    public static void main(String[]arg){
+       Board board = new Board();
        Scanner console = new Scanner(System.in);
 
 
        Dice officialDice = Dice.getDice();
-       Board.init();
+       board.init();
 
        //Create list of all Player objects to iterate through
        //Create list of all Set objects to iterate through
@@ -650,11 +671,43 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
        Trailer trailer = new Trailer();
        p1.setDollars(4);
        while(true){
-        System.out.print("> ");
-        String cmd = console.nextLine();
-        //CommandExec(p1,cmd,list, office, trailer);
-       }
+        turn(p1, actingSetList, office, trailer);
+        boolean dayDone = isDayDone();
+        if(dayDone){
+            return;
+        }
+        turn(p2, actingSetList, office, trailer);
+        }
+       
     }
+    
+    private static void isSceneDone(Player p){
+        if(p.getActingSet().getShotsLeft() == 0){
+            activeScenes --;
+        }
+    }
+    private static boolean isDayDone(){
+        if(activeScenes == 1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    private static void turn(Player p, Map<String,ActingSet> list, CastingOffice office, Trailer trailer){
+        boolean stillATurn = true;
+        Scanner console = new Scanner(System.in);
+        while(stillATurn){
+            System.out.print("What is your command? : ");
+            String cmd = console.nextLine();
+            CommandExec(p,cmd,list,office,trailer);
+            if(cmd.equals("end")){
+                stillATurn = false;
+            }
+        }
+    }
+    
+            
 
     /*    public static void populateLeadsList(){
 
@@ -850,16 +903,9 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
     	}*/
 
 
-    private static ActingSet findActingSet(String room, ActingSet [] check){
-        for(int i = 0; i < 1; i ++){
-            if(check[i].getName().equals(room)){
-                return check[i];
-            }
-        }
-        return null;
-    }
+
     private static Lead findLead(String part, List<Lead> leadList){
-        for(int i =0; i < 1; i ++){
+        for(int i =0; i < leadList.size(); i ++){
             if(leadList.get(i).getName().equals(part)){
                 return leadList.get(i);
             }
@@ -867,7 +913,7 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
         return null;
     }
     private static Extra findExtra(String part, List<Extra> extraList){
-        for(int i =0; i < 1; i ++){
+        for(int i =0; i < extraList.size(); i ++){
             if(extraList.get(i).getName().equals(part)){
                 return extraList.get(i);
             }
@@ -875,7 +921,7 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
         return null;
     }
 
-    private static void CommandExec(Player p, String cmd, ActingSet [] list, CastingOffice office, Trailer trailer){
+    private static void CommandExec(Player p, String cmd, Map<String,ActingSet> list, CastingOffice office, Trailer trailer){
         if(cmd.equals("who")){
             System.out.print("\nPlayer " + p.getId() + " has $" + p.getDollars() + " and " + p.getCredits() + " credits ");
             String name = p.getLeadRole();
@@ -889,6 +935,9 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
             else{
                 System.out.print("and is currently not working on a role.\n");
             }
+        }
+        else if(cmd.length() == 0){
+            return;
         }
         else if(cmd.equals("Where")){
             System.out.print("You are in the " + p.getLocal());
@@ -927,11 +976,18 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
         }
          else if(cmd.equals("end")){
             System.out.print("Player " + p.getId() + "'s turn is over... Please pass the computer to the next player.\n");
+            isSceneDone(p);
+            return;
         }
         else if(cmd.substring(0,4).equals("move")){
-            ActingSet room = findActingSet(cmd.substring(5), list);
+            ActingSet room = list.get(cmd.substring(5));
             if(room == null && (!(cmd.substring(5).equals( "Casting Office")) && !(cmd.substring(5).equals("Trailer")))){
+                if(room == null){
+                    System.out.println(list.get(cmd.substring(5)));
+                    System.out.println(cmd.substring(5));
+                }
                 System.out.println("The room you tried to move to was an invalid room");
+                return;
             }
             else{
                 if(room == null){
@@ -951,17 +1007,25 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
             }
         }
         else if(cmd.substring(0,4).equals("work")){
-            Lead isLead = findLead(cmd.substring(5),p.getActingSet().getScene().getLeadList());
-            Extra isExtra = findExtra(cmd.substring(5),p.getActingSet().getExtrasList());
+            Lead isLead = null;//= findLead(cmd.substring(5),p.getActingSet().getScene().getLeadList());
+            Extra isExtra = findExtra(cmd.substring(5),extrasList.get(p.getActingSet().getName()));
             if(isLead == null){
                 if(isExtra == null){
-                    System.out.print("I'm sorry but that role doesn't exist...");
+                    //System.out.print(extrasList.get(p.getActingSet().getName()).get(0).getName());
+                    System.out.print("I'm sorry but that role doesn't exist...\n");
+                    return;
                 }
                 p.takeExtraRole(isExtra);
+                if(p.getExtraRole() == null){
+                    return;
+                }
                 System.out.print("Player " + p.getId() + " has taken the Extra role of " + p.getExtraRole() + ".\n");
             }
             else{
                 p.takeLeadRole(isLead);
+                 if(p.getLeadRole() == null){
+                    return;
+                }
                 System.out.print("Player " + p.getId() + " has taken the Lead role of " + p.getLeadRole() + ".\n");
             }
         }
@@ -981,6 +1045,7 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
         }
         else{
             System.out.print("That was not a valid command. Please read the README with any questions");
+            return;
         }
 
 
