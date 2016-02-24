@@ -533,6 +533,7 @@ public static int activeScenes = 10;
         populateAdjacencyList();
         populateExtrasList();
         populateActingList();
+        List<Scene> sceneList = populateSceneList();
 
       }
 
@@ -640,49 +641,284 @@ public static int activeScenes = 10;
          actingSetList.put("Train Station", TrainStation);
          actingSetList.put("General Store", GeneralStore);
       }
-      /* UNCOMMENT THIS WHEN Leads IS COMPLETE
-      private static void populateSceneList() {
-        Scene scene1 = new Scene(4,3,"Evil Wears a Hat",1,sc1Leads);
-        Scene scene2 = new Scene(6,3,"Square Deal City",2,sc2Leads);
-        Scene scene3 = new Scene(3,3,"Law and the Old West",3,sc3Leads);
-        Scene scene4 = new Scene(4,2,"Davy Crockett: A Drunkard's Tale",4,sc4Leads);
-        Scene scene5 = new Scene(5,2,"The Life and Times of John Skywater",5,sc5Leads);
-        Scene scene6 = new Scene(4,3,"The Way the West was Run",6,sc6Leads);
-        Scene scene7 = new Scene(5,3,"My Years on the Prairie",7,sc7Leads);
-        Scene scene8 = new Scene(3,3,"Down in the Valley",8,sc8Leads);
-        Scene scene9 = new Scene(4,3,"Buffalo Bill: The Lost Years",9,sc9Leads);
-        Scene scene10 = new Scene(4,3,"Ol' Shooter and Little Doll",10,sc10Leads);
-        Scene scene11 = new Scene(4,3,"The Robber of Trains",11,sc11Leads);
-        Scene scene12 = new Scene(5,3,"Jesse James: Man of Action",12,sc12Leads);
-        Scene scene13 = new Scene(2,1,"Beyond the Pail: Life without Lactose",13,sc13Leads);
-        Scene scene14 = new Scene(5,3,"Disaster at Flying J",14,sc14Leads);
-        Scene scene15 = new Scene(3,2,"A Man Called Cow",15,sc15Leads);
-        Scene scene16 = new Scene(3,3,"Shakespeare in Lubbock",16,sc16Leads);
-        Scene scene17 = new Scene(2,2,"Taffy Commercial",17,sc17Leads);
-        Scene scene18 = new Scene(3,2,"Go West, You!",18,sc18Leads);
-        Scene scene19 = new Scene(2,2,"Gum Commercial",19,sc19Leads);
-        Scene scene20 = new Scene(5,3,"The Life and Times of John Skywater",20,sc20Leads);
-        Scene scene21 = new Scene(6,3,"Gun! The Musical",21,sc21Leads);
-        Scene scene22 = new Scene(6,3,"One false Step for Mankind",22,sc22Leads);
-        Scene scene23 = new Scene(5,3,"Humor at the Expense of Others",23,sc23Leads);
-        Scene scene24 = new Scene(5,3,"Thirteen the Hard Way",24,sc24Leads);
-        Scene scene25 = new Scene(6,2,"The Search for Maggie White",25,sc25Leads);
-        Scene scene26 = new Scene(4,3,"How They Get Milk",26,sc26Leads);
-        Scene scene27 = new Scene(2,2,"Picante Sauce Commercial",27,sc27Leads);
-        Scene scene28 = new Scene(5,3,"My Years on the Prairie",28,sc28Leads);
-        Scene scene29 = new Scene(5,3,"Jesse James: Man of Action",29,sc29Leads);
-        Scene scene30 = new Scene(4,3,"Davy Crockett: A Drunkard's Tale",30,sc30Leads);
-        Scene scene31 = new Scene(4,2,"Czechs in the Sonora",31,sc31Leads);
-        Scene scene32 = new Scene(4,3,"J. Robert Lucky, Man of Substance",32,sc32Leads);
-        Scene scene33 = new Scene(6,3,"Swing 'em Wide'",33,sc33Leads);
-        Scene scene34 = new Scene(5,3,"Thirteen the Hard Way",34,sc34Leads);
+      // UNCOMMENT THIS WHEN Leads IS COMPLETE
+      private static List<Scene> populateSceneList() {
+
+        Lead sc1L1 = new Lead(2,"Defrocked Priest", "Look out below!");
+        Lead sc1L2 = new Lead(3,"Marshal Canfield", "Hold fast!");
+        Lead sc1L3 = new Lead(4,"One-Eyed Man", "Balderdash!");
+
+        Lead sc2L1 = new Lead(2,"Squeaking Boy", "I'll say!");
+        Lead sc2L2 = new Lead(4,"Pharaoh Imhotep", "Attack, soldiers!");
+        Lead sc2L3 = new Lead(6,"Aunt Martha", "You got nothin!");
+
+        Lead sc3L1 = new Lead(1,"Rug Merchant", "Don't leave my store!");
+        Lead sc3L2 = new Lead(2,"Banker", "Trust me.");
+        Lead sc3L3 = new Lead(5,"Talking Mule", "Nice work, Johnny!");
+
+        Lead sc4L1 = new Lead(4,"The Duck", "Waaaak!");
+        Lead sc4L2 = new Lead(6,"His Brother", "Waaaaaaak!");
+
+        Lead sc5L1 = new Lead(5,"Auctioneer", "Going once!");
+        Lead sc5L2 = new Lead(6,"General Custer", "Go West!");
+
+        Lead sc6L1 = new Lead(2,"Town Drunk", "Even me!");
+        Lead sc6L2 = new Lead(4,"Squinting Miner", "Sure we can!");
+        Lead sc6L3 = new Lead(5,"Poltergeist", "Wooooo!");
+
+        Lead sc7L1 = new Lead(3,"Drunk", "Where's Willard?");
+        Lead sc7L2 = new Lead(4,"Librarian", "Shhhhh!");
+        Lead sc7L3 = new Lead(6,"Man with Hay", "Hey!");
+
+        Lead sc8L1 = new Lead(1,"Angry Barber", "Hold him still!");
+        Lead sc8L2 = new Lead(3,"Woman with Board", "Nonsense, Frank!");
+        Lead sc8L3 = new Lead(5,"Man on Fire", "It burns!");
+
+        Lead sc9L1 = new Lead(2,"Hollering Boy", "Over here, mister!");
+        Lead sc9L2 = new Lead(3,"Drunk Farmer", "Git outta my barn!");
+        Lead sc9L3 = new Lead(5,"Meek Little Sarah", "He's so cute!");
+
+        Lead sc10L1 = new Lead(1,"Sleeping Man", "Snnkkk snnkk snnkk");
+        Lead sc10L2 = new Lead(2,"Man with Pig", "Tally-Hooo!");
+        Lead sc10L3 = new Lead(4,"Shooter", "Where's my britches?");
+
+        Lead sc11L1 = new Lead(1,"Buster", "One two three go!");
+        Lead sc11L2 = new Lead(4,"Man Reading Paper", "Ouchie!");
+        Lead sc11L3 = new Lead(5,"Fate Pete", "Nice kick, boss!");
+
+        Lead sc12L1 = new Lead(2,"Shot in Back", "Arrrggh!");
+        Lead sc12L2 = new Lead(4,"Shot in Leg", "Ooh, lordy!");
+        Lead sc12L3 = new Lead(5,"Leaps into Cake", "Dangit, Jesse!");
+
+        Lead sc13L1 = new Lead(6,"Martin", "Have you tried soy cheese?");
+
+        Lead sc14L1 = new Lead(2,"Piano Player", "It's a nocturne!");
+        Lead sc14L2 = new Lead(3,"Man in Turban", "My stars!");
+        Lead sc14L3 = new Lead(4,"Falls on Hoe", "Ow!");
+
+        Lead sc15L1 = new Lead(3,"Preacher", "My word!");
+        Lead sc15L2 = new Lead(6,"Amused Witness", "Tee hee hee!");
+
+        Lead sc16L1 = new Lead(1,"Falls from Tree", "What ho!");
+        Lead sc16L2 = new Lead(3,"Laughing Woman", "Tis to laugh!");
+        Lead sc16L3 = new Lead(4,"Man with Whistle", "Tweeeeet!");
+
+        Lead sc17L1 = new Lead(3,"Curious Girl", "Are you sure?");
+        Lead sc17L2 = new Lead(4,"Ghost of Plato", "It happened to me!");
+
+        Lead sc18L1 = new Lead(4,"Ex-Convict", "Never again!");
+        Lead sc18L2 = new Lead(6,"Man with Onion", "Fresh onions!");
+
+        Lead sc19L1 = new Lead(2,"Suprised Bison", "Mmrrrrrph!");
+        Lead sc19L2 = new Lead(4,"Man with Horn", "Ta daaaa!");
+
+        Lead sc20L1 = new Lead(3,"Staggering Man", "You never know!");
+        Lead sc20L2 = new Lead(5,"Woman with Beer", "Howdy, stranger!");
+        Lead sc20L3 = new Lead(6,"Marcie", "Welcome home!");
+
+        Lead sc21L1 = new Lead(4,"Looks like Elvis", "Thankyouverymuch");
+        Lead sc21L2 = new Lead(5,"Singing Dead Man", "Yeah!");
+        Lead sc21L3 = new Lead(6,"Apothecary", "Such drugs I have.");
+
+        Lead sc22L1 = new Lead(1,"Flustered Man", "Well, I never!");
+        Lead sc22L2 = new Lead(2,"Space Monkey", "Ook!");
+        Lead sc22L3 = new Lead(5,"Cowbot Dan", "Bzzzzzt!");
+
+        Lead sc23L1 = new Lead(2,"Jailer", "You there!");
+        Lead sc23L2 = new Lead(4,"Mephistopheles", "Be not afraid!");
+        Lead sc23L3 = new Lead(5,"Breaks a Window", "Oops!");
+
+        Lead sc24L1 = new Lead(1,"Man in Poncho", "Howdy, Jones!");
+        Lead sc24L2 = new Lead(3,"Ecstatic Housewife", "This is fine!");
+        Lead sc24L3 = new Lead(5,"Isaac", "The mail!");
+
+        Lead sc25L1 = new Lead(5,"Film Critic", "Implausible!");
+        Lead sc25L2 = new Lead(6,"Hobo with Bat", "Nice house!");
+
+        Lead sc26L1 = new Lead(2,"Cow", "Moo.");
+        Lead sc26L2 = new Lead(3,"St. Clement of Alexandria", "Peace be with you, child!");
+        Lead sc26L3 = new Lead(4,"Josie", "Yikes!");
+
+        Lead sc27L1 = new Lead(3,"Bewhisker'd Cowpoke", "Oh, sweet Lord!");
+        Lead sc27L2 = new Lead(5,"Dog", "Wurf!");
+
+        Lead sc28L1 = new Lead(2,"Willard", "Ain't that a sight?");
+        Lead sc28L2 = new Lead(3,"Leprechaun", "Begorrah!");
+        Lead sc28L3 = new Lead(5,"Startled Ox", "Mrr?");
+
+        Lead sc29L1 = new Lead(1,"Shot in Head", "Arrrgh!");
+        Lead sc29L2 = new Lead(4,"Leaps Out of Cake", "Oh, for Pete's sake!");
+        Lead sc29L3 = new Lead(6,"Shot Three Times", "Ow! Ow! Ow!");
+
+        Lead sc30L1 = new Lead(2,"Voice of God", "Grab hold, son!");
+        Lead sc30L2 = new Lead(3,"Hands of God", "!");
+        Lead sc30L3 = new Lead(4,"Jack Kemp", "America!");
+
+        Lead sc31L1 = new Lead(5,"Opice (Monkey)", "Ukk! (Ook)!");
+        Lead sc31L2 = new Lead(6,"Man with Gun", "Hold it right there!");
+
+        Lead sc32L1 = new Lead(1,"Man with Rope", "Look out below!");
+        Lead sc32L2 = new Lead(2,"Svetlana", "Says who?");
+        Lead sc32L3 = new Lead(5,"Accidental Victim", "Ow! My spine!");
+
+        Lead sc33L1 = new Lead(1,"Thrifty Mike", "Call!");
+        Lead sc33L2 = new Lead(3,"Sober Physician", "Raise!");
+        Lead sc33L3 = new Lead(5,"Man on Floor", "Fold!");
+
+        Lead sc34L1 = new Lead(2,"Very Wet Man", "Sheesh!");
+        Lead sc34L2 = new Lead(4,"Dejected Housewife", "Its time had come.");
+        Lead sc34L3 = new Lead(5,"Man with Box", "Progress!");
+
+        Lead sc35L1 = new Lead(3,"Liberated Nun", "Let me have it!");
+        Lead sc35L2 = new Lead(5,"Witch Doctor", "Oogie Boogie!");
+        Lead sc35L3 = new Lead(6,"Voice of Reason", "Come on, now!");
+
+        Lead sc36L1 = new Lead(4,"Marksman", "Pull!");
+        Lead sc36L2 = new Lead(5,"Postal Worker", "It's about time!");
+        Lead sc36L3 = new Lead(6,"A Horse", "Yes Sir!");
+
+        Lead sc37L1 = new Lead(2,"Burning Man", "Make it stop!");
+        Lead sc37L2 = new Lead(4,"Cheese Vendor", "Opa!");
+        Lead sc37L3 = new Lead(5,"Hit with Table", "Ow! A table?");
+
+        Lead sc38L1 = new Lead(2,"Fraternity Pledge", "Beer me!");
+        Lead sc38L2 = new Lead(6,"Man with Sword", "None shall pass!");
+
+        Lead sc39L1 = new Lead(3,"Detective", "I have a hunch.");
+        Lead sc39L2 = new Lead(4,"File Clerk", "My stapler!");
+        Lead sc39L3 = new Lead(5,"Cindy Lou", "Dear Lord!");
+
+        Lead sc40L1 = new Lead(2,"Farmer", "Git off a that!");
+        Lead sc40L2 = new Lead(4,"Exploding Horse", "Boom!");
+        Lead sc40L3 = new Lead(6,"Jack", "Here we go again!");
+
+        List<Lead> sc1Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc2Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc3Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc4Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc5Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Lead> sc6Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc7Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc8Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc9Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc10Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc11Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc12Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc13Leads = Arrays.asList(sc1L1);
+        List<Lead> sc14Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc15Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Lead> sc16Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc17Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Lead> sc18Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Lead> sc19Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Lead> sc20Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc21Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc22Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc23Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc24Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc25Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Lead> sc26Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc27Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Lead> sc28Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc29Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc30Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc31Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Lead> sc32Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc33Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc34Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc35Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc36Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc37Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc38Leads = Arrays.asList(sc1L1, sc1L2);
+        List<Lead> sc39Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+        List<Lead> sc40Leads = Arrays.asList(sc1L1, sc1L2, sc1L3);
+
+        Scene scene1 = new Scene(4,3,"Evil Wears a Hat",7,sc1Leads);
+        Scene scene2 = new Scene(6,3,"Square Deal City",14,sc2Leads);
+        Scene scene3 = new Scene(3,3,"Law and the Old West",20,sc3Leads);
+        Scene scene4 = new Scene(4,2,"Davy Crockett: A Drunkard's Tale",31,sc4Leads);
+        Scene scene5 = new Scene(5,2,"The Life and Times of John Skywater",22,sc5Leads);
+        Scene scene6 = new Scene(4,3,"The Way the West was Run",34,sc6Leads);
+        Scene scene7 = new Scene(5,3,"My Years on the Prairie",32,sc7Leads);
+        Scene scene8 = new Scene(3,3,"Down in the Valley",24,sc8Leads);
+        Scene scene9 = new Scene(4,3,"Buffalo Bill: The Lost Years",12,sc9Leads);
+        Scene scene10 = new Scene(4,3,"Ol' Shooter and Little Doll",14,sc10Leads);
+        Scene scene11 = new Scene(4,3,"The Robber of Trains",19,sc11Leads);
+        Scene scene12 = new Scene(5,3,"Jesse James: Man of Action",8,sc12Leads);
+        Scene scene13 = new Scene(2,1,"Beyond the Pail: Life without Lactose",12,sc13Leads);
+        Scene scene14 = new Scene(5,3,"Disaster at Flying J",6,sc14Leads);
+        Scene scene15 = new Scene(3,2,"A Man Called Cow",16,sc15Leads);
+        Scene scene16 = new Scene(3,3,"Shakespeare in Lubbock",23,sc16Leads);
+        Scene scene17 = new Scene(2,2,"Taffy Commercial",2,sc17Leads);
+        Scene scene18 = new Scene(3,2,"Go West, You!",30,sc18Leads);
+        Scene scene19 = new Scene(2,2,"Gum Commercial",3,sc19Leads);
+        Scene scene20 = new Scene(5,3,"The Life and Times of John Skywater",15,sc20Leads);
+        Scene scene21 = new Scene(6,3,"Gun! The Musical",25,sc21Leads);
+        Scene scene22 = new Scene(6,3,"One false Step for Mankind",21,sc22Leads);
+        Scene scene23 = new Scene(5,3,"Humor at the Expense of Others",16,sc23Leads);
+        Scene scene24 = new Scene(5,3,"Thirteen the Hard Way",15,sc24Leads);
+        Scene scene25 = new Scene(6,2,"The Search for Maggie White",12,sc25Leads);
+        Scene scene26 = new Scene(4,3,"How They Get Milk",2,sc26Leads);
+        Scene scene27 = new Scene(2,2,"Picante Sauce Commercial",1,sc27Leads);
+        Scene scene28 = new Scene(5,3,"My Years on the Prairie",27,sc28Leads);
+        Scene scene29 = new Scene(5,3,"Jesse James: Man of Action",14,sc29Leads);
+        Scene scene30 = new Scene(4,3,"Davy Crockett: A Drunkard's Tale",12,sc30Leads);
+        Scene scene31 = new Scene(4,2,"Czechs in the Sonora",25,sc31Leads);
+        Scene scene32 = new Scene(4,3,"J. Robert Lucky, Man of Substance",13,sc32Leads);
+        Scene scene33 = new Scene(6,3,"Swing 'em Wide'",19,sc33Leads);
+        Scene scene34 = new Scene(5,3,"Thirteen the Hard Way",17,sc34Leads);
         Scene scene35 = new Scene(6,3,"Swing 'em Wide'",35,sc35Leads);
-        Scene scene36 = new Scene(4,3,"How They Get Milk",36,sc36Leads);
-        Scene scene37 = new Scene(4,3,"Trials of te First Pioneers",37,sc37Leads);
-        Scene scene38 = new Scene(3,2,"Breakin' in Trick Ponies",38,sc38Leads);
-        Scene scene39 = new Scene(5,3,"How the Grinch Stole Texas",39,sc39Leads);
+        Scene scene36 = new Scene(4,3,"How They Get Milk",8,sc36Leads);
+        Scene scene37 = new Scene(4,3,"Trials of te First Pioneers",5,sc37Leads);
+        Scene scene38 = new Scene(3,2,"Breakin' in Trick Ponies",19,sc38Leads);
+        Scene scene39 = new Scene(5,3,"How the Grinch Stole Texas",9,sc39Leads);
         Scene scene40 = new Scene(5,3,"Custer's Other Stands",40,sc40Leads);
-    } */
+
+        List<Scene> sceneList = new ArrayList<Scene>();
+
+        sceneList.add(scene1);
+        sceneList.add(scene2);
+        sceneList.add(scene3);
+        sceneList.add(scene4);
+        sceneList.add(scene5);
+        sceneList.add(scene6);
+        sceneList.add(scene7);
+        sceneList.add(scene8);
+        sceneList.add(scene9);
+        sceneList.add(scene10);
+        sceneList.add(scene11);
+        sceneList.add(scene12);
+        sceneList.add(scene13);
+        sceneList.add(scene14);
+        sceneList.add(scene15);
+        sceneList.add(scene16);
+        sceneList.add(scene17);
+        sceneList.add(scene18);
+        sceneList.add(scene19);
+        sceneList.add(scene20);
+        sceneList.add(scene21);
+        sceneList.add(scene22);
+        sceneList.add(scene23);
+        sceneList.add(scene24);
+        sceneList.add(scene25);
+        sceneList.add(scene26);
+        sceneList.add(scene27);
+        sceneList.add(scene28);
+        sceneList.add(scene29);
+        sceneList.add(scene30);
+        sceneList.add(scene31);
+        sceneList.add(scene32);
+        sceneList.add(scene33);
+        sceneList.add(scene34);
+        sceneList.add(scene35);
+        sceneList.add(scene36);
+        sceneList.add(scene37);
+        sceneList.add(scene38);
+        sceneList.add(scene39);
+        sceneList.add(scene40);
+
+        return sceneList;
+    }
 
     }
 

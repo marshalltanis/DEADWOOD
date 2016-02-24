@@ -1,0 +1,9 @@
+Task List
+
+1) Make init class Acting Sets complete with Scenes, Players, Dice, Extras, Leads
+2) Check Adj List in move func
+3) Gameplay 
+4) Finish Reward
+5) Get/Set Shots Left in Acting Set
+6) Commands 
+7) Make sure variable names make sense
