@@ -1136,7 +1136,7 @@ public static int activeScenes = 10;
             isSceneDone(p);
             return;
         }
-        else if(cmd.substring(0,4).equals("move")){
+        else if((cmd.length() > 4) && (cmd.substring(0,4).equals("move"))){
             ActingSet room = list.get(cmd.substring(5));
             if(room == null && (!(cmd.substring(5).equals( "Casting Office")) && !(cmd.substring(5).equals("Trailer")))){
                 if(room == null){
@@ -1163,7 +1163,7 @@ public static int activeScenes = 10;
                 }
             }
         }
-        else if(cmd.substring(0,4).equals("work")){
+        else if((cmd.length() > 4) && (cmd.substring(0,4).equals("work"))){
             Lead isLead = null;//= findLead(cmd.substring(5),p.getActingSet().getScene().getLeadList());
             Extra isExtra = findExtra(cmd.substring(5),extrasList.get(p.getActingSet().getName()));
             if(isLead == null){
@@ -1186,14 +1186,14 @@ public static int activeScenes = 10;
                 System.out.print("Player " + p.getId() + " has taken the Lead role of " + p.getLeadRole() + ".\n");
             }
         }
-        else if(cmd.substring(0,7).equals("upgrade")){
-            if(cmd.substring(8,9).equals("$")){
+        else if((cmd.length() > 7) && (cmd.substring(0,7).equals("upgrade"))){
+            if((cmd.length() > 9) && (cmd.substring(8,9).equals("$"))){
                 if(p.getLocal().equals("Casting Office")){
                     int dollars = Integer.parseInt(cmd.substring(10));
                     office.upgrade_wDollars(p,dollars);
                 }
             }
-            else if(cmd.substring(8,10).equals("cr")){
+            else if((cmd.length() > 10) && (cmd.substring(8,10).equals("cr"))){
                 if(p.getLocal().equals("Casting Office")){
                     int credits = Integer.parseInt(cmd.substring(11));
                     office.upgrade_wCreds(p,credits);
@@ -1201,7 +1201,7 @@ public static int activeScenes = 10;
             }
         }
         else{
-            System.out.print("That was not a valid command. Please read the README with any questions");
+            System.out.print("That was not a valid command. Please read the README with any questions\n");
             return;
         }
 
