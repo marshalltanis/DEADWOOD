@@ -322,7 +322,7 @@ public static int activeScenes = 10;
         this.numelems = scenesList.size();
     }
 
-    public void newDay () {
+    public boolean newDay () {
       /* Reset all  roles to false for players
         remove scenes from Sets list
         Choose new Scenes for Sets
@@ -332,6 +332,7 @@ public static int activeScenes = 10;
         dayNum++;
         if(dayNum > lastDay) {
             System.out.println("Game Over");
+            return true;
         } else {
 
             //Resetting all roles to false for players
@@ -344,26 +345,23 @@ public static int activeScenes = 10;
                 set.resetShots();
             }
 
-            for (int i=0;i<setsList.size();i++) {
+            for (ActingSet set : setsList.values()) {
                 Random rand = new Random();
-                String sceneName = "dynamite";
                 int random = rand.nextInt(numelems);
-                for(int j = 0; j < scenesList.size(); j ++){
-                    if(scenesList.get(j).getId() == random){
-                        sceneName = scenesList.get(j).getName();
-                    }
-                }
+                Scene scene = scenesList.get(random);
+                String sceneName = scene.getName();
+
                 if(sceneName == null){
                     System.out.print("Could not start new day");
                 }
-                Scene scene = scenesList.get(random);
                 scenesList.remove(random);
                 numelems--;
 
-                setsList.get(sceneName).setScene(scene);
-
+                //System.out.println(set.getName());
+                set.setScene(scene);
             }
         }
+        return false;
     }
   }
 
@@ -684,6 +682,7 @@ public static int activeScenes = 10;
        Scanner console = new Scanner(System.in);
        List<Scene> sceneList = populateSceneList();
        List<Player> playersList = new ArrayList<Player>();
+       Day day;
 
        Dice officialDice = Dice.getDice();
        board.init();
@@ -713,10 +712,10 @@ public static int activeScenes = 10;
 
         //intialize Day:
         if (playernum < 4) {
-            Day day = new Day(sceneList, playersList, 3);
+            day = new Day(sceneList, playersList, 3);
             day.newDay();
         } else {
-            Day day = new Day(sceneList, playersList);
+            day = new Day(sceneList, playersList);
             day.newDay();
         }
 
@@ -728,27 +727,31 @@ public static int activeScenes = 10;
 
        //Actual Gameplay:
 
-       Extra l1 = new Extra(1, "Prospector");
-       Lead l2 = new Lead(1, "Miner", "Boom Pow");
-       List<Lead> leads = new ArrayList<Lead>();
-       List<Extra> extras = new ArrayList<Extra>();
-       leads.add(l2);
-       extras.add(l1);
+       //Extra l1 = new Extra(1, "Prospector");
+       //Lead l2 = new Lead(1, "Miner", "Boom Pow");
+       //List<Lead> leads = new ArrayList<Lead>();
+       //List<Extra> extras = new ArrayList<Extra>();
+       //leads.add(l2);
+       //extras.add(l1);
        CastingOffice office = new CastingOffice(adjacencyList);
-       Scene curr = new Scene(4,3, "Wild West",20, leads);
+       //Scene curr = new Scene(4,3, "Wild West",20, leads);
        //ActingSet here = new ActingSet("Salooon", 3, 3, curr, extras, adjacencyList);
-       Player p1 = new Player(officialDice,1);
-       Player p2 = new Player(officialDice,2);
+       //Player p1 = new Player(officialDice,1);
+       //Player p2 = new Player(officialDice,2);
        //ActingSet []list = {here};
        Trailer trailer = new Trailer();
-       p1.setDollars(4);
-       while(true){
-        turn(p1, actingSetList, office, trailer);
-        boolean dayDone = isDayDone();
-        if(dayDone){
-            return;
-        }
-        turn(p2, actingSetList, office, trailer);
+       //p1.setDollars(4);
+
+
+       //Actual Gameplay:
+        while(true){
+            for (int i=0;i<playernum;i++) {
+                turn(playersList.get(i), actingSetList, office, trailer);
+                boolean dayDone = isDayDone();
+                if(dayDone) {
+                    boolean isGameDone = day.newDay();
+                }
+            }
         }
        
     }
@@ -797,8 +800,7 @@ public static int activeScenes = 10;
         return null;
     }
 
-    // UNCOMMENT THIS WHEN Leads IS COMPLETE
-      private static List<Scene> populateSceneList() {
+    private static List<Scene> populateSceneList() {
 
         Lead sc1L1 = new Lead(2,"Defrocked Priest", "Look out below!");
         Lead sc1L2 = new Lead(3,"Marshal Canfield", "Hold fast!");
