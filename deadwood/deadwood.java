@@ -27,6 +27,8 @@ public static int activeScenes = 10;
     private int rank = 1;
     private int score = 0;
     private boolean role = false;
+    private boolean haveMoved = false;
+    private boolean haveActed = false;
     private Lead actRole;
     private Extra extraRole;
     private boolean actSuccessful;
@@ -72,6 +74,7 @@ public static int activeScenes = 10;
         String area = local;
         return area;
     }
+
     public void setActSuccesful(){
         this.actSuccessful = false;
     }
@@ -111,18 +114,26 @@ public static int activeScenes = 10;
         actRole = null;
     }
 
-    public boolean act(){
-      int getRoll = dice.roll();
-      System.out.print(getRoll + "\n");
-      int budget = location.getScene().getBudget();   //Identify which scene based on the players position
-      if(getRoll >= budget - rehearseCount){
-        actSuccessful = true;
-        return actSuccessful;
-      }
-      else{
-        actSuccessful = false;
-        return actSuccessful;
-      }
+    public void resetTurn() {
+        haveActed = false;
+        haveMoved = false;
+    }
+
+    public void act(){
+        if (this.haveActed==false) {
+              int getRoll = dice.roll();
+              System.out.print(getRoll + "\n");
+              int budget = location.getScene().getBudget();   //Identify which scene based on the players position
+              this.haveActed = true;
+              if(getRoll >= budget - rehearseCount){
+                this.actSuccessful = true;
+              }
+              else{
+                this.actSuccessful = false;
+              }
+        } else {
+            System.out.println("Too tired to act, need to wait till next turn.");
+        }
     }
     public void takeLeadRole(Lead roll){
       if(role == false && rank >= roll.getRank()){
@@ -144,15 +155,31 @@ public static int activeScenes = 10;
     }
     public void move(ActingSet location){
       /* If location is in adjacent set, move, else choose a different room */
-        this.location = location;
+        if (this.haveMoved == false) {
+            this.location = location;
+            this.local = location.getName();
+            this.haveMoved = true;
+        } else {
+            System.out.println("Already moved, need to wait till next turn to move again.");
+        }
     }
     public void move(CastingOffice office){
-        this.local = "Casting Office";
-        this.location = null;
+        if (this.haveMoved == false) {
+            this.local = "Casting Office";
+            this.location = null;
+            this.haveMoved = true;
+        } else {
+            System.out.println("Already moved, need to wait till next turn to move again.");
+        }
     }
     public void move(Trailer trailer){
-        this.local = "Trailer";
-        this.location = null;
+        if (this.haveMoved == false) {
+            this.local = "Trailer";
+            this.location = null;
+            this.haveMoved = true;
+        } else {
+            System.out.println("Already moved, need to wait till next turn to move again.");
+        }
     }
     /*public void rehearse(){
       this.rehearse ++;
@@ -160,8 +187,13 @@ public static int activeScenes = 10;
 
 
     public void rehearse(){
-      /*add 1 to rehearseCount */
-      this.rehearseCount ++;
+        /*add 1 to rehearseCount */
+        if (this.haveActed == true) {
+            this.rehearseCount ++;
+            this.haveActed = true;
+        } else {
+            System.out.println("Too tired to rehearse, need to wait till next turn.");
+        }
     }
 }
 
@@ -1099,7 +1131,7 @@ public static int activeScenes = 10;
         else if(cmd.equals("Where")){
             System.out.print("You are in the " + p.getLocal());
             if(p.getActingSet() != null){
-                System.out.print(" where " + p.getActingSet().getScene().getName() + ", " + "scene " + p.getActingSet().getScene().getName() +" is shooting.\n");
+                System.out.print(" where " + p.getActingSet().getScene().getName() + ", " + "scene " + p.getActingSet().getScene().getId() +" is shooting.\n");
             }
             else if(p.getLocal().equals("Casting Office")){
                 System.out.print(" where there is no scene that is ever worked on.\n");
@@ -1134,15 +1166,16 @@ public static int activeScenes = 10;
          else if(cmd.equals("end")){
             System.out.print("Player " + p.getId() + "'s turn is over... Please pass the computer to the next player.\n");
             isSceneDone(p);
+            p.resetTurn();
             return;
         }
         else if((cmd.length() > 4) && (cmd.substring(0,4).equals("move"))){
             ActingSet room = list.get(cmd.substring(5));
             if(room == null && (!(cmd.substring(5).equals( "Casting Office")) && !(cmd.substring(5).equals("Trailer")))){
-                if(room == null){
-                    System.out.println(list.get(cmd.substring(5)));
-                    System.out.println(cmd.substring(5));
-                }
+                // if(room == null){
+                //     System.out.println(list.get(cmd.substring(5)));
+                //     System.out.println(cmd.substring(5));
+                // }
                 System.out.println("The room you tried to move to was an invalid room");
                 return;
             }
@@ -1164,7 +1197,7 @@ public static int activeScenes = 10;
             }
         }
         else if((cmd.length() > 4) && (cmd.substring(0,4).equals("work"))){
-            Lead isLead = null;//= findLead(cmd.substring(5),p.getActingSet().getScene().getLeadList());
+            Lead isLead = findLead(cmd.substring(5),p.getActingSet().getScene().getLeadList());
             Extra isExtra = findExtra(cmd.substring(5),extrasList.get(p.getActingSet().getName()));
             if(isLead == null){
                 if(isExtra == null){
