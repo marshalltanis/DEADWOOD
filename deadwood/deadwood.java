@@ -2,7 +2,7 @@
  *
  * Deadwood
  *
- * Modified 2/19/2016
+ * Modified 2/23/2016
  */
 
 import java.util.*;
@@ -18,6 +18,8 @@ static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
 public static int activeScenes = 10;
 
 
+
+/* Player class */
   public static class Player{
     private Dice dice;
     private int id;
@@ -197,6 +199,7 @@ public static int activeScenes = 10;
     }
 }
 
+/* Dice class */
    public static class Dice{
         private Dice(){
         }
@@ -222,6 +225,7 @@ public static int activeScenes = 10;
     public abstract void reward(Player p);
   }
 
+/* Lead class */
   public static class Lead extends Role{
     private String roleName;
     private int rankReq;
@@ -252,6 +256,7 @@ public static int activeScenes = 10;
     }
   }
 
+/* Extra class */
   public static class Extra extends Role{
     // provide money and credit reward on Success, money only on failure:
     // shotsLeft for ActingSet is also decremented.
@@ -278,8 +283,6 @@ public static int activeScenes = 10;
       } else {
         p.setDollars(1);
       }
-      //ActingSet.setShotsLeft(ActingSet.getShotsLeft() - 1);
-
     }
   }
    public static class Scene{
@@ -315,20 +318,9 @@ public static int activeScenes = 10;
         return theLeadList;
     }
 
-
-
-
   }
 
-////////////////////////////////////////////////
-////////////////////////////////////////////////
-  // DAYDAYDAYDAYDAYDAYDAYDAYDAYDAYD //
-////////////////////////////////////////////////
-////////////////////////////////////////////////
-
-
-
-
+/* Day class */
   public static class Day{
     private int dayNum;
     private int lastDay;
@@ -336,7 +328,7 @@ public static int activeScenes = 10;
     private List<Scene> scenesList;
     private List<Player> playersList;
     private int numelems;
-    
+
 
     public Day (List<Scene> scenes, List<Player> players) {
         this.dayNum = 0;
@@ -398,7 +390,7 @@ public static int activeScenes = 10;
   }
 
 
-
+/* ActingSet class */
     public static class ActingSet {
         private String name;
         private int shots;
@@ -457,6 +449,7 @@ public static int activeScenes = 10;
 
     }
 
+/* CastingOffice */
     public static class CastingOffice {
 
         private Map<String,List<String>> adjacencyList;
@@ -575,12 +568,14 @@ public static int activeScenes = 10;
             }
         }
     }
+
+/* Trailer class */
     public static class Trailer{
         public Trailer(){
         }
     }
 
-
+/* Board class */
     public static class Board{
       public Board(){
 
@@ -684,7 +679,7 @@ public static int activeScenes = 10;
          ActingSet Jail = new ActingSet("Jail",1,1,null,extrasList.get("Jail"),adjacencyList.get("Jail"));
          ActingSet TrainStation = new ActingSet("Train Station",3,3,null,extrasList.get("Train Station"),adjacencyList.get("Train Station"));
          ActingSet GeneralStore = new ActingSet("General Store",2,2,null,extrasList.get("General Store"),adjacencyList.get("General Store"));
-         
+
          actingSetList.put("Main Street", MainStreet);
          actingSetList.put("Saloon", Saloon);
          actingSetList.put("Ranch", Ranch);
@@ -698,16 +693,12 @@ public static int activeScenes = 10;
       }
     }
 
-    //////////////////////////////////////////
-    ////MAINMAINMAIN /////////////////////////
-    //////////////////////////////////////////
 
 
+
+
+/* Main */
    public static void main(String[]arg){
-        //Create list of all Player objects to iterate through
-        //Create list of all Set objects to iterate through
-        //Create Deck of scene to choose from for ending days
-
 
         //initialization stuff:
        Board board = new Board();
@@ -723,7 +714,7 @@ public static int activeScenes = 10;
        int playernum = 0;
        while ((playernum < 1) || (playernum > 8)) {
             System.out.println("Enter a number of players between 2 and 8");
-            playernum = console.nextInt(); //error checking on this?
+            playernum = console.nextInt();
         }
 
         for (int i=0;i<playernum;i++) {
@@ -752,13 +743,6 @@ public static int activeScenes = 10;
         }
 
 
-
-
-
-
-
-       //Actual Gameplay:
-
        //Extra l1 = new Extra(1, "Prospector");
        //Lead l2 = new Lead(1, "Miner", "Boom Pow");
        //List<Lead> leads = new ArrayList<Lead>();
@@ -785,9 +769,9 @@ public static int activeScenes = 10;
                 }
             }
         }
-       
+
     }
-    
+
     private static void isSceneDone(Player p){
         if(p.getActingSet().getShotsLeft() == 0){
             activeScenes --;
@@ -813,7 +797,7 @@ public static int activeScenes = 10;
             }
         }
     }
-    
+
 
     private static Lead findLead(String part, List<Lead> leadList){
         for(int i =0; i < leadList.size(); i ++){
@@ -831,6 +815,7 @@ public static int activeScenes = 10;
         }
         return null;
     }
+
 
     private static List<Scene> populateSceneList() {
 
@@ -1110,6 +1095,8 @@ public static int activeScenes = 10;
         return sceneList;
     }
 
+
+/* Commands Method */
     private static void CommandExec(Player p, String cmd, Map<String,ActingSet> list, CastingOffice office, Trailer trailer){
         if(cmd.equals("who")){
             System.out.print("\nPlayer " + p.getId() + " has $" + p.getDollars() + " and " + p.getCredits() + " credits ");
