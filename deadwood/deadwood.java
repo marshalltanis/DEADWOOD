@@ -30,24 +30,23 @@ public static int activeScenes = 10;
 public static Graphics g;
 private static JPanel wind = new JPanel();
 private JFrame frame = new JFrame(){
-<<<<<<< HEAD
-    Image background = ImageIO.read(new File("background.jpg"));
-    public void paint(Graphics g){
-        super.paint(g);
-        g.drawImage(background,0,0,this);
-    }
-    
-};
-  
-public deadwood() throws IOException{
-    frame.setSize(1280,720);
-    frame.setResizable(false);
-    frame.setTitle("Deadwood");
-=======
+
         Image background = ImageIO.read(new File("background.jpg"));
+        Image sceneCard = ImageIO.read(new File("DeadwoodCardBacks.jpg"));
+        Image sceneCardvert = ImageIO.read(new File("DeadwoodCardBacksvert.jpg"));
+        Image sceneCardvertRight = ImageIO.read(new File("DeadwoodCardBacksvertRight.jpg"));
         public void paint(Graphics g){
             super.paint(g);
             g.drawImage(background,0,0,this);
+            g.drawImage(sceneCard,1028,24,this);
+            g.drawImage(sceneCard,678,216,this);
+            g.drawImage(sceneCard,300,27,this);
+            g.drawImage(sceneCard,393,224,this);
+            g.drawImage(sceneCardvert,36,173,this);
+            g.drawImage(sceneCard,267,387,this);
+            g.drawImage(sceneCard,36,584,this);
+            g.drawImage(sceneCard,672,384,this);
+            g.drawImage(sceneCardvertRight,1122,388,this);
         }
     };
     
@@ -55,7 +54,6 @@ public deadwood() throws IOException{
         frame.setSize(1280,720);
         frame.setResizable(false);
         frame.setTitle("Deadwood");
->>>>>>> f1fdb3f583574ad6bf8c61fe56608221eeb346e5
         
     frame.setVisible(true);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
