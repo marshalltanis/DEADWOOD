@@ -1194,6 +1194,12 @@ private JFrame frame = new JFrame(){
             JOptionPane.showMessageDialog(null,"You are in the " + p.getLocal());
             if(p.getActingSet() != null){
                 JOptionPane.showMessageDialog(null," where " + p.getActingSet().getScene().getName() + ", " + "scene " + p.getActingSet().getScene().getId() +" is shooting.\n");
+                for(int i = 0; i < p.getActingSet().getScene().getLeadList().size(); i ++){
+                    JOptionPane.showMessageDialog(null, "Lead Role #" + (i + 1) + " is " + p.getActingSet().getScene().getLeadList().get(i).getName() + " and requires level " + p.getActingSet().getScene().getLeadList().get(i).getRank());
+                }
+                for(int i = 0; i < extrasList.get(p.getLocal()).size(); i ++){
+                    JOptionPane.showMessageDialog(null, "Extra Role #" + (i + 1) + " is " + extrasList.get(p.getLocal()).get(i).getName() + " and the level requirement is " + extrasList.get(p.getLocal()).get(i).getRank());
+                }
             }
             else if(p.getLocal().equals("Casting Office")){
                 JOptionPane.showMessageDialog(null," where there is no scene that is ever worked on.\n");
