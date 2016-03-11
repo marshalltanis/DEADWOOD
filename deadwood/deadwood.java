@@ -9,9 +9,16 @@
 
 import java.util.*;
 import java.lang.*;
+import java.io.*;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.*;
+import javax.imageio.ImageIO;
 
 
- public class deadwood{
+ public class deadwood extends JFrame{
 
 /* GLOBALS */
 static Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
@@ -19,8 +26,26 @@ static Map<String,List<Extra>> extrasList = new HashMap<String,List<Extra>>();
 static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
 public static int activeScenes = 10;
 
-
-
+private JPanel wind = new JPanel();
+private JFrame frame = new JFrame(){
+    Image background = ImageIO.read(new File("background.jpg"));
+    public void paint(Graphics g){
+        super.paint(g);
+        g.drawImage(background,0,0,this);
+    }
+    
+};
+    
+    public deadwood() throws IOException{
+        frame.setSize(1280,720);
+        frame.setResizable(false);
+        frame.setTitle("Deadwood");
+        
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+    
+}
 /* Player class */
   public static class Player{
     private Dice dice;
@@ -126,7 +151,7 @@ public static int activeScenes = 10;
     public void act(){
         if (this.haveActed==false) {
               int getRoll = dice.roll();
-              System.out.print(getRoll + "\n");
+              JOptionPane.showMessageDialog(null,getRoll + "\n");
               int budget = location.getScene().getBudget();   //Identify which scene based on the players position
               this.haveActed = true;
               if(getRoll >= budget - rehearseCount){
@@ -136,7 +161,7 @@ public static int activeScenes = 10;
                 this.actSuccessful = false;
               }
         } else {
-            System.out.println("Too tired to act, need to wait till next turn.");
+            JOptionPane.showMessageDialog(null,"Too tired to act, need to wait till next turn.");
         }
     }
     public void takeLeadRole(Lead roll){
@@ -145,7 +170,7 @@ public static int activeScenes = 10;
         actRole = roll;
       }
       else{
-        System.out.print("Invalid Action, not high enough level or you have a role currently\n");
+        JOptionPane.showMessageDialog(null,"Invalid Action, not high enough level or you have a role currently\n");
       }
     }
     public void takeExtraRole(Extra roll){
@@ -154,7 +179,7 @@ public static int activeScenes = 10;
         extraRole = roll;
       }
       else{
-        System.out.print("Invalid Action, not high enough level or you have a Role currently\n");
+        JOptionPane.showMessageDialog(null,"Invalid Action, not high enough level or you have a Role currently\n");
       }
     }
     public void move(ActingSet location){
@@ -164,7 +189,7 @@ public static int activeScenes = 10;
             this.local = location.getName();
             this.haveMoved = true;
         } else {
-            System.out.println("Already moved, need to wait till next turn to move again.");
+            JOptionPane.showMessageDialog(null,"Already moved, need to wait till next turn to move again.\n");
         }
     }
     public void move(CastingOffice office){
@@ -173,7 +198,7 @@ public static int activeScenes = 10;
             this.location = null;
             this.haveMoved = true;
         } else {
-            System.out.println("Already moved, need to wait till next turn to move again.");
+            JOptionPane.showMessageDialog(null,"Already moved, need to wait till next turn to move again.");
         }
     }
     public void move(Trailer trailer){
@@ -182,7 +207,7 @@ public static int activeScenes = 10;
             this.location = null;
             this.haveMoved = true;
         } else {
-            System.out.println("Already moved, need to wait till next turn to move again.");
+            JOptionPane.showMessageDialog(null,"Already moved, need to wait till next turn to move again.");
         }
     }
     /*public void rehearse(){
@@ -196,7 +221,7 @@ public static int activeScenes = 10;
             this.rehearseCount ++;
             this.haveActed = true;
         } else {
-            System.out.println("Too tired to rehearse, need to wait till next turn.");
+            JOptionPane.showMessageDialog(null,"Too tired to rehearse, need to wait till next turn.");
         }
     }
 }
@@ -357,7 +382,7 @@ public static int activeScenes = 10;
 
         dayNum++;
         if(dayNum > lastDay) {
-            System.out.println("Game Over");
+            JOptionPane.showMessageDialog(null,"Game Over");
             return true;
         } else {
 
@@ -378,7 +403,7 @@ public static int activeScenes = 10;
                 String sceneName = scene.getName();
 
                 if(sceneName == null){
-                    System.out.print("Could not start new day");
+                    JOptionPane.showMessageDialog(null,"Could not start new day");
                 }
                 scenesList.remove(random);
                 numelems--;
@@ -467,49 +492,49 @@ public static int activeScenes = 10;
                     if (p.getDollars() >= 4){
                         p.setDollars(-4);
                         p.setRank(2);
-                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
                     } else {
-                        System.out.println("Insufficient Dollars");
+                        JOptionPane.showMessageDialog(null,"Insufficient Dollars");
                     }
                     break;
                 case 10 :
                     if (p.getDollars() >= 10){
                         p.setDollars(-10);
                         p.setRank(3);
-                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
                     } else {
-                        System.out.println("Insufficient Dollars");
+                        JOptionPane.showMessageDialog(null,"Insufficient Dollars");
                     }
                     break;
                 case 18 :
                     if (p.getDollars() >= 18){
                         p.setDollars(-18);
                         p.setRank(4);
-                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
                     } else {
-                        System.out.println("Insufficient Dollars");
+                        JOptionPane.showMessageDialog(null,"Insufficient Dollars");
                     }
                     break;
                 case 28 :
                     if (p.getDollars() >= 28){
                         p.setDollars(-28);
                         p.setRank(5);
-                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
                     } else {
-                        System.out.println("Insufficient Dollars");
+                        JOptionPane.showMessageDialog(null,"Insufficient Dollars");
                     }
                     break;
                 case 40 :
                     if (p.getDollars() >= 40){
                         p.setDollars(-40);
                         p.setRank(6);
-                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getDollars() + " dollars.");
                     } else {
-                        System.out.println("Insufficient Dollars");
+                        JOptionPane.showMessageDialog(null,"Insufficient Dollars");
                     }
                     break;
                 default :
-                    System.out.println("Invalid dollar amount");
+                    JOptionPane.showMessageDialog(null,"Invalid dollar amount");
             }
         }
 
@@ -519,9 +544,9 @@ public static int activeScenes = 10;
                     if (p.getCredits() >= 5){
                         p.setCredits(-5);
                         p.setRank(2);
-                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
                     } else {
-                        System.out.println("Insufficient Credits");
+                        JOptionPane.showMessageDialog(null,"Insufficient Credits");
                     }
                     break;
 
@@ -529,9 +554,9 @@ public static int activeScenes = 10;
                     if (p.getCredits() >= 10){
                         p.setCredits(-10);
                         p.setRank(3);
-                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
                     } else {
-                        System.out.println("Insufficient Credits");
+                        JOptionPane.showMessageDialog(null,"Insufficient Credits");
                     }
                     break;
 
@@ -539,9 +564,9 @@ public static int activeScenes = 10;
                     if (p.getCredits() >= 15){
                         p.setCredits(-15);
                         p.setRank(4);
-                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
                     } else {
-                        System.out.println("Insufficient Credits");
+                        JOptionPane.showMessageDialog(null,"Insufficient Credits");
                     }
                     break;
 
@@ -549,9 +574,9 @@ public static int activeScenes = 10;
                     if (p.getCredits() >= 20){
                         p.setCredits(-20);
                         p.setRank(5);
-                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
                     } else {
-                        System.out.println("Insufficient Credits");
+                        JOptionPane.showMessageDialog(null,"Insufficient Credits");
                     }
                     break;
 
@@ -559,14 +584,14 @@ public static int activeScenes = 10;
                     if (p.getCredits() >= 25){
                         p.setCredits(-25);
                         p.setRank(6);
-                        System.out.println("Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " is now rank " + p.getRank() + " and has " + p.getCredits() + " credits.");
                     } else {
-                        System.out.println("Insufficient Credits");
+                        JOptionPane.showMessageDialog(null,"Insufficient Credits");
                     }
                     break;
 
                 default :
-                    System.out.println("Invalid credit amount");
+                    JOptionPane.showMessageDialog(null,"Invalid credit amount");
             }
         }
     }
@@ -697,11 +722,12 @@ public static int activeScenes = 10;
 
 
 /* Main */
-   public static void main(String[]arg){
+   public static void main(String[]arg) throws IOException{
 
         //initialization stuff:
 
 
+       new deadwood();
        Board board = new Board();
        Scanner console = new Scanner(System.in);
        List<Scene> sceneList = populateSceneList();
@@ -714,8 +740,8 @@ public static int activeScenes = 10;
        //get player input and intialize playersList
        int playernum = 0;
        while ((playernum < 1) || (playernum > 8)) {
-            System.out.println("Enter a number of players between 2 and 8");
-            playernum = console.nextInt();
+            String numPlayers = JOptionPane.showInputDialog("Enter a number of players between 2 and 8: ");
+            playernum = Integer.parseInt(numPlayers);
         }
 
         for (int i=0;i<playernum;i++) {
@@ -790,8 +816,8 @@ public static int activeScenes = 10;
         boolean stillATurn = true;
         Scanner console = new Scanner(System.in);
         while(stillATurn){
-            System.out.print("What is your command? : ");
-            String cmd = console.nextLine();
+            String cmd = JOptionPane.showInputDialog("What is your command? : ");
+            //String cmd = console.nextLine();
             CommandExec(p,cmd,list,office,trailer);
             if(cmd.equals("end")){
                 stillATurn = false;
@@ -1100,40 +1126,40 @@ public static int activeScenes = 10;
 /* Commands Method */
     private static void CommandExec(Player p, String cmd, Map<String,ActingSet> list, CastingOffice office, Trailer trailer){
         if(cmd.equals("who")){
-            System.out.print("\nPlayer " + p.getId() + " has $" + p.getDollars() + " and " + p.getCredits() + " credits ");
+            JOptionPane.showMessageDialog(null,"\nPlayer " + p.getId() + " has $" + p.getDollars() + " and " + p.getCredits() + " credits ");
             String name = p.getLeadRole();
             String name2 = p.getExtraRole();
             if(name != null){
-                System.out.print("and is working on " + name + ".\n");
+                JOptionPane.showMessageDialog(null,"and is working on " + name + ".\n");
             }
             else if(name2 != null){
-                System.out.print("and is working on " + name2 + ".\n");
+                JOptionPane.showMessageDialog(null,"and is working on " + name2 + ".\n");
             }
             else{
-                System.out.print("and is currently not working on a role.\n");
+                JOptionPane.showMessageDialog(null,"and is currently not working on a role.\n");
             }
         }
         else if(cmd.length() == 0){
             return;
         }
         else if(cmd.equals("Where")){
-            System.out.print("You are in the " + p.getLocal());
+            JOptionPane.showMessageDialog(null,"You are in the " + p.getLocal());
             if(p.getActingSet() != null){
-                System.out.print(" where " + p.getActingSet().getScene().getName() + ", " + "scene " + p.getActingSet().getScene().getId() +" is shooting.\n");
+                JOptionPane.showMessageDialog(null," where " + p.getActingSet().getScene().getName() + ", " + "scene " + p.getActingSet().getScene().getId() +" is shooting.\n");
             }
             else if(p.getLocal().equals("Casting Office")){
-                System.out.print(" where there is no scene that is ever worked on.\n");
+                JOptionPane.showMessageDialog(null," where there is no scene that is ever worked on.\n");
             }
             else if(p.getLocal().equals("Trailer")){
-                System.out.print(" where there is no scene ever shot.\n");
+                JOptionPane.showMessageDialog(null," where there is no scene ever shot.\n");
             }
             else{
-                System.out.print(" and you are not currently shooting a scene.\n");
+                JOptionPane.showMessageDialog(null," and you are not currently shooting a scene.\n");
             }
         }
         else if(cmd.equals("Rehearse")){
             p.rehearse();
-            System.out.print("Player " + p.getId() + " has rehearsed this turn.\n");
+            JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has rehearsed this turn.\n");
         }
         else if(cmd.equals("Act")){
             Lead LeadRole = findLead(p.getLeadRole(), p.getActingSet().getScene().getLeadList());
@@ -1141,18 +1167,18 @@ public static int activeScenes = 10;
             if(LeadRole != null){
                 p.act();
                 LeadRole.reward(p);
-                System.out.print("Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
+                JOptionPane.showMessageDialog(null,"Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
                 p.setActSuccesful();
             }
             else if(ExtraRole != null){
                 p.act();
                 ExtraRole.reward(p);
-                System.out.print("Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
+                JOptionPane.showMessageDialog(null,"Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
                 p.setActSuccesful();
             }
         }
          else if(cmd.equals("end")){
-            System.out.print("Player " + p.getId() + "'s turn is over... Please pass the computer to the next player.\n");
+            JOptionPane.showMessageDialog(null,"Player " + p.getId() + "'s turn is over... Please pass the computer to the next player.\n");
             isSceneDone(p);
             p.resetTurn();
             return;
@@ -1161,26 +1187,26 @@ public static int activeScenes = 10;
             ActingSet room = list.get(cmd.substring(5));
             if(room == null && (!(cmd.substring(5).equals( "Casting Office")) && !(cmd.substring(5).equals("Trailer")))){
                 // if(room == null){
-                //     System.out.println(list.get(cmd.substring(5)));
-                //     System.out.println(cmd.substring(5));
+                //     JOptionPane.showMessageDialog(list.get(cmd.substring(5)));
+                //     JOptionPane.showMessageDialog(cmd.substring(5));
                 // }
-                System.out.println("The room you tried to move to was an invalid room");
+                JOptionPane.showMessageDialog(null,"The room you tried to move to was an invalid room");
                 return;
             }
             else{
                 if(room == null){
                     if(cmd.substring(5).equals("Casting Office")){
                         p.move(office);
-                        System.out.print("Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
                     }
                     else{
                         p.move(trailer);
-                        System.out.print("Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
                     }
                 }
                 else{
                     p.move(room);
-                    System.out.print("Player " + p.getId() + " has moved to room " + p.getActingSet().getName() + ".\n");
+                    JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getActingSet().getName() + ".\n");
                 }
             }
         }
@@ -1189,24 +1215,24 @@ public static int activeScenes = 10;
             Extra isExtra = findExtra(cmd.substring(5),extrasList.get(p.getActingSet().getName()));
             if(isLead == null){
                 if(isExtra == null){
-                    //System.out.print(extrasList.get(p.getActingSet().getName()).get(0).getName());
-                    System.out.print("I'm sorry but that role doesn't exist...\n");
-                    System.out.println(p.getActingSet().getScene().getName());
-                    System.out.println(p.getActingSet().getScene().getLeadList().get(0).getName());
+                    //JOptionPane.showMessageDialog(extrasList.get(p.getActingSet().getName()).get(0).getName());
+                    JOptionPane.showMessageDialog(null,"I'm sorry but that role doesn't exist...\n");
+                    JOptionPane.showMessageDialog(null,p.getActingSet().getScene().getName());
+                    JOptionPane.showMessageDialog(null,p.getActingSet().getScene().getLeadList().get(0).getName());
                     return;
                 }
                 p.takeExtraRole(isExtra);
                 if(p.getExtraRole() == null){
                     return;
                 }
-                System.out.print("Player " + p.getId() + " has taken the Extra role of " + p.getExtraRole() + ".\n");
+                JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has taken the Extra role of " + p.getExtraRole() + ".\n");
             }
             else{
                 p.takeLeadRole(isLead);
                  if(p.getLeadRole() == null){
                     return;
                 }
-                System.out.print("Player " + p.getId() + " has taken the Lead role of " + p.getLeadRole() + ".\n");
+                JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has taken the Lead role of " + p.getLeadRole() + ".\n");
             }
         }
         else if((cmd.length() > 7) && (cmd.substring(0,7).equals("upgrade"))){
@@ -1224,7 +1250,7 @@ public static int activeScenes = 10;
             }
         }
         else{
-            System.out.print("That was not a valid command. Please read the README with any questions\n");
+            JOptionPane.showMessageDialog(null,"That was not a valid command. Please read the README with any questions\n");
             return;
         }
 
