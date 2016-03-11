@@ -25,16 +25,31 @@ import java.awt.Color;
 static Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
 static Map<String,List<Extra>> extrasList = new HashMap<String,List<Extra>>();
 static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
+
+static Image background;
+static Image sceneCard;
+static Image sceneCardvert;
+static Image sceneCardvertRight;
+
+static {
+    try {
+        background = ImageIO.read(new File("background.jpg"));
+        sceneCard = ImageIO.read(new File("DeadwoodCardBacks.jpg"));
+        sceneCardvert = ImageIO.read(new File("DeadwoodCardBacksvert.jpg"));
+        sceneCardvertRight = ImageIO.read(new File("DeadwoodCardBacksvertRight.jpg"));
+    }
+    catch(IOException ex){
+        System.out.println("IOException");
+        System.exit(0);
+    }
+}
+
 public static int activeScenes = 10;
 
 public static Graphics g;
 private static JPanel wind = new JPanel();
-private JFrame frame = new JFrame(){
-
-        Image background = ImageIO.read(new File("background.jpg"));
-        Image sceneCard = ImageIO.read(new File("DeadwoodCardBacks.jpg"));
-        Image sceneCardvert = ImageIO.read(new File("DeadwoodCardBacksvert.jpg"));
-        Image sceneCardvertRight = ImageIO.read(new File("DeadwoodCardBacksvertRight.jpg"));
+private static JFrame frame = new JFrame(){
+    
         public void paint(Graphics g){
             super.paint(g);
             g.drawImage(background,0,0,this);
@@ -60,7 +75,7 @@ private JFrame frame = new JFrame(){
 }
 
 //Image Panel:
-public class ImagePanel extends JPanel{
+/*public class ImagePanel extends JPanel{
     private BufferedImage image;
 
     public ImagePanel(String imgstr) {
@@ -75,8 +90,8 @@ public class ImagePanel extends JPanel{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(image, 0, 0, null); // see javadoc for more info on the parameters            
-    }
-}
+    } 
+} */
 
 /* Player class */
   public static class Player{
