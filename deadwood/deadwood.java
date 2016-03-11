@@ -29,9 +29,21 @@ public static Graphics g;
 private static JPanel wind = new JPanel();
 private JFrame frame = new JFrame(){
         Image background = ImageIO.read(new File("background.jpg"));
+        Image sceneCard = ImageIO.read(new File("DeadwoodCardBacks.jpg"));
+        Image sceneCardvert = ImageIO.read(new File("DeadwoodCardBacksvert.jpg"));
+        Image sceneCardvertRight = ImageIO.read(new File("DeadwoodCardBacksvertRight.jpg"));
         public void paint(Graphics g){
             super.paint(g);
             g.drawImage(background,0,0,this);
+            g.drawImage(sceneCard,1028,24,this);
+            g.drawImage(sceneCard,678,216,this);
+            g.drawImage(sceneCard,300,27,this);
+            g.drawImage(sceneCard,393,224,this);
+            g.drawImage(sceneCardvert,36,173,this);
+            g.drawImage(sceneCard,267,387,this);
+            g.drawImage(sceneCard,36,584,this);
+            g.drawImage(sceneCard,672,384,this);
+            g.drawImage(sceneCardvertRight,1122,388,this);
         }
     };
     
