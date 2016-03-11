@@ -35,17 +35,35 @@ private JFrame frame = new JFrame(){
     }
     
 };
-    
-    public deadwood() throws IOException{
-        frame.setSize(1280,720);
-        frame.setResizable(false);
-        frame.setTitle("Deadwood");
+  
+public deadwood() throws IOException{
+    frame.setSize(1280,720);
+    frame.setResizable(false);
+    frame.setTitle("Deadwood");
         
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-    
+    frame.setVisible(true);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
 }
+
+//Image Panel:
+public class ImagePanel extends JPanel{
+    private BufferedImage image;
+
+    public ImagePanel(String imgstr) {
+       try {                
+          image = ImageIO.read(new File(imgstr));
+       } catch (IOException ex) {
+            // handle exception...
+       }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(image, 0, 0, null); // see javadoc for more info on the parameters            
+    }
+}
+
 /* Player class */
   public static class Player{
     private Dice dice;
