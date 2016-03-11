@@ -25,11 +25,68 @@ import java.awt.Color;
 static Map<String,List<String>> adjacencyList = new HashMap<String,List<String>>();
 static Map<String,List<Extra>> extrasList = new HashMap<String,List<Extra>>();
 static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
+static Map<String, Image> playerImages = new HashMap<String, Image>();
 
 static Image background;
 static Image sceneCard;
 static Image sceneCardvert;
 static Image sceneCardvertRight;
+
+static Image player1rank1;
+static Image player1rank2;
+static Image player1rank3;
+static Image player1rank4;
+static Image player1rank5;
+static Image player1rank6;
+
+static Image player2rank1;
+static Image player2rank2;
+static Image player2rank3;
+static Image player2rank4;
+static Image player2rank5;
+static Image player2rank6;
+
+static Image player3rank1;
+static Image player3rank2;
+static Image player3rank3;
+static Image player3rank4;
+static Image player3rank5;
+static Image player3rank6;
+
+static Image player4rank1;
+static Image player4rank2;
+static Image player4rank3;
+static Image player4rank4;
+static Image player4rank5;
+static Image player4rank6;
+
+static Image player5rank1;
+static Image player5rank2;
+static Image player5rank3;
+static Image player5rank4;
+static Image player5rank5;
+static Image player5rank6;
+
+static Image player6rank1;
+static Image player6rank2;
+static Image player6rank3;
+static Image player6rank4;
+static Image player6rank5;
+static Image player6rank6;
+
+static Image player7rank1;
+static Image player7rank2;
+static Image player7rank3;
+static Image player7rank4;
+static Image player7rank5;
+static Image player7rank6;
+
+static Image player8rank1;
+static Image player8rank2;
+static Image player8rank3;
+static Image player8rank4;
+static Image player8rank5;
+static Image player8rank6;
 
 static {
     try {
@@ -37,6 +94,120 @@ static {
         sceneCard = ImageIO.read(new File("DeadwoodCardBacks.jpg"));
         sceneCardvert = ImageIO.read(new File("DeadwoodCardBacksvert.jpg"));
         sceneCardvertRight = ImageIO.read(new File("DeadwoodCardBacksvertRight.jpg"));
+
+        player1rank1 = ImageIO.read(new File("player1rank1dice.jpg"));
+        player1rank2 = ImageIO.read(new File("player1rank2dice.jpg"));
+        player1rank3 = ImageIO.read(new File("player1rank3dice.jpg"));
+        player1rank4 = ImageIO.read(new File("player1rank4dice.jpg"));
+        player1rank5 = ImageIO.read(new File("player1rank5dice.jpg"));
+        player1rank6 = ImageIO.read(new File("player1rank6dice.jpg"));
+
+        player2rank1 = ImageIO.read(new File("player2rank1dice.jpg"));
+        player2rank2 = ImageIO.read(new File("player2rank2dice.jpg"));
+        player2rank3 = ImageIO.read(new File("player2rank3dice.jpg"));
+        player2rank4 = ImageIO.read(new File("player2rank4dice.jpg"));
+        player2rank5 = ImageIO.read(new File("player2rank5dice.jpg"));
+        player2rank6 = ImageIO.read(new File("player2rank6dice.jpg"));
+
+        player3rank1 = ImageIO.read(new File("player3rank1dice.jpg"));
+        player3rank2 = ImageIO.read(new File("player3rank2dice.jpg"));
+        player3rank3 = ImageIO.read(new File("player3rank3dice.jpg"));
+        player3rank4 = ImageIO.read(new File("player3rank4dice.jpg"));
+        player3rank5 = ImageIO.read(new File("player3rank5dice.jpg"));
+        player3rank6 = ImageIO.read(new File("player3rank6dice.jpg"));
+
+        player4rank1 = ImageIO.read(new File("player4rank1dice.jpg"));
+        player4rank2 = ImageIO.read(new File("player4rank2dice.jpg"));
+        player4rank3 = ImageIO.read(new File("player4rank3dice.jpg"));
+        player4rank4 = ImageIO.read(new File("player4rank4dice.jpg"));
+        player4rank5 = ImageIO.read(new File("player4rank5dice.jpg"));
+        player4rank6 = ImageIO.read(new File("player4rank6dice.jpg"));
+
+        player5rank1 = ImageIO.read(new File("player5rank1dice.jpg"));
+        player5rank2 = ImageIO.read(new File("player5rank2dice.jpg"));
+        player5rank3 = ImageIO.read(new File("player5rank3dice.jpg"));
+        player5rank4 = ImageIO.read(new File("player5rank4dice.jpg"));
+        player5rank5 = ImageIO.read(new File("player5rank5dice.jpg"));
+        player5rank6 = ImageIO.read(new File("player5rank6dice.jpg"));
+
+        player6rank1 = ImageIO.read(new File("player6rank1dice.jpg"));
+        player6rank2 = ImageIO.read(new File("player6rank2dice.jpg"));
+        player6rank3 = ImageIO.read(new File("player6rank3dice.jpg"));
+        player6rank4 = ImageIO.read(new File("player6rank4dice.jpg"));
+        player6rank5 = ImageIO.read(new File("player6rank5dice.jpg"));
+        player6rank6 = ImageIO.read(new File("player6rank6dice.jpg"));
+
+        player7rank1 = ImageIO.read(new File("player7rank1dice.jpg"));
+        player7rank2 = ImageIO.read(new File("player7rank2dice.jpg"));
+        player7rank3 = ImageIO.read(new File("player7rank3dice.jpg"));
+        player7rank4 = ImageIO.read(new File("player7rank4dice.jpg"));
+        player7rank5 = ImageIO.read(new File("player7rank5dice.jpg"));
+        player7rank6 = ImageIO.read(new File("player7rank6dice.jpg"));
+
+        player8rank1 = ImageIO.read(new File("player8rank1dice.jpg"));
+        player8rank2 = ImageIO.read(new File("player8rank2dice.jpg"));
+        player8rank3 = ImageIO.read(new File("player8rank3dice.jpg"));
+        player8rank4 = ImageIO.read(new File("player8rank4dice.jpg"));
+        player8rank5 = ImageIO.read(new File("player8rank5dice.jpg"));
+        player8rank6 = ImageIO.read(new File("player8rank6dice.jpg"));
+
+        playerImages.put("player1rank1", player1rank1);
+        playerImages.put("player1rank2", player1rank2);
+        playerImages.put("player1rank3", player1rank3);
+        playerImages.put("player1rank4", player1rank4);
+        playerImages.put("player1rank5", player1rank5);
+        playerImages.put("player1rank6", player1rank6);
+
+        playerImages.put("player2rank1", player2rank1);
+        playerImages.put("player2rank2", player2rank2);
+        playerImages.put("player2rank3", player2rank3);
+        playerImages.put("player2rank4", player2rank4);
+        playerImages.put("player2rank5", player2rank5);
+        playerImages.put("player2rank6", player2rank6);
+
+        playerImages.put("player3rank1", player3rank1);
+        playerImages.put("player3rank2", player3rank2);
+        playerImages.put("player3rank3", player3rank3);
+        playerImages.put("player3rank4", player3rank4);
+        playerImages.put("player3rank5", player3rank5);
+        playerImages.put("player3rank6", player3rank6);
+
+        playerImages.put("player4rank1", player4rank1);
+        playerImages.put("player4rank2", player4rank2);
+        playerImages.put("player4rank3", player4rank3);
+        playerImages.put("player4rank4", player4rank4);
+        playerImages.put("player4rank5", player4rank5);
+        playerImages.put("player4rank6", player4rank6);
+
+        playerImages.put("player5rank1", player5rank1);
+        playerImages.put("player5rank2", player5rank2);
+        playerImages.put("player5rank3", player5rank3);
+        playerImages.put("player5rank4", player5rank4);
+        playerImages.put("player5rank5", player5rank5);
+        playerImages.put("player5rank6", player5rank6);
+
+        playerImages.put("player6rank1", player6rank1);
+        playerImages.put("player6rank2", player6rank2);
+        playerImages.put("player6rank3", player6rank3);
+        playerImages.put("player6rank4", player6rank4);
+        playerImages.put("player6rank5", player6rank5);
+        playerImages.put("player6rank6", player6rank6);
+
+        playerImages.put("player7rank1", player7rank1);
+        playerImages.put("player7rank2", player7rank2);
+        playerImages.put("player7rank3", player7rank3);
+        playerImages.put("player7rank4", player7rank4);
+        playerImages.put("player7rank5", player7rank5);
+        playerImages.put("player7rank6", player7rank6);
+
+        playerImages.put("player8rank1", player8rank1);
+        playerImages.put("player8rank2", player8rank2);
+        playerImages.put("player8rank3", player8rank3);
+        playerImages.put("player8rank4", player8rank4);
+        playerImages.put("player8rank5", player8rank5);
+        playerImages.put("player8rank6", player8rank6);
+
+
     }
     catch(IOException ex){
         System.out.println("IOException");
@@ -48,8 +219,8 @@ public static int activeScenes = 10;
 
 public static Graphics g;
 private static JPanel wind = new JPanel();
-private static JFrame frame = new JFrame(){
-    
+public static JFrame frame = new JFrame(){
+
         public void paint(Graphics g){
             super.paint(g);
             g.drawImage(background,0,0,this);
@@ -63,6 +234,21 @@ private static JFrame frame = new JFrame(){
             g.drawImage(sceneCard,672,384,this);
             g.drawImage(sceneCardvertRight,1122,388,this);
         }
+        public void initPlayerPositions(Graphics g, int playernum) {
+            for (int i=0;i<playernum;i++) {
+                g.drawImage(playerImages.get("player" + (i+1) + "rank" + 1),1028,24,this);
+            }  
+        }
+        public void setPlayerPositions(Graphics g, int playernum) {
+            super.paint(g);
+            g.drawImage(background,0,0,this);
+            for (int i=0;i<playernum;i++) {
+                g.drawImage(playerImages.get("player" + (i+1) + "rank" + 1),1028,24,this);
+            }  
+        }
+        public void flipScene(Graphics g) {
+
+        }
     };
     
     public deadwood() throws IOException{
@@ -74,24 +260,6 @@ private static JFrame frame = new JFrame(){
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
 }
 
-//Image Panel:
-/*public class ImagePanel extends JPanel{
-    private BufferedImage image;
-
-    public ImagePanel(String imgstr) {
-       try {                
-          image = ImageIO.read(new File(imgstr));
-       } catch (IOException ex) {
-            // handle exception...
-       }
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(image, 0, 0, null); // see javadoc for more info on the parameters            
-    } 
-} */
 
 /* Player class */
   public static class Player{
@@ -878,14 +1046,17 @@ private static JFrame frame = new JFrame(){
        Trailer trailer = new Trailer();
        //p1.setDollars(4);
 
+       //frame.setPlayerPositions(g, playernum);
+
 
        //Actual Gameplay:
-        while(true){
+       boolean isGameDone = true;
+        while(isGameDone){
             for (int i=0;i<playernum;i++) {
                 turn(playersList.get(i), actingSetList, office, trailer);
                 boolean dayDone = isDayDone();
                 if(dayDone) {
-                    boolean isGameDone = day.newDay();
+                    isGameDone = day.newDay();
                 }
             }
         }
