@@ -16,6 +16,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.*;
 import javax.imageio.ImageIO;
+import java.awt.Color;
 
 
  public class deadwood extends JFrame{
@@ -26,8 +27,10 @@ static Map<String,List<Extra>> extrasList = new HashMap<String,List<Extra>>();
 static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
 public static int activeScenes = 10;
 
-private JPanel wind = new JPanel();
+public static Graphics g;
+private static JPanel wind = new JPanel();
 private JFrame frame = new JFrame(){
+<<<<<<< HEAD
     Image background = ImageIO.read(new File("background.jpg"));
     public void paint(Graphics g){
         super.paint(g);
@@ -40,6 +43,19 @@ public deadwood() throws IOException{
     frame.setSize(1280,720);
     frame.setResizable(false);
     frame.setTitle("Deadwood");
+=======
+        Image background = ImageIO.read(new File("background.jpg"));
+        public void paint(Graphics g){
+            super.paint(g);
+            g.drawImage(background,0,0,this);
+        }
+    };
+    
+    public deadwood() throws IOException{
+        frame.setSize(1280,720);
+        frame.setResizable(false);
+        frame.setTitle("Deadwood");
+>>>>>>> f1fdb3f583574ad6bf8c61fe56608221eeb346e5
         
     frame.setVisible(true);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
@@ -66,6 +82,10 @@ public class ImagePanel extends JPanel{
 
 /* Player class */
   public static class Player{
+    private int x = 1107;
+    private int y = 261;
+    private int width = 10;
+    private int height = 10;
     private Dice dice;
     private int id;
     private int dollars = 0;
@@ -75,13 +95,45 @@ public class ImagePanel extends JPanel{
     private int score = 0;
     private boolean role = false;
     private boolean haveMoved = false;
-    private boolean haveActed = false;
+    public boolean haveActed = false;
+    public boolean thisTurn = false;
     private Lead actRole;
     private Extra extraRole;
-    private boolean actSuccessful;
+    public boolean actSuccessful;
     private ActingSet location;
 
-    private String local = "Trailer";
+    private String local = "Trailers";
+    
+    public void drawPlayer(Graphics g){
+        if(id == 1){
+            g.setColor(Color.RED);
+            g.fillRect(x,y,width,height);
+        }
+        else if(id == 2){
+            g.setColor(Color.BLUE);
+            g.fillRect(x + 12, y+12, width, height);
+        }
+        else if(id == 3){
+            g.setColor(Color.GREEN);
+            g.fillRect(x + 24, y + 24, width, height);
+        }
+        else if(id == 4){
+            g.setColor(Color.YELLOW);
+        }
+        else if(id == 5){
+            g.setColor(Color.MAGENTA);
+        }
+        else if(id == 6){
+            g.setColor(Color.GRAY);
+        }
+        else if(id == 7){
+            g.setColor(Color.CYAN);
+        }
+        else if(id == 8){
+            g.setColor(Color.ORANGE);
+        }
+        
+    }
     public Player(Dice pDice, int pId){
         this.dice = pDice;
         this.id = pId;
@@ -164,6 +216,7 @@ public class ImagePanel extends JPanel{
     public void resetTurn() {
         haveActed = false;
         haveMoved = false;
+        thisTurn = false;
     }
 
     public void act(){
@@ -186,6 +239,7 @@ public class ImagePanel extends JPanel{
       if(role == false && rank >= roll.getRank()){
         role = true;
         actRole = roll;
+        
       }
       else{
         JOptionPane.showMessageDialog(null,"Invalid Action, not high enough level or you have a role currently\n");
@@ -221,7 +275,7 @@ public class ImagePanel extends JPanel{
     }
     public void move(Trailer trailer){
         if (this.haveMoved == false) {
-            this.local = "Trailer";
+            this.local = "Trailers";
             this.location = null;
             this.haveMoved = true;
         } else {
@@ -235,7 +289,7 @@ public class ImagePanel extends JPanel{
 
     public void rehearse(){
         /*add 1 to rehearseCount */
-        if (this.haveActed == true) {
+        if (this.haveActed == false) {
             this.rehearseCount ++;
             this.haveActed = true;
         } else {
@@ -324,9 +378,14 @@ public class ImagePanel extends JPanel{
       if (p.actSuccessful == true) {
         p.setCredits(1);
         p.setDollars(1);
+        p.thisTurn = true;
       //reward on failure:
       } else {
-        p.setDollars(1);
+        if(p.thisTurn == false && p.haveActed == true){
+            p.thisTurn = true;
+            p.setDollars(1);
+            
+        }
       }
     }
   }
@@ -442,15 +501,13 @@ public class ImagePanel extends JPanel{
         private int shotsLeft;
         private Scene scene; //add list of roles to scene
         private List<Extra> extrasList;
-        private List<String> adjacencyList;
 
-        public ActingSet (String name, int shots, int shotsLeft, Scene scene, List<Extra> extrasList, List<String> adjacencyList){
+        public ActingSet (String name, int shots, int shotsLeft, Scene scene, List<Extra> extrasList){
             this.name = name;
             this.shots = shots;
             this.shotsLeft = shotsLeft;
             this.scene = scene;
             this.extrasList = extrasList;
-            this.adjacencyList = adjacencyList;
         }
 
         public String getName(){
@@ -714,16 +771,16 @@ public class ImagePanel extends JPanel{
           extrasList.put("Hotel",hotelExtras);
       }
       private static void populateActingList(){
-         ActingSet MainStreet = new ActingSet("Main Street",3,3,null,extrasList.get("Main Street"),adjacencyList.get("Main Street"));
-         ActingSet Saloon = new ActingSet("Saloon",2,2,null,extrasList.get("Saloon"),adjacencyList.get("Saloon"));
-         ActingSet Ranch = new ActingSet("Ranch",2,2,null,extrasList.get("Ranch"),adjacencyList.get("Ranch"));
-         ActingSet SecretHideout = new ActingSet("Secret Hideout",3,3,null,extrasList.get("Secret Hideout"),adjacencyList.get("Secret Hideout"));
-         ActingSet Bank = new ActingSet("Bank",1,1,null,extrasList.get("Bank"),adjacencyList.get("Bank"));
-         ActingSet Hotel = new ActingSet("Hotel",3,3,null,extrasList.get("Hotel"),adjacencyList.get("Hotel"));
-         ActingSet Church = new ActingSet("Church",2,2,null,extrasList.get("Church"),adjacencyList.get("Church"));
-         ActingSet Jail = new ActingSet("Jail",1,1,null,extrasList.get("Jail"),adjacencyList.get("Jail"));
-         ActingSet TrainStation = new ActingSet("Train Station",3,3,null,extrasList.get("Train Station"),adjacencyList.get("Train Station"));
-         ActingSet GeneralStore = new ActingSet("General Store",2,2,null,extrasList.get("General Store"),adjacencyList.get("General Store"));
+         ActingSet MainStreet = new ActingSet("Main Street",3,3,null,extrasList.get("Main Street"));
+         ActingSet Saloon = new ActingSet("Saloon",2,2,null,extrasList.get("Saloon"));
+         ActingSet Ranch = new ActingSet("Ranch",2,2,null,extrasList.get("Ranch"));
+         ActingSet SecretHideout = new ActingSet("Secret Hideout",3,3,null,extrasList.get("Secret Hideout"));
+         ActingSet Bank = new ActingSet("Bank",1,1,null,extrasList.get("Bank"));
+         ActingSet Hotel = new ActingSet("Hotel",3,3,null,extrasList.get("Hotel"));
+         ActingSet Church = new ActingSet("Church",2,2,null,extrasList.get("Church"));
+         ActingSet Jail = new ActingSet("Jail",1,1,null,extrasList.get("Jail"));
+         ActingSet TrainStation = new ActingSet("Train Station",3,3,null,extrasList.get("Train Station"));
+         ActingSet GeneralStore = new ActingSet("General Store",2,2,null,extrasList.get("General Store"));
 
          actingSetList.put("Main Street", MainStreet);
          actingSetList.put("Saloon", Saloon);
@@ -757,24 +814,29 @@ public class ImagePanel extends JPanel{
 
        //get player input and intialize playersList
        int playernum = 0;
-       while ((playernum < 1) || (playernum > 8)) {
+       while ((playernum < 2) || (playernum > 8)) {
             String numPlayers = JOptionPane.showInputDialog("Enter a number of players between 2 and 8: ");
             playernum = Integer.parseInt(numPlayers);
         }
-
+        
         for (int i=0;i<playernum;i++) {
             if (playernum < 5) {
                 Player playkid = new Player(officialDice, i+1);
                 playersList.add(playkid);
+                //playkid.drawPlayer(g);
+
             } else if (playernum == 5) {
                 Player playkid = new Player(officialDice, i+1, 2);
                 playersList.add(playkid);
+                //playkid.drawPlayer(g);
             } else if (playernum == 6) {
                 Player playkid = new Player(officialDice, i+1, 4);
                 playersList.add(playkid);
+                //playkid.drawPlayer(g);
             } else if (playernum > 6) {
                 Player playkid = new Player(officialDice, i+1, 0, 2);
                 playersList.add(playkid);
+                //playkid.drawPlayer(g);
             }
         }
 
@@ -818,8 +880,10 @@ public class ImagePanel extends JPanel{
     }
 
     private static void isSceneDone(Player p){
-        if(p.getActingSet().getShotsLeft() == 0){
-            activeScenes --;
+        if(p.getLocal() != "Trailers" && p.getLocal() != "Casting Office"){
+            if(p.getActingSet().getShotsLeft() == 0){
+                activeScenes --;
+            }
         }
     }
     private static boolean isDayDone(){
@@ -1164,11 +1228,17 @@ public class ImagePanel extends JPanel{
             JOptionPane.showMessageDialog(null,"You are in the " + p.getLocal());
             if(p.getActingSet() != null){
                 JOptionPane.showMessageDialog(null," where " + p.getActingSet().getScene().getName() + ", " + "scene " + p.getActingSet().getScene().getId() +" is shooting.\n");
+                for(int i = 0; i < p.getActingSet().getScene().getLeadList().size(); i ++){
+                    JOptionPane.showMessageDialog(null, "Lead Role #" + (i + 1) + " is " + p.getActingSet().getScene().getLeadList().get(i).getName() + " and requires level " + p.getActingSet().getScene().getLeadList().get(i).getRank());
+                }
+                for(int i = 0; i < extrasList.get(p.getLocal()).size(); i ++){
+                    JOptionPane.showMessageDialog(null, "Extra Role #" + (i + 1) + " is " + extrasList.get(p.getLocal()).get(i).getName() + " and the level requirement is " + extrasList.get(p.getLocal()).get(i).getRank());
+                }
             }
             else if(p.getLocal().equals("Casting Office")){
                 JOptionPane.showMessageDialog(null," where there is no scene that is ever worked on.\n");
             }
-            else if(p.getLocal().equals("Trailer")){
+            else if(p.getLocal().equals("Trailers")){
                 JOptionPane.showMessageDialog(null," where there is no scene ever shot.\n");
             }
             else{
@@ -1176,34 +1246,45 @@ public class ImagePanel extends JPanel{
             }
         }
         else if(cmd.equals("Rehearse")){
-            p.rehearse();
-            JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has rehearsed this turn.\n");
+             if( p.getLeadRole() != null || p.getExtraRole() != null){
+                if(p.haveActed == false){
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has rehearsed this turn.\n");
+                }
+                p.rehearse();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "You aren't in a role, so you cannot rehearse.");
+            }
         }
         else if(cmd.equals("Act")){
-            Lead LeadRole = findLead(p.getLeadRole(), p.getActingSet().getScene().getLeadList());
-            Extra ExtraRole = findExtra(p.getExtraRole(), p.getActingSet().getExtrasList());
-            if(LeadRole != null){
-                p.act();
-                LeadRole.reward(p);
-                JOptionPane.showMessageDialog(null,"Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
-                p.setActSuccesful();
+            if(p.getLeadRole() != null || p.getExtraRole() != null){
+                Lead LeadRole = findLead(p.getLeadRole(), p.getActingSet().getScene().getLeadList());
+                Extra ExtraRole = findExtra(p.getExtraRole(), p.getActingSet().getExtrasList());
+                if(LeadRole != null){
+                    p.act();
+                    LeadRole.reward(p);
+                    JOptionPane.showMessageDialog(null,"Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
+                    p.setActSuccesful();
+                }
+                else if(ExtraRole != null){
+                    p.act();
+                    ExtraRole.reward(p);
+                    JOptionPane.showMessageDialog(null,"Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
+                    p.setActSuccesful();
+                }
             }
-            else if(ExtraRole != null){
-                p.act();
-                ExtraRole.reward(p);
-                JOptionPane.showMessageDialog(null,"Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
-                p.setActSuccesful();
+            else{
+                JOptionPane.showMessageDialog(null, "You aren't in a role, so you cannot act.");
             }
         }
          else if(cmd.equals("end")){
             JOptionPane.showMessageDialog(null,"Player " + p.getId() + "'s turn is over... Please pass the computer to the next player.\n");
             isSceneDone(p);
             p.resetTurn();
-            return;
         }
         else if((cmd.length() > 4) && (cmd.substring(0,4).equals("move"))){
             ActingSet room = list.get(cmd.substring(5));
-            if(room == null && (!(cmd.substring(5).equals( "Casting Office")) && !(cmd.substring(5).equals("Trailer")))){
+            if(room == null && (!(cmd.substring(5).equals( "Casting Office")) && !(cmd.substring(5).equals("Trailers")))){
                 // if(room == null){
                 //     JOptionPane.showMessageDialog(list.get(cmd.substring(5)));
                 //     JOptionPane.showMessageDialog(cmd.substring(5));
@@ -1214,42 +1295,61 @@ public class ImagePanel extends JPanel{
             else{
                 if(room == null){
                     if(cmd.substring(5).equals("Casting Office")){
-                        p.move(office);
-                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
+                        if(adjacencyList.get(p.getLocal()).contains("Casting Office")){
+                            p.move(office);
+                            JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "That room is not adjacent");
+                        }
                     }
                     else{
-                        p.move(trailer);
-                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
+                        if(adjacencyList.get(p.getLocal()).contains("Trailers")){
+                            p.move(trailer);
+                            JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "That room is not adjacent");
+                        }
                     }
                 }
                 else{
-                    p.move(room);
-                    JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getActingSet().getName() + ".\n");
+                    if(adjacencyList.get(p.getLocal()).contains(room.getName())){
+                        p.move(room);
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getActingSet().getName() + ".\n");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "That room is not adjacent");
+                    }
                 }
             }
         }
         else if((cmd.length() > 4) && (cmd.substring(0,4).equals("work"))){
-            Lead isLead = findLead(cmd.substring(5),p.getActingSet().getScene().getLeadList());
-            Extra isExtra = findExtra(cmd.substring(5),extrasList.get(p.getActingSet().getName()));
+            Lead isLead = null;
+            Extra isExtra = null;
+            if(p.getActingSet() != null){
+                isLead = findLead(cmd.substring(5),p.getActingSet().getScene().getLeadList());
+                isExtra = findExtra(cmd.substring(5),extrasList.get(p.getActingSet().getName()));
+            }
             if(isLead == null){
                 if(isExtra == null){
                     //JOptionPane.showMessageDialog(extrasList.get(p.getActingSet().getName()).get(0).getName());
                     JOptionPane.showMessageDialog(null,"I'm sorry but that role doesn't exist...\n");
-                    JOptionPane.showMessageDialog(null,p.getActingSet().getScene().getName());
-                    JOptionPane.showMessageDialog(null,p.getActingSet().getScene().getLeadList().get(0).getName());
+//                     JOptionPane.showMessageDialog(null,p.getActingSet().getScene().getName());
+//                     JOptionPane.showMessageDialog(null,p.getActingSet().getScene().getLeadList().get(0).getName());
                     return;
                 }
                 p.takeExtraRole(isExtra);
-                if(p.getExtraRole() == null){
-                    return;
-                }
+//                 if(p.getExtraRole() == null){
+//                     return;
+//                 }
                 JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has taken the Extra role of " + p.getExtraRole() + ".\n");
             }
             else{
                 p.takeLeadRole(isLead);
-                 if(p.getLeadRole() == null){
-                    return;
-                }
+//                 if(p.getLeadRole() == null){
+//                     return;
+//                 }
                 JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has taken the Lead role of " + p.getLeadRole() + ".\n");
             }
         }
