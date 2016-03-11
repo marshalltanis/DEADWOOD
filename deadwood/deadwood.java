@@ -181,6 +181,7 @@ private JFrame frame = new JFrame(){
     public void resetTurn() {
         haveActed = false;
         haveMoved = false;
+        thisTurn = false;
     }
 
     public void act(){
@@ -203,6 +204,7 @@ private JFrame frame = new JFrame(){
       if(role == false && rank >= roll.getRank()){
         role = true;
         actRole = roll;
+        
       }
       else{
         JOptionPane.showMessageDialog(null,"Invalid Action, not high enough level or you have a role currently\n");
@@ -780,7 +782,7 @@ private JFrame frame = new JFrame(){
 
        //get player input and intialize playersList
        int playernum = 0;
-       while ((playernum < 1) || (playernum > 8)) {
+       while ((playernum < 2) || (playernum > 8)) {
             String numPlayers = JOptionPane.showInputDialog("Enter a number of players between 2 and 8: ");
             playernum = Integer.parseInt(numPlayers);
         }
@@ -1270,27 +1272,31 @@ private JFrame frame = new JFrame(){
             }
         }
         else if((cmd.length() > 4) && (cmd.substring(0,4).equals("work"))){
-            Lead isLead = findLead(cmd.substring(5),p.getActingSet().getScene().getLeadList());
-            Extra isExtra = findExtra(cmd.substring(5),extrasList.get(p.getActingSet().getName()));
+            Lead isLead = null;
+            Extra isExtra = null;
+            if(p.getActingSet() != null){
+                isLead = findLead(cmd.substring(5),p.getActingSet().getScene().getLeadList());
+                isExtra = findExtra(cmd.substring(5),extrasList.get(p.getActingSet().getName()));
+            }
             if(isLead == null){
                 if(isExtra == null){
                     //JOptionPane.showMessageDialog(extrasList.get(p.getActingSet().getName()).get(0).getName());
                     JOptionPane.showMessageDialog(null,"I'm sorry but that role doesn't exist...\n");
-                    JOptionPane.showMessageDialog(null,p.getActingSet().getScene().getName());
-                    JOptionPane.showMessageDialog(null,p.getActingSet().getScene().getLeadList().get(0).getName());
+//                     JOptionPane.showMessageDialog(null,p.getActingSet().getScene().getName());
+//                     JOptionPane.showMessageDialog(null,p.getActingSet().getScene().getLeadList().get(0).getName());
                     return;
                 }
                 p.takeExtraRole(isExtra);
-                if(p.getExtraRole() == null){
-                    return;
-                }
+//                 if(p.getExtraRole() == null){
+//                     return;
+//                 }
                 JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has taken the Extra role of " + p.getExtraRole() + ".\n");
             }
             else{
                 p.takeLeadRole(isLead);
-                 if(p.getLeadRole() == null){
-                    return;
-                }
+//                 if(p.getLeadRole() == null){
+//                     return;
+//                 }
                 JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has taken the Lead role of " + p.getLeadRole() + ".\n");
             }
         }
