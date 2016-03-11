@@ -5,7 +5,8 @@
  * Modified 2/23/2016
  */
 
-import processing.core.*;
+//package deadwood;
+
 import java.util.*;
 import java.lang.*;
 
@@ -695,13 +696,12 @@ public static int activeScenes = 10;
     }
 
 
-
-
-
 /* Main */
    public static void main(String[]arg){
 
         //initialization stuff:
+
+
        Board board = new Board();
        Scanner console = new Scanner(System.in);
        List<Scene> sceneList = populateSceneList();
