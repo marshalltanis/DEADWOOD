@@ -14,6 +14,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.*;
 import javax.imageio.ImageIO;
+import java.awt.Color;
 
 
  public class deadwood extends JFrame{
@@ -24,15 +25,15 @@ static Map<String,List<Extra>> extrasList = new HashMap<String,List<Extra>>();
 static Map<String,ActingSet> actingSetList = new HashMap<String,ActingSet>();
 public static int activeScenes = 10;
 
-private JPanel wind = new JPanel();
+public static Graphics g;
+private static JPanel wind = new JPanel();
 private JFrame frame = new JFrame(){
-    Image background = ImageIO.read(new File("background.jpg"));
-    public void paint(Graphics g){
-        super.paint(g);
-        g.drawImage(background,0,0,this);
-    }
-    
-};
+        Image background = ImageIO.read(new File("background.jpg"));
+        public void paint(Graphics g){
+            super.paint(g);
+            g.drawImage(background,0,0,this);
+        }
+    };
     
     public deadwood() throws IOException{
         frame.setSize(1280,720);
@@ -46,6 +47,10 @@ private JFrame frame = new JFrame(){
 }
 /* Player class */
   public static class Player{
+    private int x = 1107;
+    private int y = 261;
+    private int width = 10;
+    private int height = 10;
     private Dice dice;
     private int id;
     private int dollars = 0;
@@ -55,13 +60,44 @@ private JFrame frame = new JFrame(){
     private int score = 0;
     private boolean role = false;
     private boolean haveMoved = false;
-    private boolean haveActed = false;
+    public boolean haveActed = false;
     private Lead actRole;
     private Extra extraRole;
-    private boolean actSuccessful;
+    public boolean actSuccessful;
     private ActingSet location;
 
     private String local = "Trailer";
+    
+    public void drawPlayer(Graphics g){
+        if(id == 1){
+            g.setColor(Color.RED);
+            g.fillRect(x,y,width,height);
+        }
+        else if(id == 2){
+            g.setColor(Color.BLUE);
+            g.fillRect(x + 12, y+12, width, height);
+        }
+        else if(id == 3){
+            g.setColor(Color.GREEN);
+            g.fillRect(x + 24, y + 24, width, height);
+        }
+        else if(id == 4){
+            g.setColor(Color.YELLOW);
+        }
+        else if(id == 5){
+            g.setColor(Color.MAGENTA);
+        }
+        else if(id == 6){
+            g.setColor(Color.GRAY);
+        }
+        else if(id == 7){
+            g.setColor(Color.CYAN);
+        }
+        else if(id == 8){
+            g.setColor(Color.ORANGE);
+        }
+        
+    }
     public Player(Dice pDice, int pId){
         this.dice = pDice;
         this.id = pId;
@@ -215,7 +251,7 @@ private JFrame frame = new JFrame(){
 
     public void rehearse(){
         /*add 1 to rehearseCount */
-        if (this.haveActed == true) {
+        if (this.haveActed == false) {
             this.rehearseCount ++;
             this.haveActed = true;
         } else {
@@ -306,7 +342,9 @@ private JFrame frame = new JFrame(){
         p.setDollars(1);
       //reward on failure:
       } else {
-        p.setDollars(1);
+        if(p.haveActed == false){
+            p.setDollars(1);
+        }
       }
     }
   }
@@ -742,20 +780,25 @@ private JFrame frame = new JFrame(){
             String numPlayers = JOptionPane.showInputDialog("Enter a number of players between 2 and 8: ");
             playernum = Integer.parseInt(numPlayers);
         }
-
+        
         for (int i=0;i<playernum;i++) {
             if (playernum < 5) {
                 Player playkid = new Player(officialDice, i+1);
                 playersList.add(playkid);
+                //playkid.drawPlayer(g);
+
             } else if (playernum == 5) {
                 Player playkid = new Player(officialDice, i+1, 2);
                 playersList.add(playkid);
+                //playkid.drawPlayer(g);
             } else if (playernum == 6) {
                 Player playkid = new Player(officialDice, i+1, 4);
                 playersList.add(playkid);
+                //playkid.drawPlayer(g);
             } else if (playernum > 6) {
                 Player playkid = new Player(officialDice, i+1, 0, 2);
                 playersList.add(playkid);
+                //playkid.drawPlayer(g);
             }
         }
 
@@ -1157,23 +1200,35 @@ private JFrame frame = new JFrame(){
             }
         }
         else if(cmd.equals("Rehearse")){
-            p.rehearse();
-            JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has rehearsed this turn.\n");
+             if( p.getLeadRole() != null || p.getExtraRole() != null){
+                if(p.haveActed == false){
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has rehearsed this turn.\n");
+                }
+                p.rehearse();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "You aren't in a role, so you cannot rehearse.");
+            }
         }
         else if(cmd.equals("Act")){
-            Lead LeadRole = findLead(p.getLeadRole(), p.getActingSet().getScene().getLeadList());
-            Extra ExtraRole = findExtra(p.getExtraRole(), p.getActingSet().getExtrasList());
-            if(LeadRole != null){
-                p.act();
-                LeadRole.reward(p);
-                JOptionPane.showMessageDialog(null,"Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
-                p.setActSuccesful();
+            if(p.getLeadRole() != null || p.getExtraRole() != null){
+                Lead LeadRole = findLead(p.getLeadRole(), p.getActingSet().getScene().getLeadList());
+                Extra ExtraRole = findExtra(p.getExtraRole(), p.getActingSet().getExtrasList());
+                if(LeadRole != null){
+                    p.act();
+                    LeadRole.reward(p);
+                    JOptionPane.showMessageDialog(null,"Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
+                    p.setActSuccesful();
+                }
+                else if(ExtraRole != null){
+                    p.act();
+                    ExtraRole.reward(p);
+                    JOptionPane.showMessageDialog(null,"Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
+                    p.setActSuccesful();
+                }
             }
-            else if(ExtraRole != null){
-                p.act();
-                ExtraRole.reward(p);
-                JOptionPane.showMessageDialog(null,"Player " + p.getId() + " now has $" + p.getDollars() + " and " + p.getCredits() + " credits.\n");
-                p.setActSuccesful();
+            else{
+                JOptionPane.showMessageDialog(null, "You aren't in a role, so you cannot act.");
             }
         }
          else if(cmd.equals("end")){
