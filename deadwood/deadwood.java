@@ -61,6 +61,7 @@ private JFrame frame = new JFrame(){
     private boolean role = false;
     private boolean haveMoved = false;
     public boolean haveActed = false;
+    public boolean thisTurn = false;
     private Lead actRole;
     private Extra extraRole;
     public boolean actSuccessful;
@@ -340,10 +341,13 @@ private JFrame frame = new JFrame(){
       if (p.actSuccessful == true) {
         p.setCredits(1);
         p.setDollars(1);
+        p.thisTurn = true;
       //reward on failure:
       } else {
-        if(p.haveActed == false){
+        if(p.thisTurn == false && p.haveActed == true){
+            p.thisTurn = true;
             p.setDollars(1);
+            
         }
       }
     }
@@ -842,8 +846,10 @@ private JFrame frame = new JFrame(){
     }
 
     private static void isSceneDone(Player p){
-        if(p.getActingSet().getShotsLeft() == 0){
-            activeScenes --;
+        if(p.getLocal() != "Trailer" && p.getLocal() != "Casting Office"){
+            if(p.getActingSet().getShotsLeft() == 0){
+                activeScenes --;
+            }
         }
     }
     private static boolean isDayDone(){
@@ -1235,7 +1241,6 @@ private JFrame frame = new JFrame(){
             JOptionPane.showMessageDialog(null,"Player " + p.getId() + "'s turn is over... Please pass the computer to the next player.\n");
             isSceneDone(p);
             p.resetTurn();
-            return;
         }
         else if((cmd.length() > 4) && (cmd.substring(0,4).equals("move"))){
             ActingSet room = list.get(cmd.substring(5));
