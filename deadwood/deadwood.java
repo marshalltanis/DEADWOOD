@@ -67,7 +67,7 @@ private JFrame frame = new JFrame(){
     public boolean actSuccessful;
     private ActingSet location;
 
-    private String local = "Trailer";
+    private String local = "Trailers";
     
     public void drawPlayer(Graphics g){
         if(id == 1){
@@ -240,7 +240,7 @@ private JFrame frame = new JFrame(){
     }
     public void move(Trailer trailer){
         if (this.haveMoved == false) {
-            this.local = "Trailer";
+            this.local = "Trailers";
             this.location = null;
             this.haveMoved = true;
         } else {
@@ -466,15 +466,13 @@ private JFrame frame = new JFrame(){
         private int shotsLeft;
         private Scene scene; //add list of roles to scene
         private List<Extra> extrasList;
-        private List<String> adjacencyList;
 
-        public ActingSet (String name, int shots, int shotsLeft, Scene scene, List<Extra> extrasList, List<String> adjacencyList){
+        public ActingSet (String name, int shots, int shotsLeft, Scene scene, List<Extra> extrasList){
             this.name = name;
             this.shots = shots;
             this.shotsLeft = shotsLeft;
             this.scene = scene;
             this.extrasList = extrasList;
-            this.adjacencyList = adjacencyList;
         }
 
         public String getName(){
@@ -738,16 +736,16 @@ private JFrame frame = new JFrame(){
           extrasList.put("Hotel",hotelExtras);
       }
       private static void populateActingList(){
-         ActingSet MainStreet = new ActingSet("Main Street",3,3,null,extrasList.get("Main Street"),adjacencyList.get("Main Street"));
-         ActingSet Saloon = new ActingSet("Saloon",2,2,null,extrasList.get("Saloon"),adjacencyList.get("Saloon"));
-         ActingSet Ranch = new ActingSet("Ranch",2,2,null,extrasList.get("Ranch"),adjacencyList.get("Ranch"));
-         ActingSet SecretHideout = new ActingSet("Secret Hideout",3,3,null,extrasList.get("Secret Hideout"),adjacencyList.get("Secret Hideout"));
-         ActingSet Bank = new ActingSet("Bank",1,1,null,extrasList.get("Bank"),adjacencyList.get("Bank"));
-         ActingSet Hotel = new ActingSet("Hotel",3,3,null,extrasList.get("Hotel"),adjacencyList.get("Hotel"));
-         ActingSet Church = new ActingSet("Church",2,2,null,extrasList.get("Church"),adjacencyList.get("Church"));
-         ActingSet Jail = new ActingSet("Jail",1,1,null,extrasList.get("Jail"),adjacencyList.get("Jail"));
-         ActingSet TrainStation = new ActingSet("Train Station",3,3,null,extrasList.get("Train Station"),adjacencyList.get("Train Station"));
-         ActingSet GeneralStore = new ActingSet("General Store",2,2,null,extrasList.get("General Store"),adjacencyList.get("General Store"));
+         ActingSet MainStreet = new ActingSet("Main Street",3,3,null,extrasList.get("Main Street"));
+         ActingSet Saloon = new ActingSet("Saloon",2,2,null,extrasList.get("Saloon"));
+         ActingSet Ranch = new ActingSet("Ranch",2,2,null,extrasList.get("Ranch"));
+         ActingSet SecretHideout = new ActingSet("Secret Hideout",3,3,null,extrasList.get("Secret Hideout"));
+         ActingSet Bank = new ActingSet("Bank",1,1,null,extrasList.get("Bank"));
+         ActingSet Hotel = new ActingSet("Hotel",3,3,null,extrasList.get("Hotel"));
+         ActingSet Church = new ActingSet("Church",2,2,null,extrasList.get("Church"));
+         ActingSet Jail = new ActingSet("Jail",1,1,null,extrasList.get("Jail"));
+         ActingSet TrainStation = new ActingSet("Train Station",3,3,null,extrasList.get("Train Station"));
+         ActingSet GeneralStore = new ActingSet("General Store",2,2,null,extrasList.get("General Store"));
 
          actingSetList.put("Main Street", MainStreet);
          actingSetList.put("Saloon", Saloon);
@@ -848,7 +846,7 @@ private JFrame frame = new JFrame(){
     }
 
     private static void isSceneDone(Player p){
-        if(p.getLocal() != "Trailer" && p.getLocal() != "Casting Office"){
+        if(p.getLocal() != "Trailers" && p.getLocal() != "Casting Office"){
             if(p.getActingSet().getShotsLeft() == 0){
                 activeScenes --;
             }
@@ -1200,7 +1198,7 @@ private JFrame frame = new JFrame(){
             else if(p.getLocal().equals("Casting Office")){
                 JOptionPane.showMessageDialog(null," where there is no scene that is ever worked on.\n");
             }
-            else if(p.getLocal().equals("Trailer")){
+            else if(p.getLocal().equals("Trailers")){
                 JOptionPane.showMessageDialog(null," where there is no scene ever shot.\n");
             }
             else{
@@ -1246,7 +1244,7 @@ private JFrame frame = new JFrame(){
         }
         else if((cmd.length() > 4) && (cmd.substring(0,4).equals("move"))){
             ActingSet room = list.get(cmd.substring(5));
-            if(room == null && (!(cmd.substring(5).equals( "Casting Office")) && !(cmd.substring(5).equals("Trailer")))){
+            if(room == null && (!(cmd.substring(5).equals( "Casting Office")) && !(cmd.substring(5).equals("Trailers")))){
                 // if(room == null){
                 //     JOptionPane.showMessageDialog(list.get(cmd.substring(5)));
                 //     JOptionPane.showMessageDialog(cmd.substring(5));
@@ -1257,17 +1255,32 @@ private JFrame frame = new JFrame(){
             else{
                 if(room == null){
                     if(cmd.substring(5).equals("Casting Office")){
-                        p.move(office);
-                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
+                        if(adjacencyList.get(p.getLocal()).contains("Casting Office")){
+                            p.move(office);
+                            JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "That room is not adjacent");
+                        }
                     }
                     else{
-                        p.move(trailer);
-                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
+                        if(adjacencyList.get(p.getLocal()).contains("Trailers")){
+                            p.move(trailer);
+                            JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getLocal() + ".\n");
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "That room is not adjacent");
+                        }
                     }
                 }
                 else{
-                    p.move(room);
-                    JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getActingSet().getName() + ".\n");
+                    if(adjacencyList.get(p.getLocal()).contains(room.getName())){
+                        p.move(room);
+                        JOptionPane.showMessageDialog(null,"Player " + p.getId() + " has moved to room " + p.getActingSet().getName() + ".\n");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "That room is not adjacent");
+                    }
                 }
             }
         }
